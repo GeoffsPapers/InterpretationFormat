@@ -61,7 +61,7 @@
 }
 
 \authorrunning{Sutcliffe, Steen, Fontaine}
-\titlerunning{TPTP Interpretations}
+\titlerunning{TPTP World Interpretations}
 
 \begin{document}
 \maketitle
@@ -113,11 +113,17 @@ served the community adequately for almost 20 years, and is output by several AT
 Paradox \cite{CS03}, FMDarwin \cite{BF+06}, Vampire \cite{KV13}.
 
 \paragraph{Related Work:}
+Section~\ref{Interpretations} provides the landscape of different representations of
+interpretations, and how models (interpretations that make particular formulae {\em true})
+can be built.
+The focus there is on Tarskian interpretations, but Kripke interpretations are also reviewed.
+That provides the necessary background for the focus of this paper -- a concrete realization
+of how interpretations are to be represented in the TPTP World.
+There are other concrete representations in use:
 The SMT-LIB standard \cite{BFT17} defines a format for model output, and commands to inspect 
 models.  
 SAT solvers generally output models as specified by the SAT competitions \cite{JL+12}, in a 
 simple format similar to the DIMACS input format \cite{Bab93}.
-iProver, DIGs.
 Some individual model finding systems have defined their own formats for models, e.g., the 
 output formats of Nitpick and Z3 \cite{dMB08}.
 % +++
@@ -129,20 +135,163 @@ output formats of Nitpick and Z3 \cite{dMB08}.
 % +++
 
 This paper is organized as follows:
-Section~\ref{TPTP} introduces the TPTP World which provides the framework and languages used
-in this research.
 Section~\ref{Interpretations} discusses the nature of interpretations, considering what is
 needed from interpretations, and the various forms that interpretations can take.
-Section~\ref{NewTarskian} defines the new format for Tarskian interpretations, and
+Section~\ref{TPTP} introduces the TPTP World which provides the framework and languages used
+in this research.
+Section~\ref{TarskianTF0} defines the new format for Tarskian interpretations, and
 Section~\ref{NewKripke} does the same for Kripke interpretations.
 Section~\ref{Tools} reviews some TPTP World tools for examining and manipulating interpretations.
 Section~\ref{Conclusion} concludes and discusses plans for future work.
 
 %--------------------------------------------------------------------------------------------------
+\section{The Landscape of Interpretations}
+\label{Interpretations}
+
+What do we Need?
+\begin{itemize}
+\item {\em Model existence}
+      \begin{packed_itemize}
+      \item Consistency of axiomatizations, to avoid CAX [ATP process]
+      \item Use as a yes/no subroutine in more complex reasoning [Steen], including~\ldots
+      \item Axiom selection \cite{SP07} NEED FROM LT
+      \item Existence of bugs in verification, but frustrating [McCune]
+      \end{packed_itemize}
+      The model finder has to be trusted.
+\item {\em Explicit models}
+      \begin{packed_itemize}
+      \item Identification of bugs in verification [Claessen]
+      \item A solution to a problem encoded as a model finding problem [Claessen]
+      \item Inspecting outcomes of student's experiments [Steen]
+      \item Evaluating formulae wrt the model [Sutcliffe]
+      \item Machine learning from models [~Barbosa]
+      \item Improve model finders [~Barbosa]
+      \end{packed_itemize}
+      The models can be verified.
+\item {\em Properties of explicit interpretations}
+      \begin{packed_itemize}
+      \item Verifiable [Zhang]
+      \item Comprehensible for manual inspection, e.g., for Intel \cite{EK+10}
+      \item Tractable evaluation of formulae [Sutcliffe]
+      \end{packed_itemize}
+      In the language of the input!
+\end{itemize}
+
+A Tarskian-style interpretation \cite{TV56} of formulae in first-order logic consists of a 
+non-empty domain of unequal elements for each type used in the formulae (just one domain for 
+untyped logic), and interpretations of the function and predicate symbols with respect to the 
+domains \cite{Hun96,Gal15}.
+An overview of some ways of building and representing Tarskian interpretations is provided 
+by \cite{CLP04}.
+$I \vdash \Phi$ means the interpretation $I$ is a model of the formula $\Phi$.
+An interpretation can normally interpret all expressions that can be written in the language of 
+the formulae, but in some circumstances an interpretation can interpret only (at least) the given 
+formulae, e.g., \cite{BSW23}; such an interpretation is a {\em partial interpretation}.
+
+Three types of Tarskian interpretations are clear (and more might exist):
+\begin{itemize}
+\item {\em Finite interpretations} have only finite domains.
+      The domain and symbol mappings can be be explcitly enumerated.
+      There are several ATP systems that produce finite interpretations, e.g., Paradox,
+      FMDarwin, and Vampire.
+      Finite interpretations are typically verifiable, comprehensible, and tractable.
+\item {\em Infinite interpretations} have one or more infinite domains.
+      Infinite domains can be explicitly generated (e.g., terms representing Peano numbers), or 
+      implicitly specified (e.g., some set of algebraic numbers, such as the integers).
+      There are several ATP systems that produce finite interpretations, e.g., 
+      cvc5 \cite{BB+22-cvc5}, Z3.
+      Infinite interpretations are verifiable, but might not be comprehensible, and are often
+      intractable.
+\item {\em Herbrand interpretations} \cite{Her30} have the Herbrand universe as the domain, 
+      the mapping for non-boolean symbols (functions) is the ``identity'', and the mapping
+      for boolean symbols (predicates) is from the Herbrand base to $\{true,false\}$.
+
+      Every set of formulae induces its set of Herbrand models.
+      A set of formulae might not be intended to represent it's models, e.g., the input to 
+      an ATP system. 
+      In the ATP context a set of formulae is often intended to at least confirm the existence
+      of Herbrand models.
+      Such sets can be the result from model preserving transformations done by an ATP on its 
+      input, or generated by an ATP system with the explicit intention of representing Herbrand 
+      interpretations.
+      \begin{packed_itemize}
+      \item {\em Saturations} \cite{BG+01} are a fixed point for a set of clauses at which further 
+            application of a complete inference system does not generate any new clauses.
+            This approach is adopted in saturation-based ATP systems such as E \cite{SCV19},
+            Prover9 \cite{McC-Prover9-URL}, Vampire, and Zipperposition \cite{VB+21}.
+            While the domain of a saturation is known to be the Herbrand Universe, there is no 
+            explicit symbol interpretation that can be used constructively by users.
+            Saturations are verifiable, incomprehensible, and often intractable.
+      \item {\em Formulae} that are intended to represent Herbrand interpretations include
+            a disjunction of implicit generalisations (DIGs) \cite{LM87}, and predicate
+            definitions over the term algebra \cite{SK12}.
+            iProver \cite{Kor08,SK12} is an ATP system that output the latter format.
+            Formulae as Herbrand interpretations are verifiable, and they can be comprehensible 
+            and tractable.
+      \end{packed_itemize}
+\item {\em Kripke interpretations} \cite{Kri63} add a layer of {\em worlds} over Tarskian
+      interpretations.
+      There can be a finite or infinite number of worlds.
+      There is an {\em accessibility relation} between the worlds, which can be subject to the
+      requirements of the logic being used, e.g., for modal logic {\bf M} the accessibility 
+      relation must be reflexive, i.e., every world can access itself.
+      Within each world there is a Tarskian interpretation, and there can be some interaction
+      between the worlds' interpretations if the terms designate globally MORE TO BE SAID.
+      The verifiability, comprehensibility, and tractablity of Kripke interpretations varies
+      between individual cases.
+\end{itemize}
+
+The notions of interpretations, models, partial interpretations, finite interpretations,
+Herbrand interpretations, etc., are captured in the SZS ontologies \cite{Sut08-KEAPPA}, as
+updated at 
+\href{https://www.tptp.org/cgi-bin/SeeTPTP?Category=Documents\&File=SZSOntology}{\tt www.tptp.org}
+\href{https://www.tptp.org/cgi-bin/SeeTPTP?Category=Documents\&File=SZSOntology}{\tt /cgi-bin/SeeTPTP?Category=Documents\&File=SZSOntology}.
+For this work the otology was extended with a new value {\em Model Preserving} (MPR), defined
+as ``Some interpretations are models of Ax, and
+  all models of Ax are extended to a model of C, and
+  all models of C are an extension of a model of Ax
+  (which means that all models of C are models of Ax)''.
+This is used for ATP transformations of satisfiable sets of formulae in which the models
+of the set are unchanged, or changed only by adding new domain elements or mappings such
+that they still model the original formulae.
+Examples of such transformations are adding logical consequence of the set into the set, and
+Skolemization.
+
+Ways to make finite interpretations:
+\begin{packed_itemize}
+\item Reduction to Function-Free Clause Logic \cite{CS03,McC03-MACE4-TR,BF+09}
+\end{packed_itemize}
+
+Ways to make infinite non-Herbrand interpretations:
+\begin{packed_itemize}
+\item cvc5
+\end{packed_itemize}
+
+Ways to make Herbrand interpretations:
+\begin{packed_itemize}
+\item Tableaux. as long as you use a proof confluent calculus, it is normally possible to 
+      construct a model from a saturated branch \cite{Hah01}.
+\item Hyper-tableaux. \cite{BFN96,Bau98,BFP07}
+\item Ordered Semantic Hyper-linking \cite{PZ00} NEED TO READ
+\item SGGS \cite{BP16}
+\item Proving Infinite Satisfiability \cite{BB13}
+\item Model Evolution with Equality \cite{BT03,BFT04,BT05,BPT11}
+\item EQMC \cite{CP00,Pel03-EQMC}
+\item Saturation \cite{Pel03-JSC}
+\item RAMC \cite{CZ92,CP95,CP95-TAB}
+\end{packed_itemize}
+
+\begin{figure}[htbp]
+\includegraphics[width=\textwidth]{ModelLandscape.pdf}
+\caption{The Landscape of Classical Model Building}
+\label{ModelLandscape}
+\end{figure}
+
+%--------------------------------------------------------------------------------------------------
 \section{The TPTP World and Languages}
 \label{TPTP}
 
-The TPTP language \cite{Sut22-IGPL} is one of the keys to the success of the TPTP World.
+The TPTP language \cite{Sut23-IGPL} is one of the keys to the success of the TPTP World.
 The language is used for writing both problems and solutions,
 which enables convenient communication between systems. 
 % It also enables tool exchange, tool integration, and comparable experimental results.
@@ -168,117 +317,11 @@ A general principle of the TPTP language is ``we provide the syntax, you provide
 As such, there is no a priori commitment to any semantics for the languages, although in almost 
 all cases the intended logic and semantics are well known.
 All the typed forms include constructs for arithmetic.
-TF0 \cite{SS+12}, the monomorphic subform of TFF, is used in this work (see Section~\ref{TF0}).
-
-The top level building blocks of the TPTP language are {\em annotated formulae}.
-An annotated formula has the form:\\
-\hspace*{0.5cm}{\em language}{\tt (}{\em name}{\tt ,}
-{\em role}{\tt ,}
-{\em formula}{\tt ,}
-{\em source}{\tt ,}
-{\em useful\_info}{\tt )}\\
-The {\em language}s supported are {\smalltt{cnf}} (clause normal form), {\smalltt{fof}}
-(first-order form), {\smalltt{tff}} (typed first-order form), and {\smalltt{thf}}
-(typed higher-order form).
-The {\em role}, e.g., {\smalltt{axiom}}, {\smalltt{lemma}}, {\smalltt{conjecture}},
-defines the use of the formula in an ATP system.
-In a {\em formula}, terms and atoms follow Prolog conventions
--- functions and predicates start with a lowercase letter or are {\tt '}single quoted{\tt '}, and 
-variables start with an uppercase letter.
-The language also supports interpreted symbols, which either start with a {\tt \$}, e.g., 
-the truth constants {\smalltt{\$true}} and {\smalltt{\$false}}, or are composed of 
-non-alphabetic characters, e.g., integer/rational/real numbers such as 27, 43/92, -99.66.
-The logical connectives in the TPTP language are
-{\tt !}, {\tt ?}, {\tt {\raisebox{0.4ex}{\texttildelow}}}, {\tt |}, {\tt \&}, {\tt =>}, {\tt <=},
-{\tt <=>}, and {\tt <{\raisebox{0.4ex}{\texttildelow}}>},
-for the mathematical connectives
-$\forall$, $\exists$, $\neg$, $\vee$, $\wedge$, $\Rightarrow$, $\Leftarrow$, $\Leftrightarrow$, 
-and $\oplus$ respectively.
-Equality and inequality are expressed as the infix operators {\tt =} and {\tt !=}.
-The {\em source} and {\em useful\_info} are optional.
-Annotated formulae (using TF0) can be seen in 
-Figures~\ref{TF0FiniteProblem}-\ref{TF0InfiniteVerification}.
+FOF and TF0 \cite{SS+12} (the monomorphic subform of TFF), are used in this work.
 
 %--------------------------------------------------------------------------------------------------
-\subsection{The TF0 Language}
-\label{TF0}
-
-% is a typed first-order language extended with FOOL logic constructs.
-TF0 is a typed first-order language.
-The TF0 types are
-(i)~the predefined types {\smalltt{\$i}} for individuals and {\smalltt{\$o}} for booleans; 
-(ii)~the predefined arithmetic types {\smalltt{\$int}}, {\smalltt{\$rat}}, and {\smalltt{\$real}}; 
-(iii)~user-defined types declared to be of the kind {\smalltt{\$tType}}.
-Every symbol is declared with a type signature:
-(i)~individual types for variables;
-(ii)~function types from non-boolean argument types to a non-boolean result type;
-(iii)~predicate types from non-boolean argument types to a boolean result.
-The equality predicates {\tt =} and {\tt !=} are ad hoc polymorphic over all types. 
-Arithmetic predicates and functions are ad hoc polymorphic over the arithmetic types.
-% TX0 formulae are those of first-order logic, extended to allow boolean variables and terms.
-% TX0 additionally supports tuples, conditional expressions, and let expressions, but they are
-% not used in this paper (see \cite{SK18} for the details).
-Figures~\ref{TF0FiniteProblem}~and~\ref{TF0InfiniteProblem} are examples of problems in TF0.  Their associated (counter)models are discussed in Section~\ref{Interpretations}.
-
-\begin{figure}[htbp]
-\small
-\setstretch{0.9}
-\verbatiminput{TFF_Finite.p}
-\caption{A TF0 problem (with a finite countermodel)\\
-{\footnotesize \url{https://raw.githubusercontent.com/GeoffsPapers/ModelVerificationLPAR/master/TFF_Finite.p}}}
-\label{TF0FiniteProblem}
-\end{figure}
-
-\begin{figure}[htbp]
-\small
-\setstretch{0.9}
-\verbatiminput{TFF_Infinite.p}
-\caption{A TF0 problem (with an infinite model)\\
-{\footnotesize \url{https://raw.githubusercontent.com/GeoffsPapers/ModelVerificationLPAR/master/TFF_Infinite.p}}}
-\label{TF0InfiniteProblem}
-\end{figure}
-
-%--------------------------------------------------------------------------------------------------
-\section{Interpretations}
-\label{Interpretations}
-
-A Tarskian-style interpretation \cite{TV56} of formulae in typed first-order logic consists of a 
-non-empty domain of unequal elements for each type used in the formulae (just one domain for 
-untyped logic), and interpretations of the function and predicate symbols with respect to the 
-domains \cite{Hun96,Gal15}.
-$I \vdash \Phi$ means the interpretation $I$ is a model of the formula $\Phi$.
-An interpretation can normally interpret all expressions that can be written in the language of 
-the formulae, but in some circumstances an interpretation can interpret only (at least) the given 
-formulae, e.g., \cite{BSW23}; such an interpretation is a {\em partial interpretation}.
-
-The domains of an interpretation may be finite or infinite.
-Interpretations with only finite domains are called {\em finite interpretations}, and
-interpretations with one or more infinite domains are called {\em infinite interpretations}.
-Finite domains are commonly explicitly enumerated, but can also take other forms, e.g., the 
-finite Herbrand Universe of a Herbrand interpretation \cite{Her30}.
-Infinite domains can take several forms, including being implicitly specified (e.g., some set
-of algebraic numbers, such as the integers), explicitly generated (e.g., terms representing 
-Peano numbers), and the infinite Herbrand Universe of a Herbrand interpretation.
-
-In addition to Tarskian-style interpretations that provide explicit symbol interpretation, 
-a Herbrand interpretation can also be embodied in a saturation \cite{BG+01},
-i.e., a fixed point for a set of clauses at which further application of a complete inference 
-system does not generate any new clauses.
-This approach is adopted in saturation-based ATP systems such as E \cite{SCV19},
-Prover9 \cite{McC-Prover9-URL}, Vampire, and Zipperposition \cite{VB+21}.
-While the domain of a saturation is known to be the Herbrand Universe, there is no explicit
-symbol interpretation that can be used constructively by users.
-Saturations are thus a less useful form of interpretation.
-This work considers only Tarskian-style interpretations.
-
-The notions of interpretations, models, partial interpretations, finite interpretations,
-Herbrand interpretations, etc., are captured in the SZS ontologies \cite{Sut08-KEAPPA}, as
-updated at 
-{\smalltt{\url{https://www.tptp.org/cgi-bin/SeeTPTP?Category=Documents&File=SZSOntology}}}
-
-%--------------------------------------------------------------------------------------------------
-\subsection{Representing Interpretations in TF0}
-\label{InterpretationsTF0}
+\section{Representing Tarskian Interpretations in TF0}
+\label{TarskianTF0}
 
 As noted in Section~\ref{Introduction}, a TPTP format for interpretations with finite domains 
 has previously been defined, and was been adopted by some ATP systems.
@@ -353,10 +396,28 @@ tuples with negative integers, i.e., this is an example of a partial interpretat
 \begin{figure}[htbp]
 \small
 \setstretch{0.9}
+\verbatiminput{TFF_Finite.p}
+\caption{A TF0 problem (with a finite countermodel)\\
+{\footnotesize \url{https://raw.githubusercontent.com/GeoffsPapers/ModelVerificationLPAR/master/TFF_Finite.p}}}
+\label{TF0FiniteProblem}
+\end{figure}
+
+\begin{figure}[htbp]
+\small
+\setstretch{0.9}
 \verbatiminput{TFF_Finite.s}
 \caption{A TF0 interpretation with a finite domain \\
 {\footnotesize \url{https://raw.githubusercontent.com/GeoffsPapers/ModelVerificationLPAR/master/TFF_Finite.s}}}
 \label{TF0FiniteInterpretation}
+\end{figure}
+
+\begin{figure}[htbp]
+\small
+\setstretch{0.9}
+\verbatiminput{TFF_Infinite.p}
+\caption{A TF0 problem (with an infinite model)\\
+{\footnotesize \url{https://raw.githubusercontent.com/GeoffsPapers/ModelVerificationLPAR/master/TFF_Infinite.p}}}
+\label{TF0InfiniteProblem}
 \end{figure}
 
 \begin{figure}[htbp]
@@ -420,279 +481,13 @@ These questions are answered as follows:
       {\smalltt{\url{https://raw.githubusercontent.com/GeoffsPapers/ModelVerificationLPAR/master/TFF_Finite.sp.AGMV.p}}}.
 \end{enumerate}
 
-\begin{figure}[htbp]
-\small
-\setstretch{0.9}
-\verbatiminput{TFF_Integer.s.p}
-\caption{The TF0 verification problem for 
-Figures~\ref{TF0InfiniteProblem}~and~\ref{TF0InfiniteInterpretation}\\
-{\footnotesize \url{https://raw.githubusercontent.com/GeoffsPapers/ModelVerificationLPAR/master/TFF_Integer.s.p}}}
-\label{TF0InfiniteVerification}
-\end{figure}
-
-The proof of soundness is given here for a finite interpretation in untyped first-order logic, 
-where (as explained in Section~\ref{InterpretationsTF0}) there is no need for type considerations.
-The proof for typed first-order logic follows exactly the same pattern, but is technically
-complicated due to the introduction of types and type promotion functions.
-The extension to infinite domains is quite simple after that, following 
-Section~\ref{InterpretationsTF0}.
-
-\paragraph{Proof}
-~\\
-Let $\Sigma$ be an untyped first-order language:
-\begin{packed_itemize}
-\item $V_\Sigma$ - The variable symbols, starting in uppercase.
-\item $F_\Sigma$ - The function symbols with arity, in the form $f/n$.
-\item $P_\Sigma$ - The predicate symbols with arity, in the form $p/n$.
-\end{packed_itemize}
-The formulae over $\Sigma$, $\mathcal{F}(\Sigma)$, are defined as usual. 
-
-\vspace*{1em}
-\noindent
-Let $I$ be an interpretation for $\Sigma$:
-\begin{packed_itemize}
-\item $D_I$ - A finite set of unequal domain elements.
-\item $F_I$ - For each $f/n \in F_\Sigma$, a mapping $f_I: D_I^n \mapsto D_I$.
-\item $P_I$ - For each $p/n \in P_\Sigma$, a mapping $p_I: D_I^n \mapsto \{\true,\false\}$.
-\end{packed_itemize}
-
-\newpage
-\noindent
-Recalling Section~\ref{InterpretationsTF0}, an interpretation is represented by an 
-{\em interpretation formula}, $\varphi$.
-Let:
-\begin{packed_itemize}
-%----Note they do not have to be constants, so I removed "/0"
-\item $D_{\varphi}$ be a set of fresh terms $d_{\varphi}$, one for each $d_I \in D_I$
-% \item $D_{I \mapsto \varphi_I}$ be the corresponding mapping from $D_I$ to $D_{\varphi_I}$
-\item $D_{\varphi \mapsto I}$ be the corresponding mapping from $D_{\varphi}$ to $D_I$
-\item $\Sigma_{\varphi}$ be the untyped first-order language:
-      \begin{packed_itemize}
-      \item $V_{\Sigma_{\varphi}} = V_\Sigma$
-      \item $F_{\Sigma_{\varphi}} = F_\Sigma \cup D_{\varphi}$
-      \item $P_{\Sigma_{\varphi}} = P_\Sigma$
-      \end{packed_itemize}
-\item $\varphi \in \mathcal{F}(\Sigma_{\varphi}) = 
-D^\vee_{\varphi} \land D^{\neq}_{\varphi} \land F^\wedge_{\varphi} \land 
-P^\wedge_{\varphi}$, where:
-\begin{equation*}
-\begin{split}
-D^\vee_{\varphi}   &= \forall X \bigvee_{d_{\varphi} \in D_{\varphi}} \left(X = d_{\varphi} \right) \\
-%D^{\neq}_{\varphi} &= \bigwedge_{\substack{d_{\varphi},e_{\varphi} \in D_{\varphi} \\
-%                                             d_{\varphi} \neq\; e_{\varphi}}} \left(d_{\varphi} \neq e_{\varphi} \right) \\
-D^{\neq}_{\varphi} &= \bigwedge_{\substack{\{d_{\varphi},e_{\varphi}\} \subseteq D_{\varphi} \\
-                                           d_{\varphi} \not\equiv e_{\varphi}}} \left(d_{\varphi} \neq e_{\varphi} \right) \\
-F^\wedge_{\varphi} &= \bigwedge_{\substack{f \in F_\Sigma,\;f_I \in F_I \\
-                                           (\overline{d_{I,i}} \mapsto d_I) \in f_I \\
-                                           D_{\varphi \mapsto I}(d_{\varphi,i}) = d_{I,i} \\
-                                           D_{\varphi \mapsto I}(d_{\varphi}) = d_I}} 
-                                 ( f(\overline{d_{\varphi,i}}) = d_{\varphi} ) \\
-P^\wedge_{\varphi} &= \bigwedge_{\substack{p \in P_\Sigma,\;p_I \in P_I \\
-                                           (\overline{d_{I,i}} \mapsto \true) \in p_I \\
-                                           D_{\varphi \mapsto I}(d_{\varphi,i}) = d_{I,i}}}
-                                 p(\overline{d_{\varphi,i}}) \\
-              &\wedge \bigwedge_{\substack{p \in P_\Sigma,\;p_I \in P_I \\
-                                           (\overline{d_{I,i}} \mapsto \false) \in p_I \\
-                                           D_{\varphi \mapsto I}(d_{\varphi,i}) = d_{I,i}}}
-                                 \neg p(\overline{d_{\varphi,i}})
-\end{split}
-\end{equation*}
-\end{packed_itemize}
-% (Note that we don't need that the $\mathrm{rep}_d$ are pair-wise distinct so far, because our 
-% $I^\prime$ does this. For the backwards direction of the Theorem, we might need this.)
-
-\noindent
-Let $I_{\varphi}$ be an interpretation for $\Sigma_{\varphi}$:
-\begin{packed_itemize}
-\item $D_{I_{\varphi}} = D_I$
-\item $F_{I_{\varphi}} = F_I \cup D_{\varphi \mapsto I}$
-\item $P_{I_{\varphi}} = P_I$
-\end{packed_itemize}
-
-\begin{lemma} 
-$I_{\varphi} \vdash \varphi$
-\end{lemma}
-\begin{proof}
-To prove $I_{\varphi} \vdash \varphi$, prove
-$I_{\varphi} \vdash D^\vee_{\varphi}$,
-$I_{\varphi} \vdash D^{\neq}_{\varphi}$,
-$I_{\varphi} \vdash F^\wedge_{\varphi}$ and
-$I_{\varphi} \vdash P^\wedge_{\varphi}$:
-% Each can be proved separately: 
-\begin{itemize}
-\item For every $d_{I_{\varphi}} \in D_{I_{\varphi}}$, or equivalently $d_I \in D_I$:
-      \begin{packed_itemize}
-      \item There is a $d_{\varphi} \in D_{\varphi}$ such that 
-            $D_{\varphi \mapsto I}(d_{\varphi}) = d_I$
-      \item $(X = d_{\varphi}) \in D^\vee_{\varphi}$
-      \item With $X$ set to $d_I$ \\
-            $I_{\varphi} \vdash (d_I = d_{\varphi})$ iff \\
-            $d_I = F_{I_{\varphi}}(d_{\varphi})$ iff \\
-            $d_I = D_{\varphi \mapsto I}(d_{\varphi})$ \\
-            which is $\true$ from the selection of $d_{\varphi}$
-      \end{packed_itemize}
-      For every $d_{I_{\varphi}} \in D_{I_{\varphi}}$, with $X$ set to $d_{I_{\varphi}}$, a 
-      disjunct in $D^\vee_{\varphi}$ is $\true$, i.e., $I_{\varphi} \vdash D^\vee_{\varphi}$
-\newpage
-\item For every $(d_{\varphi} \neq e_{\varphi})$ in $D^{\neq}_{\varphi}$:
-      \begin{packed_itemize}
-      \item $I_{\varphi} \vdash (d_{\varphi} \neq e_{\varphi})$ iff \\
-            $F_{I_{\varphi}}(d_{\varphi}) \neq F_{I_{\varphi}}(e_{\varphi})$ iff \\
-            $D_{\varphi \mapsto I}(d_{\varphi}) \neq D_{\varphi \mapsto I}(e_{\varphi})$ iff \\
-            $d_I \neq e_I$ \\
-            which is $\true$ from the definition of $D_I$
-      \end{packed_itemize}
-      Thus every inequality in $D^{\neq}_{\varphi_I}$ is $\true$, therefore
-      $D^{\neq}_{\varphi}$ is $\true$, i.e.,
-      $I_{\varphi} \vdash D^{\neq}_{\varphi}$
-\item For every $(f(\overline{d_{\varphi,i}}) = d_{\varphi})$ in $F^\wedge_{\varphi}$:
-      \begin{packed_itemize}
-      \item $I_{\varphi} \vdash ( f(\overline{d_{\varphi,i}}) = d_{\varphi} )$ iff \\
-            $F_{I_{\varphi}}(f(\overline{d_{\varphi,i}})) = F_{I_{\varphi}}(d_{\varphi})$ iff \\
-%            $f_I(F_{I_{\varphi}}(\overline{d_{\varphi,i}})) = F_{I_{\varphi}}(d_{\varphi})$ iff \\
-            $f_I(D_{\varphi \mapsto I}(\overline{d_{\varphi,i}})) = D_{\varphi \mapsto I}(d_{\varphi})$ iff \\
-            $f_I(\overline{d_{I,i}}) = d_I$ \\
-            which is $\true$ from the use of $F_I$ in $F^\wedge_{\varphi}$
-      \end{packed_itemize}
-      Thus every equality in $F^\wedge_{\varphi}$ is $\true$, therefore
-      $F^\wedge_{\varphi}$ is $\true$, i.e.,
-      $I_{\varphi} \vdash F^\wedge_{\varphi}$
-\item For every (positive) $p(\overline{d_{\varphi,i}})$ in $P^\wedge_{\varphi}$:
-      \begin{packed_itemize}
-      \item $I_{\varphi} \vdash p(\overline{d_{\varphi,i}})$ iff \\
-            $P_{I_{\varphi}}(p(F_{I_{\varphi}}(\overline{d_{\varphi,i}})))$ iff \\
-            $p_I(D_{\varphi \mapsto I}(\overline{d_{\varphi,i}}))$ iff \\
-            $p_I(\overline{d_{I,i}})$ \\
-            which is $\true$ from the use of $P_I$ in $P^\wedge_{\varphi}$
-      \end{packed_itemize}
-      Thus every (positive) $p(\overline{d_{\varphi,i}})$ in $P^\wedge_{\varphi}$ is $\true$.
-      Analogously, every (negative) $\neg p(\overline{d_{\varphi,i}})$ in $P^\wedge_{\varphi}$ is 
-      $\false$.
-     Therefore  $P^\wedge_{\varphi}$ is $\true$, i.e., $I_{\varphi} \vdash P^\wedge_{\varphi}$
-\end{itemize}
-\end{proof}
-
-\begin{theorem}
-Let $\Phi \in \mathcal{F}(\Sigma)$, $I$ an interpretation for $\Sigma$, and $\varphi$ the
-interpretation formula for $I$.
-If $\varphi \models \Phi$ then $I \vdash \Phi$.
-\end{theorem}
-\begin{proof}
-~\linebreak
-\vspace*{-1.5em}
-\begin{itemize}
-\item If $\varphi \models \Phi$ then $I_{\varphi} \vdash \Phi$ \\
-      because every model of $\varphi$ is a model of $\Phi$, and $I_{\varphi}$ is a model
-      of $\varphi$ by the {\bf Lemma}.
-\item $I_{\varphi} \vdash \Phi$ iff $I \vdash \Phi$ \\
-      because $\Phi$ contains no symbols from $D_{\varphi}$, and $I_{\varphi}$ is the same
-      as $I$ with respect to all other symbols.
-\item Thus if $\varphi \models \Phi$ then $I \vdash \Phi$.
-\end{itemize}
-\end{proof}
-
-%--------------------------------------------------------------------------------------------------
-\section{Interpretation Visualization}
-\label{Visualization}
-
-Proof visualization is well-established, with several tools available, e.g., 
-Evonne \cite{AB+22} is an interactive proof visualization software for description logics;
-ProofTree \cite{Tew17} is a proof visualization tool focused on interactive theorem proving 
-within Coq;
-Treehehe \cite{Bat18} was designed generically to visualize any proof tree but currently it 
-supports only a handful of pre-existing proofs and does not allow users to visualize their own 
-proofs;
-and the Interactive Derivation Viewer (IDV) \cite{TPS07} is a tool for visualization of 
-TPTP format proofs.
-Interpretation visualization, however, has (to the knowledge of the authors) had minimal 
-attention, as noted in Section~\ref{Introduction}. 
-Visualization of interpretations is useful in areas such as teaching logic, debugging ATP 
-systems, and understanding of a model.
-
-A visualization for TF0 interpretations has been designed in this work, and an initial
-implementation is available as the IIV tool in SystemOnTSTP.
-IIV is built on top of IDV, and has benefited from the mature state of IDV.
-IDV was originally a Java applet, but has since been ported to HTML/JavaScript using GraphViz
-\cite{EG+02} for the layout and rendering.
-IIV has benefited from the mature state of IDV.
-The implementation is ``initial'' because it is fully automated for only finite TF0 and FOF
-interpretations; for infinite interpretations different components of the interpretation formula 
-have to be manually extracted into separate annotated formulae, to mimic a derivation that IDV 
-can render.
-
-Figure~\ref{TF0FiniteIIV} is the visualization of the finite countermodel in 
-Figure~\ref{TF0FiniteInterpretation}.
-The top row of inverted triangles are the types in the given formulae,
-while the bottom row of inverted triangles are the types of the domains.
-The inverted houses are the function and predicate symbols, and the successive rows of ovals are 
-the successive domain element arguments used to specify the symbols' interpretations.
-Finally, the row of houses and boxes are the interpretations of the symbols applied to those
-arguments; houses for domain elements and boxes for truth values.
-Paths from leaf type nodes to root type nodes show the interpretation of symbols and the domain
-elements.
-For example, in Figure~\ref{TF0FiniteIIV} the result type of {\smalltt{loves}} is {\smalltt{cat}},
-and {\smalltt{loves(d\_arlene)}} is interpreted as {\smalltt{d\_garfield}}, which is of type
-{\smalltt{d\_cat}} in the interpretation formula.
-
-IIV has interactive features: In Figure~\ref{TF0FiniteIIV} the cursor is hovering over the 
-{\smalltt{d\_nermal}} node on the path from {\smalltt{owns}} to {\smalltt{\$false}}, showing 
-that {\smalltt{owns(d\_jon,d\_nermal)}} is interpreted as {\smalltt{\$false}}.
-The nodes above are increasingly darker red (grey if printed) up to the {\smalltt{\$o}} node
-that is the result type of {\smalltt{owns}}, and increasingly darker blue down to 
-the {\smalltt{\$o}} node that is the type of {\smalltt{\$true}}.
-This highlighting provides easy focus on the interpretation of chosen symbols, e.g., hovering
-over inverted house nodes shows what symbols applied to what domain elements are interpreted as 
-which domain elements and boolean values, and hovering over oval nodes shows how different domain 
-elements affect the interpretation of symbols.
-% Details of the annotated formulae used to represent each node in the input to IIV are available 
-% in the ``Node Information'' box (which is to the left in reality, placed below here).
-This visualization is available in IIV using 
-{\smalltt{\url{https://raw.githubusercontent.com/GeoffsPapers/ModelVerificationLPAR/master/TFF_Finite.s}}}
-as the ``URL to fetch from'',
-selecting {\tt IIV 0.0} as the ``System'', and clicking the ``Process Solution'' button.
-
-Figure~\ref{TF0InfiniteIIV} is the visualization of the infinite model in 
-Figure~\ref{TF0InfiniteInterpretation}. 
-Here (universally quantified) variables are used to represent an infinite number of
-domain elements, and built-in arithmetic predicates are used to compute symbols' mappings.
-The cursor is hovering over the {\smalltt{X:\$int}} node, showing how 
-{\smalltt{child\_of(X)}} is interpreted as {\smalltt{\$sum(X,1)}}.
-% This visualization is available in IIV using the IIV format file
-% {\smalltt{\url{https://raw.githubusercontent.com/GeoffsPapers/ModelVerificationLPAR/master/TFF_Integer.s.IIV}}}
-% as the ``URL to fetch from'' - this file was manually extracted from the infinite model in 
-% Figure~\ref{TF0InfiniteInterpretation}.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\columnwidth]{TFF_Finite.s.IIV.pdf}
-\caption{Visualization of the interpretation in Figure~\ref{TF0FiniteInterpretation}}
-\label{TF0FiniteIIV}
-\end{figure}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.45\columnwidth]{TFF_Integer.s.IIV.pdf}
-\caption{Visualization of the interpretation in Figure~\ref{TF0InfiniteInterpretation}}
-\label{TF0InfiniteIIV}
-\end{figure}
-
 %--------------------------------------------------------------------------------------------------
 \section{Conclusion}
 \label{Conclusion}
 
-This paper describes the new TPTP format for representing Tarskian-style interpretations for
-formulae in typed first-order logic, using the TPTP TF0 language.
-It further describes a technique and an implemented tool for verifying models using this 
-representation, and a tool for visualizing interpretations.
-The research contributes to the advancement of automated reasoning technology for model finding, 
-which has several applications, including verification.
+This paper 
 
-Currently this work is being extended to Kripke interpretations for formulae in non-classical 
-typed first-order logic \cite{SF+22}, using the TPTP NX0 language \cite{Sut22-IGPL}.
-The tool to translate interpretation formulae to the format required for input to the IIV tool is 
-being extended to infinite interpretations.
-Further inspiration might also lead to improvements to IIV's visualizations, especially for more
-complex infinite interpretations.
+This work is being extended 
 
 %--------------------------------------------------------------------------------------------------
 \bibliographystyle{plain}
