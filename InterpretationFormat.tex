@@ -393,42 +393,6 @@ symbols for an infinite number of argument tuples;
 the interpretations of function and predicate symbols is not given for argument 
 tuples with negative integers, i.e., this is an example of a partial interpretation.
 
-\begin{figure}[htbp]
-\small
-\setstretch{0.9}
-\verbatiminput{TFF_Finite.p}
-\caption{A TF0 problem (with a finite countermodel)\\
-{\footnotesize \url{https://raw.githubusercontent.com/GeoffsPapers/ModelVerificationLPAR/master/TFF_Finite.p}}}
-\label{TF0FiniteProblem}
-\end{figure}
-
-\begin{figure}[htbp]
-\small
-\setstretch{0.9}
-\verbatiminput{TFF_Finite.s}
-\caption{A TF0 interpretation with a finite domain \\
-{\footnotesize \url{https://raw.githubusercontent.com/GeoffsPapers/ModelVerificationLPAR/master/TFF_Finite.s}}}
-\label{TF0FiniteInterpretation}
-\end{figure}
-
-\begin{figure}[htbp]
-\small
-\setstretch{0.9}
-\verbatiminput{TFF_Infinite.p}
-\caption{A TF0 problem (with an infinite model)\\
-{\footnotesize \url{https://raw.githubusercontent.com/GeoffsPapers/ModelVerificationLPAR/master/TFF_Infinite.p}}}
-\label{TF0InfiniteProblem}
-\end{figure}
-
-\begin{figure}[htbp]
-\small
-\setstretch{0.9}
-\verbatiminput{TFF_Integer.s}
-\caption{A TF0 interpretation with an infinite domain\\
-{\footnotesize \url{https://raw.githubusercontent.com/GeoffsPapers/ModelVerificationLPAR/master/TFF_Integer.s}}}
-\label{TF0InfiniteInterpretation}
-\end{figure}
-
 %--------------------------------------------------------------------------------------------------
 \section{Model Verification}
 \label{Verification}
@@ -492,6 +456,46 @@ This work is being extended
 %--------------------------------------------------------------------------------------------------
 \bibliographystyle{plain}
 \bibliography{Bibliography.bib}
+%--------------------------------------------------------------------------------------------------
+\newpage
+\appendix
+
+All these listings are available from
+\href{https://github.com/GeoffsPapers/InterpretationFormat}{github.com/GeoffsPapers/InterpretationFormat}.
+
+\section{Problem Listings}
+\label{ProblemListings}
+
+\subsection{A TF0 Problem with a Finite Countermodel}
+\begin{small}
+\verbatiminput{TFF_Finite.p}
+\end{small}
+
+\newpage
+\subsection{A TF0 Problem with an Infinite Model}
+\begin{small}
+\verbatiminput{TFF_Infinite.p}
+\end{small}
+
+%--------------------------------------------------------------------------------------------------
+\newpage
+\section{Interpretation Listings}
+\label{InterpretationListings}
+
+\subsection{A TF0 interpretation with a finite domain}
+\begin{small}
+\verbatiminput{TFF_Finite.s}
+\end{small}
+
+\newpage
+\subsection{A TF0 interpretation with an infinite domain}
+\begin{small}
+\verbatiminput{TFF_Integer.s}
+\end{small}
+%--------------------------------------------------------------------------------------------------
+\section{Tools' Listings}
+\label{ToolsListings}
+
 %--------------------------------------------------------------------------------------------------
 \end{document}
 %--------------------------------------------------------------------------------------------------
