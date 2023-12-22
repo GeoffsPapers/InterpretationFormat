@@ -105,7 +105,19 @@ The TPTP World includes the TPTP problem library \cite{Sut09},
 the TSTP solution library \cite{Sut10}, 
 tools and services for processing ATP problems and solutions \cite{Sut10}, 
 it supports the CADE ATP System Competition (CASC) \cite{Sut16}.
-Most relevant to this work the TPTP World provides formats for writing ATP problems, 
+The TPTP language \cite{Sut23-IGPL} is one of the keys to the success of the TPTP World.
+Originally the TPTP World supported only first-order clause normal form (CNF)
+\cite{SS98-JAR}.
+Over the years full first-order form (FOF)
+\cite{Sut09}, 
+typed first-order form (TFF)
+\cite{SS+12,BP13-TFF1}, 
+typed extended first-order form (TXF)
+\cite{SK18}, 
+typed higher-order form (THF)
+\cite{SB10,KSR16}, 
+and non-classical forms (NTF).
+Most relevant to this work, the TPTP languages are used for writing ATP problems, 
 derivations, and interpretations \cite{SS+06,Sut08-KEAPPA}.
 This work describes the new TPTP format for interpretations.
 The new format replaces the old format for finite interpretations \cite{SS+06}, which has 
@@ -113,7 +125,7 @@ served the community adequately for almost 20 years, and is output by several AT
 Paradox \cite{CS03}, FMDarwin \cite{BF+06}, Vampire \cite{KV13}.
 
 \paragraph{Related Work:}
-Section~\ref{Interpretations} provides the landscape of different representations of
+Section~\ref{TypesOfInterpretations} provides the landscape of different representations of
 interpretations, and how models (interpretations that make particular formulae {\em true})
 can be built.
 The focus there is on Tarskian interpretations, but Kripke interpretations are also reviewed.
@@ -135,18 +147,16 @@ output formats of Nitpick and Z3 \cite{dMB08}.
 % +++
 
 This paper is organized as follows:
-Section~\ref{Interpretations} discusses the nature of interpretations, considering what is
+Section~\ref{TypesOfInterpretations} discusses the nature of interpretations, considering what is
 needed from interpretations, and the various forms that interpretations can take.
-Section~\ref{TPTP} introduces the TPTP World which provides the framework and languages used
-in this research.
-Section~\ref{TarskianTF0} defines the new format for Tarskian interpretations, and
+Section~\ref{NewTarskian} defines the new format for Tarskian interpretations, and
 Section~\ref{NewKripke} does the same for Kripke interpretations.
 Section~\ref{Tools} reviews some TPTP World tools for examining and manipulating interpretations.
 Section~\ref{Conclusion} concludes and discusses plans for future work.
 
 %--------------------------------------------------------------------------------------------------
-\section{The Landscape of Interpretations}
-\label{Interpretations}
+\section{Uses for Interpretations}
+\label{UsesForInterpretations}
 
 What do we Need?
 \begin{itemize}
@@ -176,6 +186,65 @@ What do we Need?
       \end{packed_itemize}
       In the language of the input!
 \end{itemize}
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Model Verification}
+\label{Verification}
+
+ATP systems are complex pieces of software, implementing complex calculi, with the end goal
+being a sound implementation of a sound inference system whose output correctly corroborates the
+result obtained.
+The reality is that the complexity leads to incorrectness, and as such verification of ATP systems'
+outputs is necessary. 
+For theorem proving this means verifying the proof output \cite{Sut06}, and for model finding 
+this means verifying the model output.
+In the context of this work the model verification applies to the type declarations and 
+the interpretation formula that represent the model found by the ATP system, and
+has (at least) the following aspects:
+\begin{packed_enumerate}
+\item Are the type declarations and interpretation formula syntactically well-formed 
+      and semantically well-typed?
+\item Is the interpretation formula satisfiable?
+\item Does the interpretation formula correctly represent the interpretation found by the 
+      ATP system?
+\item Is the interpretation represented by the interpretation formula a model for the given 
+      formulae?
+\end{packed_enumerate}
+\noindent
+These questions are answered as follows:
+\begin{enumerate}
+\item This can be confirmed using standard parsing and type checking tools, e.g., \cite{VS06,HR15}.
+\item This can be empirically confirmed using a trusted model finder (in the same way the GDV 
+      derivation verifier \cite{Sut06} uses the Otter system \cite{McC03-Otter} as a trusted 
+      theorem prover).
+      Confirming that the interpretation formula is satisfiable is almost certainly much 
+      easier than finding the model itself, so the system used to check the satisfiability can 
+      be weaker and more trusted than the system that found the model.
+\item This cannot be confirmed, as that representation is internal to the ATP system that found
+      the model.
+\item In this work a ``semantic'' approach is taken, in which the given formulae $\Phi$ are proved 
+      from the interpretation formula $\varphi$ using a trusted theorem prover; $\varphi$ is 
+      supplied as an axiom, and $\Phi$ as the conjecture to be proved.
+      This approach relies on the proof of soundness below, which shows that if $\Phi$ can be 
+      proved from $\varphi$ (written $\varphi \models \Phi$), then the interpretation $I$ 
+      represented by $\varphi$ is a model of $\Phi$.
+
+      An implementation is available online as the AGMV tool in the SystemOnTSTP \cite{Sut07-CSR} 
+      web interface {\smalltt{\url{https://www.tptp.org/cgi-bin/SystemOnTSTP}}}.
+      The tool input is the concatenation of the problem and the interpretation.
+      Appendix~\ref{FOF_Finite.s.p} shows the verification problem for the problem in 
+      Appendix~\ref{FOF_Finite.p} and its finite model in Appendix~\ref{FOF_Finite.s}.
+      Appendix~\ref{TFF_Finite.s.p} shows the verification problem for the problem in 
+      Appendix~\ref{TFF_Finite.p} and its finite model in Appendix~\ref{TFF_Finite.s}.
+      Appendix~\ref{TFF_Integer.s.p} shows the verification problem for the problem in 
+      Appendix~\ref{TFF_Infinite.p} and its integer model in Appendix~\ref{TFF_Integer.s}.
+      Appendix~\ref{TFF_Peano.s.p} shows the verification problem for the problem in 
+      Appendix~\ref{TFF_Infinite.p} and its infinite term model in Appendix~\ref{TFF_Peano.s}.
+\end{enumerate}
+
+%--------------------------------------------------------------------------------------------------
+\section{Types of Interpretations}
+\label{TypesOfInterpretations}
 
 A Tarskian-style interpretation \cite{TV56} of formulae in first-order logic consists of a 
 non-empty domain of unequal elements for each type used in the formulae (just one domain for 
@@ -288,40 +357,8 @@ Ways to make Herbrand interpretations:
 \end{figure}
 
 %--------------------------------------------------------------------------------------------------
-\section{The TPTP World and Languages}
-\label{TPTP}
-
-The TPTP language \cite{Sut23-IGPL} is one of the keys to the success of the TPTP World.
-The language is used for writing both problems and solutions,
-which enables convenient communication between systems. 
-% It also enables tool exchange, tool integration, and comparable experimental results.
-Originally the TPTP World supported only first-order clause normal form (CNF)
-\cite{SS98-JAR}.
-Over the years full first-order form (FOF)
-\cite{Sut09}, 
-typed first-order form (TFF)
-\cite{SS+12,BP13-TFF1}, 
-typed extended first-order form (TXF)
-\cite{SK18}, 
-typed higher-order form (THF)
-\cite{SB10,KSR16}, 
-and non-classical forms (NTF)
-\footnote{%
-There are many ``non-classical logics'', including multi-valued logics \cite{Aug17},
-paraconsistent logics \cite{Pri02}, relevance logics \cite{AB75}, etc.
-In this work we are interested in those that admit Kripke interpretation \cite{Kri63},
-e.g., modal logics \cite{BBW06}.}
-\cite{SF+22} 
-have been added.
-A general principle of the TPTP language is ``we provide the syntax, you provide the semantics''.
-As such, there is no a priori commitment to any semantics for the languages, although in almost 
-all cases the intended logic and semantics are well known.
-All the typed forms include constructs for arithmetic.
-FOF and TF0 \cite{SS+12} (the monomorphic subform of TFF), are used in this work.
-
-%--------------------------------------------------------------------------------------------------
-\section{Representing Tarskian Interpretations in TF0}
-\label{TarskianTF0}
+\section{The New Format for Tarskian Interpretations}
+\label{NewTarskian}
 
 As noted in Section~\ref{Introduction}, a TPTP format for interpretations with finite domains 
 has previously been defined, and was been adopted by some ATP systems.
@@ -334,8 +371,8 @@ The underlying principle is unchanged: interpretations are represented as formul
 This provides the basis for verification of models, as explained in Section~\ref{Verification}.
 
 The new format uses an {\em interpretation formula}. 
-Examples of interpretation formulae can be seen in Figures~\ref{TF0FiniteInterpretation}
-and~\ref{TF0InfiniteInterpretation}, illustrating the components described next. 
+Examples of interpretation formulae can be seen in Appendices~\ref{TFF_Finite.s}, 
+\ref{TFF_Integer.s}, and \ref{TFF_Peano.s}, illustrating the components described next. 
 An interpretation formula is a conjunction of three components:
 \begin{packed_itemize}
 \item a conjunction of the domain specifications for the types in the given formulae:
@@ -379,12 +416,12 @@ the given formulae and the interpretation formula are of the same type – ``ind
 This obviates the need for type considerations, in particular type-promotion functions are not 
 needed.
 
-Figure~\ref{TF0FiniteInterpretation} is a TF0 interpretation with finite domains -- it is a 
-countermodel for the problem in Figure~\ref{TF0FiniteProblem}.
+Appendix~\ref{TFF_Finite.s} shows a TF0 interpretation with finite domains -- it is a 
+countermodel for the problem in Appendix~\ref{TFF_Finite.p}.
 The comments show which parts of the formula specify what aspects of the interpretation.
-Figure~\ref{TF0InfiniteInterpretation} is a TF0 interpretation with an infinite domain -- it 
-is a model for the problem in Figure~\ref{TF0InfiniteProblem}.
-Note that in Figure~\ref{TF0InfiniteInterpretation}:
+Appendix~\ref{TFF_Integer.s} shows a TF0 interpretation with an integer domain -- it 
+is a model for the problem in Appendix~\ref{TFF_Infinite.p}.
+Note that in Appendix~\ref{TFF_Integer.s}:
 the defined type {\smalltt{\$int}} is the domain type for the formula type 
 {\smalltt{person}}, so that there is no specification of the domain elements and their 
 distinctness;
@@ -392,58 +429,16 @@ universal quantification is used for the interpretation of function and predicat
 symbols for an infinite number of argument tuples;
 the interpretations of function and predicate symbols is not given for argument 
 tuples with negative integers, i.e., this is an example of a partial interpretation.
+Appendix~\ref{TFF_Peano.s} shows a TF0 interpretation with an infinite term domain -- it 
+is a model for the problem in Appendix~\ref{TFF_Infinite.p}.
 
 %--------------------------------------------------------------------------------------------------
-\section{Model Verification}
-\label{Verification}
+\section{The New Format for Kripke Interpretations}
+\label{NewKripke}
 
-ATP systems are complex pieces of software, implementing complex calculi, with the end goal
-being a sound implementation of a sound inference system whose output correctly corroborates the
-result obtained.
-The reality is that the complexity leads to incorrectness, and as such verification of ATP systems'
-outputs is necessary. 
-For theorem proving this means verifying the proof output \cite{Sut06}, and for model finding 
-this means verifying the model output.
-In the context of this work the model verification applies to the type declarations and 
-the interpretation formula that represent the model found by the ATP system, and
-has (at least) the following aspects:
-\begin{packed_enumerate}
-\item Are the type declarations and interpretation formula syntactically well-formed 
-      and semantically well-typed?
-\item Is the interpretation formula satisfiable?
-\item Does the interpretation formula correctly represent the interpretation found by the 
-      ATP system?
-\item Is the interpretation represented by the interpretation formula a model for the given 
-      formulae?
-\end{packed_enumerate}
-\noindent
-These questions are answered as follows:
-\begin{enumerate}
-\item This can be confirmed using standard parsing and type checking tools, e.g., \cite{VS06,HR15}.
-\item This can be empirically confirmed using a trusted model finder (in the same way the GDV 
-      derivation verifier \cite{Sut06} uses the Otter system \cite{McC03-Otter} as a trusted 
-      theorem prover).
-      Confirming that the interpretation formula is satisfiable is almost certainly much 
-      easier than finding the model itself, so the system used to check the satisfiability can 
-      be weaker and more trusted than the system that found the model.
-\item This cannot be confirmed, as that representation is internal to the ATP system that found
-      the model.
-\item In this work a ``semantic'' approach is taken, in which the given formulae $\Phi$ are proved 
-      from the interpretation formula $\varphi$ using a trusted theorem prover; $\varphi$ is 
-      supplied as an axiom, and $\Phi$ as the conjecture to be proved.
-      This approach relies on the proof of soundness below, which shows that if $\Phi$ can be 
-      proved from $\varphi$ (written $\varphi \models \Phi$), then the interpretation $I$ 
-      represented by $\varphi$ is a model of $\Phi$.
-
-      An implementation is available online as the AGMV tool in the SystemOnTSTP \cite{Sut07-CSR} 
-      web interface {\smalltt{\url{https://www.tptp.org/cgi-bin/SystemOnTSTP}}}.
-      The tool input is the concatenation of the problem and the interpretation.
-      Figure~\ref{TF0InfiniteVerification} shows the verification problem for the problem in 
-      Figure~\ref{TF0InfiniteProblem} and its model in Figure~\ref{TF0InfiniteInterpretation}.
-      The input to verify the finite countermodel in Figure~\ref{TF0FiniteInterpretation}, for the 
-      problem in Figure~\ref{TF0FiniteProblem}, is
-      {\smalltt{\url{https://raw.githubusercontent.com/GeoffsPapers/ModelVerificationLPAR/master/TFF_Finite.sp.AGMV.p}}}.
-\end{enumerate}
+%--------------------------------------------------------------------------------------------------
+\section{Tools for Interpretations}
+\label{Tools}
 
 %--------------------------------------------------------------------------------------------------
 \section{Conclusion}
@@ -467,24 +462,28 @@ All these listings are available from
 \label{FOFListings}
 
 \subsection{A FOF Problem with a Finite Countermodel}
+\label{FOF_Finite.p}
 \begin{small}
 \verbatiminput{FOF_Finite.p}
 \end{small}
 
 \newpage
 \subsection{A FOF Interpretation with a Finite Domain}
+\label{FOF_Finite.s}
 \begin{small}
 \verbatiminput{FOF_Finite.s}
 \end{small}
 
 \newpage
 \subsection{A FOF Interpretation with a Finite Domain, Medium Grained}
+\label{FOF_Finite_Medium.s}
 \begin{small}
 \verbatiminput{FOF_Finite_Medium.s}
 \end{small}
 
 \newpage
 \subsection{A FOF Interpretation with a Finite Domain, Verification Problem}
+\label{FOF_Finite.s.p}
 \begin{small}
 \verbatiminput{FOF_Finite.s.p}
 \end{small}
@@ -495,62 +494,79 @@ All these listings are available from
 \label{TF0Listings}
 
 \subsection{A TF0 Problem with a Finite Countermodel}
+\label{TFF_Finite.p}
 \begin{small}
 \verbatiminput{TFF_Finite.p}
 \end{small}
 
 \newpage
 \subsection{A TF0 Interpretation with a Finite Domain}
+\label{TFF_Finite.s}
 \begin{small}
 \verbatiminput{TFF_Finite.s}
 \end{small}
 
 \newpage
 \subsection{A TF0 Interpretation with a Finite Domain, Medium Grained}
+\label{TFF_Finite_Medium.s}
 \begin{small}
 \verbatiminput{TFF_Finite_Medium.s}
 \end{small}
 
 \newpage
 \subsection{A TF0 Interpretation with a Finite Domain, Fine Grained}
+\label{TFF_Finite_Fine.s}
 \begin{small}
 \verbatiminput{TFF_Finite_Fine.s}
 \end{small}
 
 \newpage
 \subsection{A TF0 Interpretation with a Finite Domain, Compacted}
+\label{TFF_Finite_Compact.s}
 \begin{small}
 \verbatiminput{TFF_Finite_Compact.s}
 \end{small}
 
 \newpage
 \subsection{A TF0 Problem with an Infinite Model}
+\label{TFF_Infinite.p}
 \begin{small}
 \verbatiminput{TFF_Infinite.p}
 \end{small}
 
 \newpage
 \subsection{A TF0 Interpretation with an Integer Domain}
+\label{TFF_Integer.s}
 \begin{small}
 \verbatiminput{TFF_Integer.s}
 \end{small}
 
 \newpage
 \subsection{A TF0 Interpretation with an Infinite Term Domain}
+\label{TFF_Peano.s}
 \begin{small}
 \verbatiminput{TFF_Peano.s}
 \end{small}
 
 \newpage
 \subsection{A TF0 Interpretation with a Finite Domain, Verification Problem}
+\label{TFF_Finite.s.p}
 \begin{small}
 \verbatiminput{TFF_Finite.s.p}
 \end{small}
 
 \newpage
 \subsection{A TF0 Interpretation with an Integer Domain, Verification Problem}
+\label{TFF_Integer.s.p}
 \begin{small}
 \verbatiminput{TFF_Integer.s.p}
+\end{small}
+
+\newpage
+\subsection{A TF0 Interpretation with an Infinite Term Domain, Verification Problem}
+\label{TFF_Peano.s.p}
+\begin{small}
+\verbatiminput{TFF_Peano.s.p}
 \end{small}
 
 %--------------------------------------------------------------------------------------------------
@@ -559,54 +575,63 @@ All these listings are available from
 \label{NXFListings}
 
 \subsection{A NXF Problem with Global Axioms, with a Finite-Finite Countermodel}
+\label{NTF_Finite-Finite-Global.p}
 \begin{small}
 \verbatiminput{NTF_Finite-Finite-Global.p}
 \end{small}
 
 \newpage
 \subsection{A NXF Interpretation for Global Axioms, with Finite Worlds with Finite Domains}
+\label{NTF_Finite-Finite-Global.s}
 \begin{small}
 \verbatiminput{NTF_Finite-Finite-Global.s}
 \end{small}
 
 \newpage
 \subsection{A NXF Interpretation for Global Axioms, with Finite Worlds with Finite Domains, Medium Grained}
+\label{NTF_Finite-Finite-Global_Medium.s}
 \begin{small}
 \verbatiminput{NTF_Finite-Finite-Global_Medium.s}
 \end{small}
 
 \newpage
 \subsection{A NXF Interpretation for Global Axioms, with Finite Worlds with Finite Domains, Fine Grained}
+\label{NTF_Finite-Finite-Global_Fine.s}
 \begin{small}
 \verbatiminput{NTF_Finite-Finite-Global_Fine.s}
 \end{small}
 
 \newpage
 \subsection{A NXF Interpretation for Global Axioms, with Finite Worlds with Finite Domains, Compacted}
+\label{NTF_Finite-Finite-Global_Compact.s}
 \begin{small}
 \verbatiminput{NTF_Finite-Finite-Global_Compact.s}
 \end{small}
 
 \newpage
 \subsection{A NXF Problem with Global and Local Axioms, with a Finite-Finite Countermodel}
+\label{NTF_Finite-Finite-Local.p}
 \begin{small}
 \verbatiminput{NTF_Finite-Finite-Local.p}
 \end{small}
 
 \newpage
 \subsection{A NXF Interpretation for Global and Local Axioms, with Finite Worlds with Finite Domains}
+\label{NTF_Finite-Finite-Local.s}
 \begin{small}
 \verbatiminput{NTF_Finite-Finite-Local.s}
 \end{small}
 
 \newpage
 \subsection{A NXF Interpretation for Global Axioms, with Finite Worlds with Finite Domains, Verification Problem}
+\label{NTF_Finite-Finite-Global.s.p}
 \begin{small}
 \verbatiminput{NTF_Finite-Finite-Global.s.p}
 \end{small}
 
 \newpage
 \subsection{A NXF Interpretation for Global and Local Axioms, with Finite Worlds with Finite Domains, Verification Problem}
+\label{NTF_Finite-Finite-Local.s.p}
 \begin{small}
 \verbatiminput{NTF_Finite-Finite-Local.s.p}
 \end{small}
