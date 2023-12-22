@@ -119,10 +119,21 @@ typed higher-order form (THF)
 and non-classical forms (NTF).
 Most relevant to this work, the TPTP languages are used for writing ATP problems, 
 derivations, and interpretations \cite{SS+06,Sut08-KEAPPA}.
+Examples of problems are in Appendices~\ref{FOF_Finite.p}, \ref{TFF_Finite.p},
+\ref{TFF_Infinite.p}, \ref{NTF_Finite-Finite-Global.p}, and \ref{NTF_Finite-Finite-Local.p}.
+The problems will be discussed in the context of their associated models in 
+Sections~\ref{NewTarskian} and~\ref{NewKripke}.
+
+A TPTP format for interpretations with finite domains \cite{SS+06} was previously been defined, 
+and has served the ATP community adequately for almost 20 years. 
+The old format is output by several ATP systems, e.g., Paradox \cite{CS03}, FMDarwin \cite{BF+06}, 
+Vampire \cite{KV13}.
+The new format replaces the old format for finite interpretations \cite{SS+06}, which 
+Recently the need for a format for interpretations with infinite domains, and for a format for 
+Kripke interpretations \cite{Kri63} of formulae written in the NTF language \cite{SF+22}, 
+led to the development of a new TPTP format for interpretations.
 This work describes the new TPTP format for interpretations.
-The new format replaces the old format for finite interpretations \cite{SS+06}, which has 
-served the community adequately for almost 20 years, and is output by several ATP systems, e.g., 
-Paradox \cite{CS03}, FMDarwin \cite{BF+06}, Vampire \cite{KV13}.
+The underlying principle is unchanged: interpretations are represented as formulae.
 
 \paragraph{Related Work:}
 Section~\ref{TypesOfInterpretations} provides the landscape of different representations of
@@ -186,6 +197,8 @@ What do we Need?
       \end{packed_itemize}
       In the language of the input!
 \end{itemize}
+
+This provides the basis for verification of models, as explained in Section~\ref{Verification}.
 
 %--------------------------------------------------------------------------------------------------
 \subsection{Model Verification}
@@ -362,23 +375,22 @@ Ways to make Herbrand interpretations:
 
 As noted in Section~\ref{Introduction}, a TPTP format for interpretations with finite domains 
 has previously been defined, and was been adopted by some ATP systems.
-Recently the need for a format for interpretations with infinite domains, and for a format for 
-Kripke interpretations \cite{Kri63} of formulae written in the NTF language \cite{SF+22}, 
-led to the development of a new TPTP format for interpretations.
-The changes allow for multiple interpretations to be given in a single file, which, in the case 
-of typed logics, share type declarations.
-The underlying principle is unchanged: interpretations are represented as formulae.
-This provides the basis for verification of models, as explained in Section~\ref{Verification}.
 
 The new format uses an {\em interpretation formula}. 
-Examples of interpretation formulae can be seen in Appendices~\ref{TFF_Finite.s}, 
-\ref{TFF_Integer.s}, and \ref{TFF_Peano.s}, illustrating the components described next. 
-An interpretation formula is a conjunction of three components:
+Examples of single interpretation formulae are in Appendices~\ref{FOF_Finite.s},
+\ref{TFF_Finite.s}, \ref{TFF_Integer.s}, and~\ref{TFF_Peano.s}, illustrating the components 
+described next. 
+(Interpretations split over multiple interpretation formulae, as in 
+Appendices~\ref{FOF_Finite_Medium.s}, \ref{TFF_Finite_Fine.s}, and~\ref{TFF_Finite_Compact.s},
+are explained below.)
+
+An interpretation formula is a conjunction of components:
 \begin{packed_itemize}
-\item a conjunction of the domain specifications for the types in the given formulae:
-      for each type a {\em type-promotion} function that converts domain elements to terms is
-      used to keep the interpretation formula well-typed; each domain specification is a 
+\item Domain specifications for each of the types in the problem formulae.
+      Each domain specification is a 
       conjunction of:
+      for each type a {\em type-promotion} function that converts domain elements to terms is
+      used to keep the interpretation formula well-typed; 
       \begin{packed_itemize}
       \item the domain type, by a formula that makes the type-promotion function a surjection 
             (unless it is unnecessary because the type is defined and is the same as the type in 
@@ -435,6 +447,14 @@ is a model for the problem in Appendix~\ref{TFF_Infinite.p}.
 %--------------------------------------------------------------------------------------------------
 \section{The New Format for Kripke Interpretations}
 \label{NewKripke}
+ 
+The new format uses an {\em interpretation formula}. 
+Examples of single interpretation formulae are in Appendices~\ref{NTF_Finite-Finite-Global.s}
+and~\ref{NTF_Finite-Finite-Local.s}, illustrating the components 
+described next. 
+(Interpretations split over multiple interpretation formulae, as in 
+Appendices~\ref{NTF_Finite-Finite-Global_Medium.s}, \ref{NTF_Finite-Finite-Global_Fine.s},
+and~\ref{NTF_Finite-Finite-Global_Compact.s}, are explained below.)
 
 %--------------------------------------------------------------------------------------------------
 \section{Tools for Interpretations}
