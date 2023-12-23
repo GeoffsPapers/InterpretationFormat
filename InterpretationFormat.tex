@@ -235,24 +235,18 @@ These questions are answered as follows:
       be weaker and more trusted than the system that found the model.
 \item This cannot be confirmed, as that representation is internal to the ATP system that found
       the model.
-\item In this work a ``semantic'' approach is taken, in which the given formulae $\Phi$ are proved 
-      from the interpretation formula $\varphi$ using a trusted theorem prover; $\varphi$ is 
-      supplied as an axiom, and $\Phi$ as the conjecture to be proved.
-      This approach relies on the proof of soundness below, which shows that if $\Phi$ can be 
-      proved from $\varphi$ (written $\varphi \models \Phi$), then the interpretation $I$ 
-      represented by $\varphi$ is a model of $\Phi$.
-
+\item In this work a ``semantic'' approach is taken, in which the problem formulae $\Phi$ are 
+      proved from the interpretation formulae $\varphi$ using a trusted theorem prover. 
+      $\varphi$ are given as axioms, and $\Phi$ as the conjecture to be proved.
+      The soundness of this approach is provided by showing that if $\Phi$ can be proved from 
+      $\varphi$ then the interpretation $I$ represented by $\varphi$ is a model of $\Phi$.
+      This is shown for finite FOF interpretations in \cite{SS+23-LPAR}, and that theorem lifts 
+      (we believe) naturally to TFF, and THF, but is technically complicated due to the 
+      introduction of types and type promotion functions. 
+      The extension to infinite domains is quite simple after that.
       An implementation is available online as the AGMV tool in the SystemOnTSTP \cite{Sut07-CSR} 
-      web interface {\smalltt{\url{https://www.tptp.org/cgi-bin/SystemOnTSTP}}}.
-      The tool input is the concatenation of the problem and the interpretation.
-      Appendix~\ref{FOF_Finite.s.p} shows the verification problem for the problem in 
-      Appendix~\ref{FOF_Finite.p} and its finite model in Appendix~\ref{FOF_Finite.s}.
-      Appendix~\ref{TFF_Finite.s.p} shows the verification problem for the problem in 
-      Appendix~\ref{TFF_Finite.p} and its finite model in Appendix~\ref{TFF_Finite.s}.
-      Appendix~\ref{TFF_Integer.s.p} shows the verification problem for the problem in 
-      Appendix~\ref{TFF_Infinite.p} and its integer model in Appendix~\ref{TFF_Integer.s}.
-      Appendix~\ref{TFF_Peano.s.p} shows the verification problem for the problem in 
-      Appendix~\ref{TFF_Infinite.p} and its infinite term model in Appendix~\ref{TFF_Peano.s}.
+      web interface {\smalltt{\url{https://www.tptp.org/cgi-bin/SystemOnTSTP}}}, described in
+      Section~\ref{Tools}.
 \end{enumerate}
 
 %--------------------------------------------------------------------------------------------------
@@ -459,6 +453,18 @@ and~\ref{NTF_Finite-Finite-Global_Compact.s}, are explained below.)
 %--------------------------------------------------------------------------------------------------
 \section{Tools for Interpretations}
 \label{Tools}
+
+An implementation is available online as the AGMV tool in the SystemOnTSTP \cite{Sut07-CSR} 
+web interface {\smalltt{\url{https://www.tptp.org/cgi-bin/SystemOnTSTP}}}, described in
+The tool input is the concatenation of the problem and the interpretation.
+Appendix~\ref{FOF_Finite.s.p} shows the verification problem for the problem in 
+Appendix~\ref{FOF_Finite.p} and its finite model in Appendix~\ref{FOF_Finite.s}.
+Appendix~\ref{TFF_Finite.s.p} shows the verification problem for the problem in 
+Appendix~\ref{TFF_Finite.p} and its finite model in Appendix~\ref{TFF_Finite.s}.
+Appendix~\ref{TFF_Integer.s.p} shows the verification problem for the problem in 
+Appendix~\ref{TFF_Infinite.p} and its integer model in Appendix~\ref{TFF_Integer.s}.
+Appendix~\ref{TFF_Peano.s.p} shows the verification problem for the problem in 
+Appendix~\ref{TFF_Infinite.p} and its infinite term model in Appendix~\ref{TFF_Peano.s}.
 
 %--------------------------------------------------------------------------------------------------
 \section{Conclusion}
