@@ -71,5 +71,4 @@ tff(leo_workers,interpretation,
           & work_hard(d2person(d_chris),d2product(d_leo))
           & gets_rich(d2person(d_alex))
           & ~ gets_rich(d2person(d_chris)) ) ) ) ) ).
-
 %------------------------------------------------------------------------------

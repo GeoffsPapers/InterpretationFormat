@@ -96,5 +96,4 @@ tff(prove_formulae,conjecture,
             & ~ '$necessary'('$local_world',
                   ( healthy(apple)
                   & ~ rotten(banana) )) ) ) ) ) ).
-
 %------------------------------------------------------------------------------

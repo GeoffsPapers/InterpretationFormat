@@ -40,8 +40,7 @@ tff(garfield_mapping_cats,interpretation-mapping,
     & nermal = d2cat(d_nermal) ) ).
 
 tff(garfield_mapping_loves,interpretation-mapping(loves,d_cat),
-    ! [DC: d_cat] :
-      ( loves(d2cat(DC)) = d2cat(d_garfield) ) ).
+    ! [DC: d_cat] : ( loves(d2cat(DC)) = d2cat(d_garfield) ) ).
 
 tff(garfield_mapping_owns,interpretation-mapping(owns,$o),
     ( owns(d2human(d_jon),d2cat(d_garfield))

@@ -27,5 +27,4 @@ tff(not_true,conjecture,
     ( {$necessary} @ 
       (( healthy(apple)
        & ~ rotten(banana) )) ) ).
-
 %------------------------------------------------------------------------------

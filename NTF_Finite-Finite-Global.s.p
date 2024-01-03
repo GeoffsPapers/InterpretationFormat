@@ -113,5 +113,4 @@ tff(prove_formulae,conjecture,
           & '$possible'('$local_world',
               ( gets_rich(alex)
               & ~ gets_rich(chris) )) ) ) ) ).
-
 %------------------------------------------------------------------------------

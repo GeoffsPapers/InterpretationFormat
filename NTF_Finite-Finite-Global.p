@@ -1,4 +1,4 @@
-%---------------------------------------------------------------
+%------------------------------------------------------------------------------
 tff(semantics,logic,
     $alethic_modal ==
       [ $domains == $constant,
@@ -35,4 +35,4 @@ tff(chris_works_on_leo,axiom,
 %----It's possible that Alex gets rich but Chris does not.
 tff(only_alex_gets_rich,conjecture,
     ( {$possible} @ (gets_rich(alex) & ~ gets_rich(chris)) ) ).
-%---------------------------------------------------------------
+%------------------------------------------------------------------------------

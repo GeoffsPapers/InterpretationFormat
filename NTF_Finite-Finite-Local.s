@@ -53,5 +53,4 @@ tff(fruity_worlds,interpretation,
           & healthy(d2fruit(d_banana))
           & ~ rotten(d2fruit(d_apple))
           & ~ rotten(d2fruit(d_banana)) ) ) ) ) ) ).
-
 %------------------------------------------------------------------------------
