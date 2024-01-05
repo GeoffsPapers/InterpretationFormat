@@ -19,6 +19,12 @@ scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/
 scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/TFF_Integer.s.p .
 scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/TFF_Peano.s.p .
 
+scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/THF_Finite.p .
+scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/THF_Finite.s .
+scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/THF_Finite_Medium.s .
+scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/THF_Finite_Compact.s .
+scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/THF_Finite.s.p .
+
 scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/NTF_Finite-Finite-Global.p .
 scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/NTF_Finite-Finite-Global.s .
 scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/NTF_Finite-Finite-Global_Medium.s .

@@ -120,7 +120,8 @@ and non-classical forms (NTF).
 Most relevant to this work, the TPTP languages are used for writing ATP problems, 
 derivations, and interpretations \cite{SS+06,Sut08-KEAPPA}.
 Examples of problems are in Appendices~\ref{FOF_Finite.p}, \ref{TFF_Finite.p},
-\ref{TFF_Infinite.p}, \ref{NTF_Finite-Finite-Global.p}, and \ref{NTF_Finite-Finite-Local.p}.
+\ref{TFF_Infinite.p}, \ref{THF_Finite.p}, \ref{NTF_Finite-Finite-Global.p}, 
+and~\ref{NTF_Finite-Finite-Local.p}.
 The problems will be discussed in the context of their associated models in 
 Sections~\ref{NewTarskian} and~\ref{NewKripke}.
 
@@ -136,13 +137,7 @@ This work describes the new TPTP format for interpretations.
 The underlying principle is unchanged: interpretations are represented as formulae.
 
 \paragraph{Related Work:}
-Section~\ref{TypesOfInterpretations} provides the landscape of different representations of
-interpretations, and how models (interpretations that make particular formulae {\em true})
-can be built.
-The focus there is on Tarskian interpretations, but Kripke interpretations are also reviewed.
-That provides the necessary background for the focus of this paper -- a concrete realization
-of how interpretations are to be represented in the TPTP World.
-There are other concrete representations in use:
+There are other concrete representations of interpretations in use:
 The SMT-LIB standard \cite{BFT17} defines a format for model output, and commands to inspect 
 models.  
 SAT solvers generally output models as specified by the SAT competitions \cite{JL+12}, in a 
@@ -157,6 +152,7 @@ output formats of Nitpick and Z3 \cite{dMB08}.
 % See also https://microsoft.github.io/z3guide/docs/logic/Quantifiers
 % +++
 
+\vspace*{1em}
 This paper is organized as follows:
 Section~\ref{Interpretations} discusses the nature of interpretations, considering what is
 needed from interpretations, and the various forms that interpretations can take.
@@ -169,7 +165,10 @@ Section~\ref{Conclusion} concludes and discusses plans for future work.
 \section{About Interpretations}
 \label{Interpretations}
 
-What do we Need?
+%--------------------------------------------------------------------------------------------------
+\subsection{What do we Need?}
+\label{Need}
+
 \begin{itemize}
 \item {\em Model existence}
       \begin{packed_itemize}
@@ -200,27 +199,9 @@ What do we Need?
       Section~\ref{Verification}.
 \end{itemize}
 
-The notions of interpretations, models, partial interpretations, finite interpretations,
-Herbrand interpretations, etc., are captured in the SZS ontologies \cite{Sut08-KEAPPA}, as
-updated at 
-\href{https://www.tptp.org/cgi-bin/SeeTPTP?Category=Documents\&File=SZSOntology}{\tt www.tptp.org}
-\href{https://www.tptp.org/cgi-bin/SeeTPTP?Category=Documents\&File=SZSOntology}{\tt /cgi-bin/SeeTPTP?Category=Documents\&File=SZSOntology}.
-For this work the ontology was extended with a new value {\em Model Preserving} (MPR), defined
-as ``Some interpretations are models of Ax, and
-  all models of Ax are extended to a model of C, and
-  all models of C are an extension of a model of Ax
-  (which means that all models of C are models of Ax)''.
-This is used for ATP transformations of satisfiable sets of formulae in which the models
-of the set are unchanged, or changed only by adding new domain elements or mappings such
-that they still model the original formulae.
-Examples of such transformations are adding logical consequence of the set into the set, and
-Skolemization.
-
-$I \vdash \Phi$ means the interpretation $I$ is a model of the formula $\Phi$.
-
 %--------------------------------------------------------------------------------------------------
-\subsection{Tarskian Interpretations}
-\label{TarskianInterpretations}
+\subsection{What do we Have?}
+\label{Have}
 
 A Tarskian-style interpretation \cite{TV56} of formulae in first-order logic consists of a 
 non-empty domain of unequal elements for each type used in the formulae (just one domain for 
@@ -298,10 +279,6 @@ Ways to make Herbrand interpretations:
 
 \end{itemize}
 
-%--------------------------------------------------------------------------------------------------
-\subsection{Kripke Interpretations}
-\label{KripkeInterpretations}
-
 {\em Kripke interpretations} \cite{Kri63} add a layer of {\em worlds} over Tarskian
 interpretations.
 There can be a finite or infinite number of worlds.
@@ -312,6 +289,46 @@ Within each world there is a Tarskian interpretation, and there can be some inte
 between the worlds' interpretations if the terms designate globally MORE TO BE SAID.
 The verifiability, comprehensibility, and tractablity of Kripke interpretations varies
 between individual cases.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Do we Have what we Need?}
+\label{HaveNeed}
+
+$I \vdash \Phi$ means the interpretation $I$ is a model of the formula $\Phi$.
+
+Need to evaluated formulae wrt interpretation.
+Two ways
+\begin{packed_itemize}
+\item For a Kripke interpretation with finite worlds~\ldots
+      \begin{packed_itemize}
+      \item Interpret quantifiers over worlds using Kripke semantics.
+      \item Interpret formulae with a world using what follows~\ldots
+      \end{packed_itemize}
+\item For a Tarskian interpretation with finite domains or no quantification, and mappings for 
+      symbols applied to domain elements~\ldots
+      \begin{packed_itemize}
+      \item Interpret quantifiers for terms using Tarskian semantics.
+      \item Interpret ground (grounded with domain elements) terms and atoms using the mappings.
+      \item Interpret boolan formulae using truth tables for connectives.
+      \end{packed_itemize}
+\item For any interpretation use ATP
+\end{packed_itemize}
+
+The notions of interpretations, models, partial interpretations, finite interpretations,
+Herbrand interpretations, etc., are captured in the SZS ontologies \cite{Sut08-KEAPPA}, as
+updated at 
+\href{https://www.tptp.org/cgi-bin/SeeTPTP?Category=Documents\&File=SZSOntology}{\tt www.tptp.org}
+\href{https://www.tptp.org/cgi-bin/SeeTPTP?Category=Documents\&File=SZSOntology}{\tt /cgi-bin/SeeTPTP?Category=Documents\&File=SZSOntology}.
+For this work the ontology was extended with a new value {\em Model Preserving} (MPR), defined
+as ``Some interpretations are models of Ax, and
+  all models of Ax are extended to a model of C, and
+  all models of C are an extension of a model of Ax
+  (which means that all models of C are models of Ax)''.
+This is used for ATP transformations of satisfiable sets of formulae in which the models
+of the set are unchanged, or changed only by adding new domain elements or mappings such
+that they still model the original formulae.
+Examples of such transformations are adding logical consequence of the set into the set, and
+Skolemization.
 
 \begin{figure}[htbp]
 \includegraphics[width=\textwidth]{ModelLandscape.pdf}
@@ -328,76 +345,90 @@ has previously been defined, and was been adopted by some ATP systems.
 
 The new format uses an {\em interpretation formula}. 
 Examples of single interpretation formulae are in 
-Appendices~\ref{FOF_Finite.s}, \ref{TFF_Finite.s}, \ref{TFF_Integer.s}, and~ \ref{TFF_Peano.s},
+Appendices~\ref{FOF_Finite.s}, \ref{TFF_Finite.s}, \ref{TFF_Integer.s}, \ref{TFF_Peano.s} 
+and~\ref{THF_Finite.s},
 illustrating the components described next. 
 (Interpretations split over multiple interpretation formulae, as in 
 Appendices~\ref{FOF_Finite_Medium.s}, \ref{TFF_Finite_Medium.s}, \ref{TFF_Finite_Fine.s},
-and~\ref{TFF_Finite_Compact.s}, are explained below.)
+\ref{TFF_Finite_Compact.s}, \ref{THF_Finite_Medium.s} and~\ref{THF_Finite_Compact.s}, are 
+explained below.)
 
 An interpretation formula is a conjunction of components:
 \begin{packed_itemize}
 \item Domain specifications for each of the types in the problem formulae.
-\item Interpretation of the function symbols, as equalities whose left-hand sides are
-      formed from symbols applied to domain elements, and whose right-hand sides
-      are domain elements.
+\item Interpretation of the function symbols, as equalities whose left-hand sides are formed from 
+      symbols applied to domain elements, and whose right-hand sides are domain elements.
 \item Interpretation of the predicate symbols, as literals formed from symbols applied
       to domain elements; positive literals are {\em true} and negative literals are {\em false}.
 \end{packed_itemize}
 
-For FOF interpretations, the domain elements can be any terms.
-If plain terms are used their distinctness must be specified either with pairwise
-inequality or with the {\tt \$distinct} predicate.
-A better alternative is to use {\tt "distinct object"} terms, which are known to be distinct
-(and often not used in problems, which makes them easy to identify as domain elements) --
-Section Appendices~\ref{FOF_Finite.s}~and~\ref{FOF_Finite_Medium.s} for examples.
+Note that function and predicate symbols are interpreted by directly applying them to domain
+elements, rather than the traditional presentation of interpretation that introduces a new
+interpretation function for each function/predicate symbol \cite[p.999]{Gal15}.
+This slight-of-hand simplifies the representation of interpretations, and makes interpretation
+of new formulae by ATP more tractable.
+The explanations and examples that follow will convince you of that!
 
-For TFF and TXF each domain requires a {\em type-promotion} function that converts domain 
-elements to terms, to keep the interpretation formula well-typed.
-Each domain is a conjunction of (following along in Appendices~\ref{TFF_Finite.s},
-\ref{TFF_Integer.s},~and~\ref{TFF_Peano.s} might help here):
+For FOF interpretations domain elements are new ground terms, and their distinctness must be 
+specified either with pairwise inequalities or with the {\tt \$distinct} predicate.
+A convenient alternative is to use {\tt "distinct object"} constants, which are known to be 
+distinct (and often not used in problems, which makes them easy to identify as domain elements) --
+see Appendix~\ref{FOF_Finite.s} for an example.
+As terms and domain elements are untyped (or, if you will, of type {\tt \$i}), the interpretation
+of symbols can apply the symbols directly to the domain elements; this is not the case for
+TFF and TXF, as is explained next.
+
+For TFF and TXF interpretations each type of the problem has a domain, which can be of a new type.
+If the problem type is different from the domain type then function and predicate symbols from 
+the problem cannot be directly applied to domain elements of the type that corresponds to the type
+of the argument position.
+To resolve this {\em type-promotion} bijection are used to ``convert'' domain elements to terms 
+of the corresponding type, thus keeping the interpretation formula well-typed -- See
+Appendix~\ref{TFF_Finite.s} for examples.
+The interpretation formula is preceded by the necessary type declarations:
 \begin{packed_itemize}
-\item The domain type, as a formula that makes the type-promotion function a surjection 
-      (unless it is unnecessary because the type is defined and is the same as the type in 
-      the given formulae, e.g., both are {\smalltt{\$int}}).
-\item The domain elements (unless implicit from their defined type), 
+\item The types in the problem (except defined types, e.g., {\smalltt{\$int}}).
+\item The types of the domains (except defined types).
+\item The types of type-promotion functions.
+\item The types of the domain elements.
+\end{packed_itemize}
+Then, (following along in Appendices~\ref{TFF_Finite.s}, \ref{TFF_Integer.s}, and~\ref{TFF_Peano.s} 
+might help here) each domain is a conjunction of:
+\begin{packed_itemize}
+\item The domain for each problem type, as a formula that makes the type-promotion function a 
+      surjection (unless it is unnecessary because the domain type is defined and is the same as 
+      the problem type, e.g., both are {\smalltt{\$int}}), e.g., in 
+      Appendix~\ref{TFF_Finite.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [C: cat] : ? [DC: d\_cat] : C = d2cat(DC)}
+\item The elements of each domain (unless implicit from their defined type, as in
+      Appendix~\ref{TFF_Integer.s}). 
       If the domain is finite this is a universally quantified disjunction of equalities whose 
-      right-hand sides are the terms. 
+      right-hand sides are the terms, e.g., in Appendix~\ref{TFF_Finite.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [DC: d\_cat]: ( DC = d\_garfield | DC = d\_arlene | DC = d\_nermal )}\\
       If the domain is infinite this is an existentially quantified formula that captures an 
-      infinite disjunction of equalities, e.g., for terms representing Peano numbers as the 
-      domain elements:\\
-      \hspace*{0.5cm}$\forall I{:}peano\;((I = zero) \vee \exists P{:}peano\;(I = s(P)))$;
-       \smalltt{! [I: peano] : ( I = zero | ? [P: peano] : I = s(P) )};
+      infinite disjunction of equalities, e.g., in Appendix~\ref{TFF_Peano.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [I: peano] : ( I = zero | ? [P: peano] : I = s(P) )}
 \item Specification of the distinctness of the domain elements (unless implicit from their
       defined type);
 \item A formula making the type-promotion function an injection,
       % (unless the type of the domain is the same as the type in the formula), 
       which together with the surjectivity makes it a bijection.
 \end{packed_itemize}
-For TFF and TXF the interpretation of symbols uses the type-promotion functions so that the
-signatures of the symbols are respected.
-
-The interpretation formula is preceded by the necessary type declarations:
-\begin{packed_itemize}
-\item the types in the given formulae (except defined types, e.g., {\smalltt{\$int}});
-\item the types of the domains (except defined types);
-\item the types of type-promotion functions;
-\item the types of the domain elements.
-\end{packed_itemize}
-
-ZZZZZZZZZZ
+The interpretation of symbols applies the corresponding type-promotion function to each domain
+element argument so that that signatures of the symbols are respected.
 
 Appendix~\ref{TFF_Finite.s} shows a TF0 interpretation with finite domains -- it is a 
 countermodel for the problem in Appendix~\ref{TFF_Finite.p}.
 The comments show which parts of the formula specify what aspects of the interpretation.
 Appendix~\ref{TFF_Integer.s} shows a TF0 interpretation with an integer domain -- it 
 is a model for the problem in Appendix~\ref{TFF_Infinite.p}.
-Note that in Appendix~\ref{TFF_Integer.s}:
-the defined type {\smalltt{\$int}} is the domain type for the formula type 
+Note that in Appendix~\ref{TFF_Integer.s}
+$\bullet$~the defined type {\smalltt{\$int}} is the domain type for the formula type 
 {\smalltt{person}}, so that there is no specification of the domain elements and their 
 distinctness;
-universal quantification is used for the interpretation of function and predicate
+$\bullet$~universal quantification is used for the interpretation of function and predicate
 symbols for an infinite number of argument tuples;
-the interpretations of function and predicate symbols is not given for argument 
+$\bullet$~the interpretations of function and predicate symbols is not given for argument 
 tuples with negative integers, i.e., this is an example of a partial interpretation.
 Appendix~\ref{TFF_Peano.s} shows a TF0 interpretation with an infinite term domain -- it 
 is a model for the problem in Appendix~\ref{TFF_Infinite.p}.
@@ -605,6 +636,46 @@ All these listings are available from
 \label{TFF_Peano.s.p}
 \begin{small}
 \verbatiminput{TFF_Peano.s.p}
+\end{small}
+
+%--------------------------------------------------------------------------------------------------
+\newpage
+\section{TH0, Finite Interpretations}
+\label{TH0Finite}
+
+\subsection{TH0 Problem with a Finite Countermodel}
+\label{THF_Finite.p}
+\begin{small}
+\verbatiminput{THF_Finite.p}
+\end{small}
+
+\newpage
+\subsection{TH0 Finite Model for \ref{THF_Finite.p}, Coarse Grained}
+\label{THF_Finite.s}
+\begin{small}
+\verbatiminput{THF_Finite.s}
+\end{small}
+
+\newpage
+\subsection{TH0 Finite Model for \ref{THF_Finite.p}, Medium Grained}
+\label{THF_Finite_Medium.s}
+\begin{small}
+\verbatiminput{THF_Finite_Medium.s}
+\end{small}
+
+\newpage
+\subsection{TH0 Finite Model for \ref{THF_Finite.p}, Compacted}
+\label{THF_Finite_Compact.s}
+\begin{small}
+\verbatiminput{THF_Finite_Compact.s}
+\end{small}
+
+\newpage
+\subsection{TH0 Verification Problem for \ref{THF_Finite.p} and 
+            \ref{THF_Finite.s}/\ref{THF_Finite_Medium.s}}
+\label{THF_Finite.s.p}
+\begin{small}
+\verbatiminput{THF_Finite.s.p}
 \end{small}
 
 %--------------------------------------------------------------------------------------------------
