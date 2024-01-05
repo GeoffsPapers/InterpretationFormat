@@ -80,8 +80,6 @@ task of proving theorems from axioms -- the derivation of conclusions that follo
 from known facts \cite{RV01-HAR}.
 The axioms and conjecture to be proved (and hence become a theorem) are written in an 
 appropriately expressive logic, and the proofs are often similarly written in logic \cite{SS+06}.
-% In this work simply-typed first-order logic in the form of \cite{Wal83,Sch85,Coh87},
-% whose expressive power is sufficient for a wide range of topics \cite{Sut17}, is used
 In the last two decades the converse task of disproving conjectures, i.e., proving that a 
 conjecture is not a theorem of the axioms, has become increasingly important.
 This process depends on finding an {\em interpretation}, i.e., a structure that maps terms 
@@ -122,14 +120,11 @@ derivations, and interpretations \cite{SS+06,Sut08-KEAPPA}.
 Examples of problems are in Appendices~\ref{FOF_Finite.p}, \ref{TFF_Finite.p},
 \ref{TFF_Infinite.p}, \ref{THF_Finite.p}, \ref{NTF_Finite-Finite-Global.p}, 
 and~\ref{NTF_Finite-Finite-Local.p}.
-The problems will be discussed in the context of their associated models in 
-Sections~\ref{NewTarskian} and~\ref{NewKripke}.
 
 A TPTP format for interpretations with finite domains \cite{SS+06} was previously been defined, 
 and has served the ATP community adequately for almost 20 years. 
 The old format is output by several ATP systems, e.g., Paradox \cite{CS03}, FMDarwin \cite{BF+06}, 
 Vampire \cite{KV13}.
-The new format replaces the old format for finite interpretations \cite{SS+06}, which 
 Recently the need for a format for interpretations with infinite domains, and for a format for 
 Kripke interpretations \cite{Kri63} of formulae written in the NTF language \cite{SF+22}, 
 led to the development of a new TPTP format for interpretations.
@@ -169,35 +164,38 @@ Section~\ref{Conclusion} concludes and discusses plans for future work.
 \subsection{What do we Need?}
 \label{Need}
 
-\begin{itemize}
-\item {\em Model existence}
-      \begin{packed_itemize}
-      \item Consistency of axiomatizations, to avoid CAX [ATP process]
-      \item Use as a yes/no subroutine in more complex reasoning [Steen], including~\ldots
-      \item Axiom selection \cite{SP07} NEED FROM LT
-      \item Existence of bugs in verification, but frustrating [McCune]
-      \end{packed_itemize}
-      The model finder has to be trusted.
-\item {\em Explicit models}
-      \begin{packed_itemize}
-      \item Identification of bugs in verification [Claessen]
-      \item A solution to a problem encoded as a model finding problem [Claessen]
-      \item Inspecting outcomes of student's experiments [Steen]
-      \item Evaluating formulae wrt the model [Sutcliffe]
-      \item Machine learning from models [~Barbosa]
-      \item Improve model finders [~Barbosa]
-      \end{packed_itemize}
-      The models can be verified.
-\item {\em Properties of explicit interpretations}
-      \begin{packed_itemize}
-      \item Verifiable [Zhang]
-      \item Comprehensible for manual inspection, e.g., for Intel \cite{EK+10}
-      \item Tractable evaluation of formulae [Sutcliffe]
-      \end{packed_itemize}
-      As formulae in the language of the input!
-      This provides the basis for verification of models, as explained in 
-      Section~\ref{Verification}.
-\end{itemize}
+The needs of applications that require model finding vary according to their use of the model.
+In the simplest case application need only to know that a model exists.
+Examples of such applications include checking the consistency of an axiomatization \cite{CI15},
+use as a subroutine in more complex reasoning, e.g., for
+axiom selection \cite{SP07,Pud07-ESARLT}, and establishing the existence of a bug in a
+verification process\footnote{%
+Bill McCune claimed that establishing the existence of a bug without having an explicit model
+to help pinpoint the bug would be ``frustrating''. And he should know.}
+A key weakness of model finder systems that claim to have found a model but do not output an 
+explicit model is that it is necessary to trust the model finder.
+
+In many applications it is necessary to have an explicit model, in some representation that
+allows for analysis of the model.
+Applications that productively use an explicit model include finding inconsistencies in 
+axiomatizations \cite{SS+17}, identification of bugs in verification \cite{CE82,QS82},
+solution of problems encoded as a model finding problems \cite{Win82}, and evaluating formulae
+wrt the model \cite{SS+23-LPAR}.
+Internally, explicit models can be used for machine learning and improving model finders.
+A key strength of model finder systems that output an explicit model is that the model can
+be verified -- see Section{Verification}.
+
+Given the innate desirability of obtaining explicit models of satisfiable formulae, desirable
+properties of model can be considered.
+As indicated, a key property is verifiability.
+Verification typically means evaluating the problem formulae wrt the model, to ensure all
+evaluate to true.
+The process of evaluating formulae wrt an explicit model should be tractable, for direct
+use and for verification.
+Models should also be comprehensible, so that insights can be gained from manual inspection
+\cite{EK+10}.
+This property suggests that models should be written using the same vocabulary as the problem
+formulae, and even better using the same syntax.
 
 %--------------------------------------------------------------------------------------------------
 \subsection{What do we Have?}
@@ -215,10 +213,10 @@ formulae, e.g., \cite{BSW23}; such an interpretation is a {\em partial interpret
 Three types of Tarskian interpretations are clear (and more might exist):
 \begin{itemize}
 \item {\em Finite interpretations} have only finite domains.
-      The domain and symbol mappings can be be explcitly enumerated.
+      The domain and symbol mappings can be be explicitly enumerated.
       There are several ATP systems that produce finite interpretations, e.g., Paradox,
       FMDarwin, and Vampire.
-      Finite interpretations are typically verifiable, comprehensible, and tractable.
+      Finite interpretations are typically verifiable, tractable, and comprehensible.
 Ways to make finite interpretations:
 \begin{packed_itemize}
 \item Reduction to Function-Free Clause Logic \cite{CS03,McC03-MACE4-TR,BF+09}
@@ -229,8 +227,8 @@ Ways to make finite interpretations:
       implicitly specified (e.g., some set of algebraic numbers, such as the integers).
       There are several ATP systems that produce finite interpretations, e.g., 
       cvc5 \cite{BB+22-cvc5}, Z3.
-      Infinite interpretations are verifiable, but might not be comprehensible, and are often
-      intractable.
+      Infinite interpretations are verifiable, but often intractable and might not be 
+      comprehensible.
 Ways to make infinite non-Herbrand interpretations:
 \begin{packed_itemize}
 \item cvc5
@@ -255,13 +253,13 @@ Ways to make infinite non-Herbrand interpretations:
             Prover9 \cite{McC-Prover9-URL}, Vampire, and Zipperposition \cite{VB+21}.
             While the domain of a saturation is known to be the Herbrand Universe, there is no 
             explicit symbol interpretation that can be used constructively by users.
-            Saturations are verifiable, incomprehensible, and often intractable.
+            Saturations are verifiable, often intractable, and almost always incomprehensible.
       \item {\em Formulae} that are intended to represent Herbrand interpretations include
             a disjunction of implicit generalisations (DIGs) \cite{LM87}, and predicate
             definitions over the term algebra \cite{SK12}.
             iProver \cite{Kor08,SK12} is an ATP system that output the latter format.
-            Formulae as Herbrand interpretations are verifiable, and they can be comprehensible 
-            and tractable.
+            Formulae as Herbrand interpretations are verifiable, and they can be tractable and
+            comprehensible.
       \end{packed_itemize}
 Ways to make Herbrand interpretations:
 \begin{packed_itemize}
@@ -287,7 +285,7 @@ requirements of the logic being used, e.g., for modal logic {\bf M} the accessib
 relation must be reflexive, i.e., every world can access itself.
 Within each world there is a Tarskian interpretation, and there can be some interaction
 between the worlds' interpretations if the terms designate globally MORE TO BE SAID.
-The verifiability, comprehensibility, and tractablity of Kripke interpretations varies
+The verifiability, tractability, and comprehensibility of Kripke interpretations varies
 between individual cases.
 
 %--------------------------------------------------------------------------------------------------
