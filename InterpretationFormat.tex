@@ -95,10 +95,11 @@ Other applications of model finding include checking the consistency of an axiom
 \cite{Win82}.
 
 The TPTP World \cite{Sut17} (\href{https://www.tptp.org}{\tt www.tptp.org}) is a well established 
-infrastructure that supports research, development, and deployment of Automated Theorem Proving 
-(ATP) systems.
-Various parts of the TPTP World have been deployed in a range of applications,
-in both academia and industry.
+infrastructure that supports research, development, and deployment of 
+% Automated Theorem Proving 
+ATP systems.
+Various parts of the TPTP World have been deployed in a range of applications, in both academia 
+and industry.
 The TPTP World includes the TPTP problem library \cite{Sut09}, 
 the TSTP solution library \cite{Sut10}, 
 tools and services for processing ATP problems and solutions \cite{Sut10}, 
@@ -171,7 +172,7 @@ use as a subroutine in more complex reasoning, e.g., for
 axiom selection \cite{SP07,Pud07-ESARLT}, and establishing the existence of a bug in a
 verification process\footnote{%
 Bill McCune claimed that establishing the existence of a bug without having an explicit model
-to help pinpoint the bug would be ``frustrating''. And he should know.}
+to help pinpoint the bug would be ``frustrating''. And he should have known.}
 A key weakness of model finder systems that claim to have found a model but do not output an 
 explicit model is that it is necessary to trust the model finder.
 
@@ -186,13 +187,11 @@ A key strength of model finder systems that output an explicit model is that the
 be verified -- see Section{Verification}.
 
 Given the innate desirability of obtaining explicit models of satisfiable formulae, desirable
-properties of model can be considered.
+properties of explicit models can be considered.
 As indicated, a key property is verifiability.
-Verification typically means evaluating the problem formulae wrt the model, to ensure all
-evaluate to true.
-The process of evaluating formulae wrt an explicit model should be tractable, for direct
-use and for verification.
-Models should also be comprehensible, so that insights can be gained from manual inspection
+Verification means evaluating the problem formulae wrt the model, to ensure all evaluate to true.
+The process of evaluating formulae wrt an explicit model should be tractable.
+Models should also be comprehensible, so that insights can be gained from manual inspection, e.g.,
 \cite{EK+10}.
 This property suggests that models should be written using the same vocabulary as the problem
 formulae, and even better using the same syntax.
@@ -207,59 +206,48 @@ untyped logic), and interpretations of the function and predicate symbols with r
 domains \cite{Hun96,Gal15}.
 An overview of some ways of building and representing Tarskian interpretations is provided 
 by \cite{CLP04}.
-An interpretation can normally interpret all expressions that can be written in the language of 
-the formulae, but in some circumstances an interpretation can interpret only (at least) the given 
-formulae, e.g., \cite{BSW23}; such an interpretation is a {\em partial interpretation}.
+A {\em complete} interpretation can interpret all expressions that can be written in the language 
+of the formulae, but a {\em partial} interpretation can interpret only (at least) the 
+given formulae, e.g., \cite{BSW23}.
 Three types of Tarskian interpretations are clear (and more might exist):
 \begin{itemize}
 \item {\em Finite interpretations} have only finite domains.
       The domain and symbol mappings can be be explicitly enumerated.
-      There are several ATP systems that produce finite interpretations, e.g., Paradox,
-      FMDarwin, and Vampire.
-      Finite interpretations are typically verifiable, tractable, and comprehensible.
-Ways to make finite interpretations:
-\begin{packed_itemize}
-\item Reduction to Function-Free Clause Logic \cite{CS03,McC03-MACE4-TR,BF+09}
-\end{packed_itemize}
-
+      Finite models for a set of formulae are typically produced by starting with domains of 
+      size one, and incrementing the sizes until a model is found.
+      At each iteration the formulae are reduced to function free clause logic AND I NEED TO
+      READ MORE \cite{CS03,McC03-MACE4-TR,BF+09}
+      There are several ATP systems that produce finite models, e.g., Paradox, FMDarwin, and 
+      Vampire.
 \item {\em Infinite interpretations} have one or more infinite domains.
       Infinite domains can be explicitly generated (e.g., terms representing Peano numbers), or 
       implicitly specified (e.g., some set of algebraic numbers, such as the integers).
-      There are several ATP systems that produce finite interpretations, e.g., 
+      HOW IS THIS DONE?
+      There are several ATP systems that produce infinite models, e.g., 
       cvc5 \cite{BB+22-cvc5}, Z3.
-      Infinite interpretations are verifiable, but often intractable and might not be 
-      comprehensible.
-Ways to make infinite non-Herbrand interpretations:
-\begin{packed_itemize}
-\item cvc5
-\end{packed_itemize}
-
 \item {\em Herbrand interpretations} \cite{Her30} have the Herbrand universe as the domain, 
       the mapping for non-boolean symbols (functions) is the ``identity'', and the mapping
       for boolean symbols (predicates) is from the Herbrand base to $\{true,false\}$.
-
       Every set of formulae induces its set of Herbrand models.
       A set of formulae might not be intended to represent it's models, e.g., the input to 
       an ATP system. 
       In the ATP context a set of formulae is often intended to at least confirm the existence
       of Herbrand models.
-      Such sets can be the result from model preserving transformations done by an ATP on its 
-      input, or generated by an ATP system with the explicit intention of representing Herbrand 
-      interpretations.
+      Such sets can be the result from an ATP system applying model preserving transformations 
+      on its input, or generated by an ATP system with the explicit intention of representing 
+      Herbrand interpretations:
       \begin{packed_itemize}
       \item {\em Saturations} \cite{BG+01} are a fixed point for a set of clauses at which further 
             application of a complete inference system does not generate any new clauses.
             This approach is adopted in saturation-based ATP systems such as E \cite{SCV19},
             Prover9 \cite{McC-Prover9-URL}, Vampire, and Zipperposition \cite{VB+21}.
-            While the domain of a saturation is known to be the Herbrand Universe, there is no 
-            explicit symbol interpretation that can be used constructively by users.
-            Saturations are verifiable, often intractable, and almost always incomprehensible.
+            While the domain of the Herbrand interpretations induced by a saturation is known 
+            to be the Herbrand Universe, there is no explicit symbol interpretation that can be 
+            used constructively by users.
       \item {\em Formulae} that are intended to represent Herbrand interpretations include
             a disjunction of implicit generalisations (DIGs) \cite{LM87}, and predicate
             definitions over the term algebra \cite{SK12}.
             iProver \cite{Kor08,SK12} is an ATP system that output the latter format.
-            Formulae as Herbrand interpretations are verifiable, and they can be tractable and
-            comprehensible.
       \end{packed_itemize}
 Ways to make Herbrand interpretations:
 \begin{packed_itemize}
@@ -293,6 +281,15 @@ between individual cases.
 \label{HaveNeed}
 
 $I \vdash \Phi$ means the interpretation $I$ is a model of the formula $\Phi$.
+
+      Finite interpretations are typically verifiable, tractable, and comprehensible.
+
+      Infinite interpretations are verifiable, but often intractable and might not be 
+      comprehensible.
+
+            Saturations are verifiable, often intractable, and almost always incomprehensible.
+            Formulae as Herbrand interpretations are verifiable, and they can be tractable and
+            comprehensible.
 
 Need to evaluated formulae wrt interpretation.
 Two ways
