@@ -3,6 +3,7 @@
 % \usepackage{doc}
 \usepackage{setspace}
 \usepackage{verbatim}
+\usepackage{amssymb}
 
 %----Making things more compact
 \newcommand{\smalltt}[1]{\small \texttt{#1}}
@@ -28,13 +29,6 @@
 % \renewcommand{\floatpagefraction}{0.66}
 % \setlength{\floatsep}{2.0pt plus 2.0pt minus 2.0pt}
 % \setlength{\textfloatsep}{5.0pt plus 2.0pt minus 0.0pt}
-
-%----For Alex's proof stuff
-\usepackage{amsmath,amssymb,amsthm}
-\newtheorem*{lemma}{Lemma}
-\newtheorem*{theorem}{Theorem}
-\newcommand{\true}{{\mathit{true}}}
-\newcommand{\false}{{\mathit{false}}}
 
 \title{The New TPTP Format for \\ Tarskian and Kripke Interpretations}
 
@@ -215,16 +209,16 @@ Three types of Tarskian interpretations are clear (and more might exist):
       The domain and symbol mappings can be be explicitly enumerated.
       Finite models for a set of formulae are typically produced by starting with domains of 
       size one, and incrementing the sizes until a model is found.
-      At each iteration the formulae are reduced to function free clause logic AND I NEED TO
-      READ MORE \cite{CS03,McC03-MACE4-TR,BF+09}
+      At each iteration the formulae are reduced to either propositional \cite{CS03,McC03-MACE4-TR}
+      or function free clause logic \cite{BF+09}, both of which are decidable logics.
+      An ATP system that can decide the logic is used to find a model.
       There are several ATP systems that produce finite models, e.g., Paradox, FMDarwin, and 
       Vampire.
 \item {\em Infinite interpretations} have one or more infinite domains.
       Infinite domains can be explicitly generated (e.g., terms representing Peano numbers), or 
       implicitly specified (e.g., some set of algebraic numbers, such as the integers).
-      HOW IS THIS DONE?
-      There are several ATP systems that produce infinite models, e.g., 
-      cvc5 \cite{BB+22-cvc5}, Z3.
+      % HOW IS THIS DONE?
+      There are some ATP systems that produce infinite models, e.g., cvc5 \cite{BB+22-cvc5}, Z3.
 \item {\em Herbrand interpretations} \cite{Her30} have the Herbrand universe as the domain, 
       the mapping for non-boolean symbols (functions) is the ``identity'', and the mapping
       for boolean symbols (predicates) is from the Herbrand base to $\{true,false\}$.
@@ -304,53 +298,69 @@ Section~\ref{Need} listed three needs for interpretations:
       resources.
 \item Comprehensibility - the extent to which the interpretation can be understood, typically
       by a human but possibly by a machine.
-      This property suggests that interpretations should be written using the same vocabulary
-      as the formulae, and even better using the same syntax.
 \end{packed_itemize}
 
 The new TPTP format represents interpretations as formulae, written in an extension of the
-language of the formulae being interpreted.
+language of the formulae being interpreted, i.e., extensing the same vocabulary as the formulae, 
+and using the same syntax.
 That immediately contributes to comprehensibility (but does not ensure it).
 
-There are two obvious ways to interpret a formula wrt a given interpretation.
+To interpret a formula wrt a given interpretation~\ldots
 \begin{packed_itemize}
 \item For a Kripke interpretation with finite worlds~\ldots
       \begin{packed_itemize}
       \item Interpret quantifiers over worlds using Kripke semantics.
-      \item Interpret formulae with a world using what follows~\ldots
+      \item Interpret formulae within a world according to the following points.
       \end{packed_itemize}
 \item For a Tarskian interpretation with finite domains or no quantification, and mappings for 
       symbols applied to domain elements~\ldots
       \begin{packed_itemize}
-      \item Interpret quantifiers for terms using Tarskian semantics.
+      \item Interpret quantifiers using Tarskian semantics.
       \item Interpret ground (grounded with domain elements) terms and atoms using the mappings.
-      \item Interpret boolan formulae using truth tables for connectives.
+      \item Interpret boolean formulae using truth tables for connectives.
       \end{packed_itemize}
 \item For an interpretation represented by formulae, theorem proving can be used~\ldots
       \begin{packed_itemize}
-      \item If a formula can be proved from an interpretation it is $true$ in the interpretation.
-      \item If a formula can be disproved from an interpretation it is $false$ in the 
-            interpretation.
-      \item In practice a formula can be neither proved nor disproved within limited/reasonable 
+      \item If a formula can be proved from interpretation formulae then it is $true$ in the 
+            interpretation represented by formulae, and $true$ in all the Herbrand interpretations
+            induced by the formulae.
+      \item If a formula can be disproved from interpretation formulae then it is $false$ in the 
+            interpretation, and $false$ in all the Herbrand interpretations induced by the 
+            formulae.
+      \item In practice, a formula might be neither proved nor disproved within reasonable 
             resource limits, so that nothing is known.
-      \item In the case that a set of Herbrand interpretations is induced by a set of formulae, 
-            GOTTA WORK THIS OUT.
       \end{packed_itemize}
 \end{packed_itemize}
+
 For an interpretation $I$ and formula $\Phi$, $I \vdash \Phi$ means that $\Phi$ is $true$ in $I$, 
 i.e., $I$ is a model of formula $\Phi$.
 
-      Finite interpretations are typically verifiable, tractable, and comprehensible.
-
-      Infinite interpretations are verifiable, but often intractable and might not be 
+In the light of the above (and hey, maybe there are more techniques than just those) I claim~\ldots
+\begin{packed_itemize}
+\item Finite interpretations are typically verifiable, tractable, and comprehensible.
+\item Infinite interpretations are verifiable, but often intractable and might not be 
       comprehensible.
+\item Saturations are verifiable, often intractable, and almost always incomprehensible.
+\item Formulae as Herbrand interpretations are verifiable, and they can be tractable and
+      comprehensible.
+\end{packed_itemize}
 
-            Saturations are verifiable, often intractable, and almost always incomprehensible.
-            Formulae as Herbrand interpretations are verifiable, and they can be tractable and
-            comprehensible.
+Figure~\ref{ModelLandscape} provides an overview of the situation.
+The starting point is the set of {\sf Satisfiable formulae in $\Sigma$}, which might have been
+formed from set of {\sf Ax $\cup$ {\raisebox{0.4ex}{\texttildelow}}C}. 
+$\Sigma$ is the language of the formulae.
+Going down lead to the {\sf Models} of the satisfiable formulae.
+Some of the {\sf Models} are models that have a domain and symbol mappings {\sf D+M}, and some
+are induced Herbrand models.
+Going left from the {\sf Satisfiable formulae in $\Sigma$} is the pathway taken by ATP systems 
+that find a {\sf D+M} model, and output a TPTP interpretation formula representing that model.
+If the interpretation formula correctly represents a model of the satisfiable formulae, then
+the satisfiable formulae can be proved ($\vDash$) from the interpretation formula.
+ZZZZZZZZZZZZ
 
 \begin{figure}[htbp]
-\includegraphics[width=\textwidth]{ModelLandscape.pdf}
+\centering
+\includegraphics[width=0.75\textwidth]{ModelLandscape.pdf}
 \caption{The Landscape of Classical Model Building}
 \label{ModelLandscape}
 \end{figure}
