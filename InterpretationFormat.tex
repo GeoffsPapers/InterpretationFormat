@@ -148,7 +148,7 @@ Section~\ref{Interpretations} discusses the nature of interpretations, consideri
 needed from interpretations, and the various forms that interpretations can take.
 Section~\ref{NewTarskian} defines the new format for Tarskian interpretations, and
 Section~\ref{NewKripke} does the same for Kripke interpretations.
-Section~\ref{Verification} describes the semantic approach to model verification.
+% Section~\ref{Verification} describes the semantic approach to model verification.
 Section~\ref{Conclusion} concludes and discusses plans for future work.
 
 %--------------------------------------------------------------------------------------------------
@@ -176,19 +176,16 @@ Applications that productively use an explicit model include finding inconsisten
 axiomatizations \cite{SS+17}, identification of bugs in verification \cite{CE82,QS82},
 solution of problems encoded as a model finding problems \cite{Win82}, and evaluating formulae
 wrt the model \cite{SS+23-LPAR}.
+Manual inspection of explicit models can also be useful, e.g., \cite{EK+10}.
 Internally, explicit models can be used for machine learning and improving model finders.
-A key strength of model finder systems that output an explicit model is that the model can
-be verified -- see Section{Verification}.
+A key advantage of having an explicit model output is that the model can be verified, i.e., the
+model finder does not need to be trusted,
 
 Given the innate desirability of obtaining explicit models of satisfiable formulae, desirable
 properties of explicit models can be considered.
-As indicated, a key property is verifiability.
-Verification means evaluating the problem formulae wrt the model, to ensure all evaluate to 
-$true$.
-The process of evaluating formulae wrt an explicit interpretation should be tractable (at least
-for verification of models).
-Interpretations should also be comprehensible, so that insights can be gained from manual 
-inspection, e.g., \cite{EK+10}.
+Verification (checking that the formulae evaluate to $true$ wrt the model), should be possible.
+The process of evaluating formulae should be tractable.
+Interpretations should be sufficiently comprehensible for manual inspection.
 
 %--------------------------------------------------------------------------------------------------
 \subsection{What do we Have?}
@@ -259,7 +256,7 @@ Ways to make Herbrand interpretations:
 
 \end{itemize}
 
-{\em Kripke interpretations} \cite{Kri63} add a layer of {\em worlds} over Tarskian
+A {\em Kripke interpretation} \cite{Kri63} adds a layer of {\em worlds} over Tarskian
 interpretations.
 There can be a finite or infinite number of worlds.
 There is an {\em accessibility relation} between the worlds, which can be subject to the
@@ -319,7 +316,11 @@ To interpret a formula wrt a given interpretation~\ldots
       \item Interpret ground (grounded with domain elements) terms and atoms using the mappings.
       \item Interpret boolean formulae using truth tables for connectives.
       \end{packed_itemize}
-\item For an interpretation represented by formulae, theorem proving can be used~\ldots
+\item For interpretations represented by an interpretation formula in the new TPTP format,
+      theorem proving can be used.
+      This is proved for FOF interpretations in \cite{SS+23-LPAR}, and the proof extends
+      DID I WRITE THIS ALREADY? ZZZZZZZZZ.
+\item For Herbrand interpretations induces by formulae, theorem proving can be used~\ldots
       \begin{packed_itemize}
       \item If a formula can be proved from interpretation formulae then it is $true$ in the 
             interpretation represented by formulae, and $true$ in all the Herbrand interpretations
@@ -331,7 +332,6 @@ To interpret a formula wrt a given interpretation~\ldots
             resource limits, so that nothing is known.
       \end{packed_itemize}
 \end{packed_itemize}
-
 For an interpretation $I$ and formula $\Phi$, $I \vdash \Phi$ means that $\Phi$ is $true$ in $I$, 
 i.e., $I$ is a model of formula $\Phi$.
 
@@ -347,16 +347,27 @@ In the light of the above (and hey, maybe there are more techniques than just th
 
 Figure~\ref{ModelLandscape} provides an overview of the situation.
 The starting point is the set of {\sf Satisfiable formulae in $\Sigma$}, which might have been
-formed from set of {\sf Ax $\cup$ {\raisebox{0.4ex}{\texttildelow}}C}. 
+formed from {\sf Ax $\cup$ {\raisebox{0.4ex}{\texttildelow}}C}. 
 $\Sigma$ is the language of the formulae.
-Going down lead to the {\sf Models} of the satisfiable formulae.
-Some of the {\sf Models} are models that have a domain and symbol mappings {\sf D+M}, and some
-are induced Herbrand models.
+Going down leads to the {\sf Models} of the satisfiable formulae.
+Some of the {\sf Models} have a domain and symbol mappings ({\sf D+M}), and some are induced 
+Herbrand models.
 Going left from the {\sf Satisfiable formulae in $\Sigma$} is the pathway taken by ATP systems 
 that find a {\sf D+M} model, and output a TPTP interpretation formula representing that model.
 If the interpretation formula correctly represents a model of the satisfiable formulae, then
 the satisfiable formulae can be proved ($\vDash$) from the interpretation formula.
-ZZZZZZZZZZZZ
+The models of the interpretation formula are a subset ($\subseteq$) of the models of the
+{\sf Satisfiable formulae in $\Sigma$}.
+Going right from the {\sf Satisfiable formulae in $\Sigma$} is the pathway taken by ATP systems
+that apply model preserving transformations ({\sf MPR}s) on the satisfiable set, possibly 
+including conversion to CNF with Skolemization.
+Whatever transformations are applied, the result is another satisfiable set of formulae that 
+induces a set of Herbrand models that are models of the original {\sf Satisfiable formulae in 
+$\Sigma$}.
+(Transformations such as these might also be applied as part of the process of building a {\sf D+M}
+interpretation formula.)
+The {\sf Satisfiable formulae in $\Sigma$} can be proved from each of the sets that result from 
+applying MPRs
 
 \begin{figure}[htbp]
 \centering
@@ -475,50 +486,50 @@ Appendices~\ref{NTF_Finite-Finite-Global_Medium.s}, \ref{NTF_Finite-Finite-Globa
 and~\ref{NTF_Finite-Finite-Global_Compact.s}, are explained below.)
 
 %--------------------------------------------------------------------------------------------------
-\section{Model Verification}
-\label{Verification}
-
-ATP systems are complex pieces of software, implementing complex calculi, with the end goal
-being a sound implementation of a sound inference system whose output correctly corroborates the
-result obtained.
-The reality is that the complexity leads to incorrectness, and as such verification of ATP systems'
-outputs is necessary. 
-For theorem proving this means verifying the proof output \cite{Sut06}, and for model finding 
-this means verifying the model output.
-In the context of this work the model verification applies to the type declarations and 
-the interpretation formula that represent the model found by the ATP system, and
-has (at least) the following aspects:
-\begin{packed_enumerate}
-\item Are the type declarations and interpretation formula syntactically well-formed 
-      and semantically well-typed?
-\item Is the interpretation formula satisfiable?
-\item Does the interpretation formula correctly represent the interpretation found by the 
-      ATP system?
-\item Is the interpretation represented by the interpretation formula a model for the given 
-      formulae?
-\end{packed_enumerate}
-\noindent
-These questions are answered as follows:
-\begin{enumerate}
-\item This can be confirmed using standard parsing and type checking tools, e.g., \cite{VS06,HR15}.
-\item This can be empirically confirmed using a trusted model finder (in the same way the GDV 
-      derivation verifier \cite{Sut06} uses the Otter system \cite{McC03-Otter} as a trusted 
-      theorem prover).
-      Confirming that the interpretation formula is satisfiable is almost certainly much 
-      easier than finding the model itself, so the system used to check the satisfiability can 
-      be weaker and more trusted than the system that found the model.
-\item This cannot be confirmed, as that representation is internal to the ATP system that found
-      the model.
-\item In this work a ``semantic'' approach is taken, in which the problem formulae $\Phi$ are 
-      proved from the interpretation formulae $\varphi$ using a trusted theorem prover. 
-      $\varphi$ are given as axioms, and $\Phi$ as the conjecture to be proved.
-      The soundness of this approach is provided by showing that if $\Phi$ can be proved from 
-      $\varphi$ then the interpretation $I$ represented by $\varphi$ is a model of $\Phi$.
-      This is shown for finite FOF interpretations in \cite{SS+23-LPAR}, and that theorem lifts 
-      (we believe) naturally to TFF, and THF, but is technically complicated due to the 
-      introduction of types and type promotion functions. 
-      The extension to infinite domains is quite simple after that.
-\end{enumerate}
+%% \section{Model Verification}
+%% \label{Verification}
+%% 
+%% ATP systems are complex pieces of software, implementing complex calculi, with the end goal
+%% being a sound implementation of a sound inference system whose output correctly corroborates the
+%% result obtained.
+%% The reality is that the complexity leads to incorrectness, and as such verification of ATP systems'
+%% outputs is necessary. 
+%% For theorem proving this means verifying the proof output \cite{Sut06}, and for model finding 
+%% this means verifying the model output.
+%% In the context of this work the model verification applies to the type declarations and 
+%% the interpretation formula that represent the model found by the ATP system, and
+%% has (at least) the following aspects:
+%% \begin{packed_enumerate}
+%% \item Are the type declarations and interpretation formula syntactically well-formed 
+%%       and semantically well-typed?
+%% \item Is the interpretation formula satisfiable?
+%% \item Does the interpretation formula correctly represent the interpretation found by the 
+%%       ATP system?
+%% \item Is the interpretation represented by the interpretation formula a model for the given 
+%%       formulae?
+%% \end{packed_enumerate}
+%% \noindent
+%% These questions are answered as follows:
+%% \begin{enumerate}
+%% \item This can be confirmed using standard parsing and type checking tools, e.g., \cite{VS06,HR15}.
+%% \item This can be empirically confirmed using a trusted model finder (in the same way the GDV 
+%%       derivation verifier \cite{Sut06} uses the Otter system \cite{McC03-Otter} as a trusted 
+%%       theorem prover).
+%%       Confirming that the interpretation formula is satisfiable is almost certainly much 
+%%       easier than finding the model itself, so the system used to check the satisfiability can 
+%%       be weaker and more trusted than the system that found the model.
+%% \item This cannot be confirmed, as that representation is internal to the ATP system that found
+%%       the model.
+%% \item In this work a ``semantic'' approach is taken, in which the problem formulae $\Phi$ are 
+%%       proved from the interpretation formulae $\varphi$ using a trusted theorem prover. 
+%%       $\varphi$ are given as axioms, and $\Phi$ as the conjecture to be proved.
+%%       The soundness of this approach is provided by showing that if $\Phi$ can be proved from 
+%%       $\varphi$ then the interpretation $I$ represented by $\varphi$ is a model of $\Phi$.
+%%       This is shown for finite FOF interpretations in \cite{SS+23-LPAR}, and that theorem lifts 
+%%       (we believe) naturally to TFF, and THF, but is technically complicated due to the 
+%%       introduction of types and type promotion functions. 
+%%       The extension to infinite domains is quite simple after that.
+%% \end{enumerate}
       
 An implementation is available online as the AGMV tool in the SystemOnTSTP \cite{Sut07-CSR} 
 web interface {\smalltt{\url{https://www.tptp.org/cgi-bin/SystemOnTSTP}}}.
