@@ -314,20 +314,25 @@ To interpret a formula wrt a given interpretation~\ldots
       \begin{packed_itemize}
       \item Interpret quantifiers using Tarskian semantics.
       \item Interpret ground (grounded with domain elements) terms and atoms using the mappings.
-      \item Interpret boolean formulae using truth tables for connectives.
+      \item Interpret boolean formulae using the truth tables for connectives.
       \end{packed_itemize}
+      This approach is taken internally in Vampire.
 \item For interpretations represented by an interpretation formula in the new TPTP format,
       theorem proving can be used.
-      This is proved for FOF interpretations in \cite{SS+23-LPAR}, and the proof extends
-      DID I WRITE THIS ALREADY? ZZZZZZZZZ.
-\item For Herbrand interpretations induces by formulae, theorem proving can be used~\ldots
       \begin{packed_itemize}
       \item If a formula can be proved from interpretation formulae then it is $true$ in the 
-            interpretation represented by formulae, and $true$ in all the Herbrand interpretations
-            induced by the formulae.
+            interpretation represented by formulae.
       \item If a formula can be disproved from interpretation formulae then it is $false$ in the 
-            interpretation, and $false$ in all the Herbrand interpretations induced by the 
-            formulae.
+            interpretation.
+      \item In practice, a formula might be neither proved nor disproved within reasonable 
+            resource limits, so that nothing is known.
+      \end{packed_itemize}
+\item For Herbrand interpretations induced by formulae, theorem proving can be used~\ldots
+      \begin{packed_itemize}
+      \item If a formula can be proved from the formulae then it is $true$ in all the Herbrand 
+            interpretations induced by the formulae.
+      \item If a formula can be disproved from the formulae then it is $false$ in in all the 
+            Herbrand interpretations induced by the formulae.
       \item In practice, a formula might be neither proved nor disproved within reasonable 
             resource limits, so that nothing is known.
       \end{packed_itemize}
@@ -335,13 +340,25 @@ To interpret a formula wrt a given interpretation~\ldots
 For an interpretation $I$ and formula $\Phi$, $I \vdash \Phi$ means that $\Phi$ is $true$ in $I$, 
 i.e., $I$ is a model of formula $\Phi$.
 
+Given ways to interpret a formula wrt a interpretation, models can be verified.
+The TPTP now offers the AGMV model verifier in the SystemOnTSTP \cite{Sut07-CSR} web interface 
+{\smalltt{\url{https://www.tptp.org/cgi-bin/SystemOnTSTP}}}.
+AGMV uses a trusted ATP system to prove each of the formulae in the satisfiable set $\Phi$
+from the interpretation formula $\varphi$.
+The soundness of this approach is provided by showing that if $\Phi$ can be proved from
+$\varphi$ then the interpretation $I$ represented by $\varphi$ is a model of $\Phi$.
+This is shown for finite FOF interpretations in \cite{SS+23-LPAR}, and that theorem lifts
+(we believe) naturally to TFF, and THF, but is technically complicated due to the
+introduction of types and type promotion functions.
+The extension to infinite domains is quite simple after that.
+
 In the light of the above (and hey, maybe there are more techniques than just those) I claim~\ldots
 \begin{packed_itemize}
 \item Finite interpretations are typically verifiable, tractable, and comprehensible.
-\item Infinite interpretations are verifiable, but often intractable and might not be 
+\item Infinite interpretations are verifiable, often intractable, and might not be 
       comprehensible.
 \item Saturations are verifiable, often intractable, and almost always incomprehensible.
-\item Formulae as Herbrand interpretations are verifiable, and they can be tractable and
+\item Formulae as Herbrand interpretations are verifiable, can be tractable, and can be
       comprehensible.
 \end{packed_itemize}
 
@@ -372,7 +389,7 @@ applying MPRs
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.75\textwidth]{ModelLandscape.pdf}
-\caption{The Landscape of Classical Model Building}
+\caption{The Landscape of Tarskian Model Building}
 \label{ModelLandscape}
 \end{figure}
 
@@ -409,14 +426,29 @@ This slight-of-hand simplifies the representation of interpretations, and makes 
 of new formulae by ATP more tractable.
 The explanations and examples that follow will convince you of that!
 
+%--------------------------------------------------------------------------------------------------
+\subsection{Untyped FOF Interpretations}
+\label{NewTarskianFOF}
+
 For FOF interpretations domain elements are new ground terms, and their distinctness must be 
 specified either with pairwise inequalities or with the {\tt \$distinct} predicate.
-A convenient alternative is to use {\tt "distinct object"} constants, which are known to be 
-distinct (and often not used in problems, which makes them easy to identify as domain elements) --
-see Appendix~\ref{FOF_Finite.s} for an example.
 As terms and domain elements are untyped (or, if you will, of type {\tt \$i}), the interpretation
 of symbols can apply the symbols directly to the domain elements; this is not the case for
 TFF and TXF, as is explained next.
+Appendix~\ref{FOF_Finite.s} shows a FOF interpretation with finite domains -- it is a 
+countermodel for the problem in Appendix~\ref{FOF_Finite.p}.
+A convenient alternative to a polynomial number of inequalities is to use {\tt "distinct object"} 
+constants as domain elements, which are known to be distinct (and often not used in problems, 
+which makes them easy to identify as domain elements).
+Appendix~\ref{FOF_Finite.s} uses {\tt "distinct object"}s.
+Appendix~\ref{FOF_Finite.s.p} shows the verification problem for the interpretation.
+
+FOF interpretations split over multiple interpretation formulae, as in 
+Appendix~\ref{FOF_Finite_Medium.s}, are explained in Section~\ref{NewTarskianSplit}.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Typed TFF and THF Interpretations}
+\label{NewTarskianTFFTHF}
 
 For TFF and TXF interpretations each type of the problem has a domain, which can be of a new type.
 If the problem type is different from the domain type then function and predicate symbols from 
@@ -457,21 +489,33 @@ might help here) each domain is a conjunction of:
 The interpretation of symbols applies the corresponding type-promotion function to each domain
 element argument so that that signatures of the symbols are respected.
 
-Appendix~\ref{TFF_Finite.s} shows a TF0 interpretation with finite domains -- it is a 
-countermodel for the problem in Appendix~\ref{TFF_Finite.p}.
-The comments show which parts of the formula specify what aspects of the interpretation.
-Appendix~\ref{TFF_Integer.s} shows a TF0 interpretation with an integer domain -- it 
-is a model for the problem in Appendix~\ref{TFF_Infinite.p}.
-Note that in Appendix~\ref{TFF_Integer.s}
-$\bullet$~the defined type {\smalltt{\$int}} is the domain type for the formula type 
-{\smalltt{person}}, so that there is no specification of the domain elements and their 
-distinctness;
-$\bullet$~universal quantification is used for the interpretation of function and predicate
-symbols for an infinite number of argument tuples;
-$\bullet$~the interpretations of function and predicate symbols is not given for argument 
-tuples with negative integers, i.e., this is an example of a partial interpretation.
-Appendix~\ref{TFF_Peano.s} shows a TF0 interpretation with an infinite term domain -- it 
-is a model for the problem in Appendix~\ref{TFF_Infinite.p}.
+\begin{packed_itemize}
+\item Appendix~\ref{TFF_Finite.s} shows a TF0 interpretation with finite domains -- it is a 
+      countermodel for the problem in Appendix~\ref{TFF_Finite.p}.
+      The comments show which parts of the formula specify what aspects of the interpretation.
+      Appendix~\ref{TFF_Finite.s.p} shows the verification problem for the interpretation.
+\item Appendix~\ref{TFF_Integer.s} shows a TF0 interpretation with an integer domain -- it 
+      is a model for the problem in Appendix~\ref{TFF_Infinite.p}.
+      Note that $\bullet$~the defined type {\smalltt{\$int}} is the domain type for the formula 
+      type {\smalltt{person}}, so that there is no specification of the domain elements and their 
+      distinctness; $\bullet$~universal quantification is used for the interpretation of function 
+      and predicate symbols for an infinite number of argument tuples; $\bullet$~the 
+      interpretation of function and predicate symbols is not given for argument tuples with 
+      negative integers, i.e., this is an example of a partial interpretation.
+      Appendix~\ref{TFF_Integer.s.p} shows the verification problem for the interpretation.
+\item Appendix~\ref{TFF_Peano.s} shows a TF0 interpretation with an infinite term domain -- it 
+      is a model for the problem in Appendix~\ref{TFF_Infinite.p}.
+      Appendix~\ref{TFF_Peano.s.p} shows the verification problem for the interpretation.
+\end{packed_itemize}
+
+Interpretations split over multiple interpretation formulae, as in 
+Appendices~\ref{TFF_Finite_Medium.s}, \ref{TFF_Finite_Fine.s}, \ref{TFF_Finite_Compact.s}, 
+\ref{THF_Finite_Medium.s}, \ref{THF_Finite_Medium.s}, and~\ref{THF_Finite_Compact.s}, are 
+explained in Section~\ref{NewTarskianSplit}.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Interpretations Split over Multiple Formulae}
+\label{NewTarskianSplit}
 
 %--------------------------------------------------------------------------------------------------
 \section{The New Format for Kripke Interpretations}
@@ -483,7 +527,7 @@ Appendices~\ref{NTF_Finite-Finite-Global.s}~and~\ref{NTF_Finite-Finite-Local.s},
 illustrating the components described next. 
 (Interpretations split over multiple interpretation formulae, as in 
 Appendices~\ref{NTF_Finite-Finite-Global_Medium.s}, \ref{NTF_Finite-Finite-Global_Fine.s}, 
-and~\ref{NTF_Finite-Finite-Global_Compact.s}, are explained below.)
+and~\ref{NTF_Finite-Finite-Global_Compact.s}, are explained in Section~\ref{NewKripkeSplit}.)
 
 %--------------------------------------------------------------------------------------------------
 %% \section{Model Verification}
@@ -531,18 +575,6 @@ and~\ref{NTF_Finite-Finite-Global_Compact.s}, are explained below.)
 %%       The extension to infinite domains is quite simple after that.
 %% \end{enumerate}
       
-An implementation is available online as the AGMV tool in the SystemOnTSTP \cite{Sut07-CSR} 
-web interface {\smalltt{\url{https://www.tptp.org/cgi-bin/SystemOnTSTP}}}.
-The tool input is the concatenation of the problem and the interpretation.
-Appendix~\ref{FOF_Finite.s.p} shows the verification problem for the problem in 
-Appendix~\ref{FOF_Finite.p} and its finite model in Appendix~\ref{FOF_Finite.s}.
-Appendix~\ref{TFF_Finite.s.p} shows the verification problem for the problem in 
-Appendix~\ref{TFF_Finite.p} and its finite model in Appendix~\ref{TFF_Finite.s}.
-Appendix~\ref{TFF_Integer.s.p} shows the verification problem for the problem in 
-Appendix~\ref{TFF_Infinite.p} and its integer model in Appendix~\ref{TFF_Integer.s}.
-Appendix~\ref{TFF_Peano.s.p} shows the verification problem for the problem in 
-Appendix~\ref{TFF_Infinite.p} and its infinite term model in Appendix~\ref{TFF_Peano.s}.
-
 %--------------------------------------------------------------------------------------------------
 \section{Conclusion}
 \label{Conclusion}
@@ -578,18 +610,18 @@ All these listings are available from
 \end{small}
 
 \newpage
-\subsection{FOF Finite Model for \ref{FOF_Finite.p}, Medium Grained}
-\label{FOF_Finite_Medium.s}
-\begin{small}
-\verbatiminput{FOF_Finite_Medium.s}
-\end{small}
-
-\newpage
 \subsection{FOF Verification Problem for \ref{FOF_Finite.p} and 
             \ref{FOF_Finite.s}/\ref{FOF_Finite_Medium.s}}
 \label{FOF_Finite.s.p}
 \begin{small}
 \verbatiminput{FOF_Finite.s.p}
+\end{small}
+
+\newpage
+\subsection{FOF Finite Model for \ref{FOF_Finite.p}, Medium Grained}
+\label{FOF_Finite_Medium.s}
+\begin{small}
+\verbatiminput{FOF_Finite_Medium.s}
 \end{small}
 
 %--------------------------------------------------------------------------------------------------
@@ -611,6 +643,13 @@ All these listings are available from
 \end{small}
 
 \newpage
+\subsection{TF0 Verification Problem for \ref{TFF_Finite.p}}
+\label{TFF_Finite.s.p}
+\begin{small}
+\verbatiminput{TFF_Finite.s.p}
+\end{small}
+
+\newpage
 \subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Medium Grained}
 \label{TFF_Finite_Medium.s}
 \begin{small}
@@ -629,14 +668,6 @@ All these listings are available from
 \label{TFF_Finite_Compact.s}
 \begin{small}
 \verbatiminput{TFF_Finite_Compact.s}
-\end{small}
-
-\newpage
-\subsection{TF0 Verification Problem for \ref{TFF_Finite.p} and 
-            \ref{TFF_Finite.s}/\ref{TFF_Finite_Medium.s}/\ref{TFF_Finite_Fine.s}}
-\label{TFF_Finite.s.p}
-\begin{small}
-\verbatiminput{TFF_Finite.s.p}
 \end{small}
 
 %--------------------------------------------------------------------------------------------------
@@ -697,6 +728,13 @@ All these listings are available from
 \end{small}
 
 \newpage
+\subsection{TH0 Verification Problem for \ref{THF_Finite.p}}
+\label{THF_Finite.s.p}
+\begin{small}
+\verbatiminput{THF_Finite.s.p}
+\end{small}
+
+\newpage
 \subsection{TH0 Finite Model for \ref{THF_Finite.p}, Medium Grained}
 \label{THF_Finite_Medium.s}
 \begin{small}
@@ -708,14 +746,6 @@ All these listings are available from
 \label{THF_Finite_Compact.s}
 \begin{small}
 \verbatiminput{THF_Finite_Compact.s}
-\end{small}
-
-\newpage
-\subsection{TH0 Verification Problem for \ref{THF_Finite.p} and 
-            \ref{THF_Finite.s}/\ref{THF_Finite_Medium.s}}
-\label{THF_Finite.s.p}
-\begin{small}
-\verbatiminput{THF_Finite.s.p}
 \end{small}
 
 %--------------------------------------------------------------------------------------------------
@@ -738,20 +768,6 @@ All these listings are available from
 \end{small}
 
 \newpage
-\subsection{TXF Finite-Finite Model for \ref{NTF_Finite-Finite-Global.p}, Medium Grained}
-\label{NTF_Finite-Finite-Global_Medium.s}
-\begin{small}
-\verbatiminput{NTF_Finite-Finite-Global_Medium.s}
-\end{small}
-
-\newpage
-\subsection{TXF Finite-Finite Model for \ref{NTF_Finite-Finite-Global.p}, Fine Grained}
-\label{NTF_Finite-Finite-Global_Fine.s}
-\begin{small}
-\verbatiminput{NTF_Finite-Finite-Global_Fine.s}
-\end{small}
-
-\newpage
 \subsection{TXF Finite-Finite Model for \ref{NTF_Finite-Finite-Global.p}, Compacted}
 \label{NTF_Finite-Finite-Global_Compact.s}
 \begin{small}
@@ -764,6 +780,20 @@ All these listings are available from
 \label{NTF_Finite-Finite-Global.s.p}
 \begin{small}
 \verbatiminput{NTF_Finite-Finite-Global.s.p}
+\end{small}
+
+\newpage
+\subsection{TXF Finite-Finite Model for \ref{NTF_Finite-Finite-Global.p}, Medium Grained}
+\label{NTF_Finite-Finite-Global_Medium.s}
+\begin{small}
+\verbatiminput{NTF_Finite-Finite-Global_Medium.s}
+\end{small}
+
+\newpage
+\subsection{TXF Finite-Finite Model for \ref{NTF_Finite-Finite-Global.p}, Fine Grained}
+\label{NTF_Finite-Finite-Global_Fine.s}
+\begin{small}
+\verbatiminput{NTF_Finite-Finite-Global_Fine.s}
 \end{small}
 
 %--------------------------------------------------------------------------------------------------
