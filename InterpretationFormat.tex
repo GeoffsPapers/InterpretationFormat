@@ -341,15 +341,15 @@ For an interpretation $I$ and formula $\Phi$, $I \vdash \Phi$ means that $\Phi$ 
 i.e., $I$ is a model of formula $\Phi$.
 
 Given ways to interpret a formula wrt a interpretation, models can be verified.
-The TPTP now offers the AGMV model verifier in the SystemOnTSTP \cite{Sut07-CSR} web interface 
-\href{https://www.tptp.org/cgi-bin/SystemOnTSTP}{{\tt www.tptp.org/cgi-bin/SystemOnTSTP}}.
+The TPTP World now offers the AGMV model verifier in the SystemOnTSTP \cite{Sut07-CSR} web 
+interface \href{https://www.tptp.org/cgi-bin/SystemOnTSTP}{{\tt www.tptp.org/cgi-bin/SystemOnTSTP}}.
 AGMV uses a trusted ATP system to prove each of the formulae in the satisfiable set $\Phi$
 from the interpretation formula $\varphi$.
 The soundness of this approach is shown by proving that if $\Phi$ can be proved from $\varphi$ 
 then the interpretation $I$ represented by $\varphi$ is a model of $\Phi$.
 This is proved for finite FOF interpretations in \cite{SS+23-LPAR}, and (we believe) the theorem 
-lifts naturally to TFF, and THF, but is technically complicated due to the introduction of types 
-and type promotion functions.
+lifts naturally to TFF and THF, but is technically complicated due to the introduction of types.
+% and type promotion functions.
 The extension to infinite domains is quite simple after that.
 
 In the light of the above (and hey, maybe there are more techniques than just those) I claim~\ldots
