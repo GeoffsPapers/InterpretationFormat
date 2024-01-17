@@ -297,9 +297,10 @@ Section~\ref{Need} listed three needs for interpretations:
       by a human but possibly by a machine.
 \end{packed_itemize}
 
-The new TPTP format represents interpretations as formulae, written in an extension of the
-language of the formulae being interpreted, i.e., extensing the same vocabulary as the formulae, 
-and using the same syntax.
+The new TPTP format represents interpretations in formulae, written {\em interpretation-formula}
+to avoid confusion -- the details are provided in Sections~\ref{NewTarskian} and~\ref{NewKripke}.
+An interpretation-formula is written in an extension of the language of the formulae being 
+interpreted, i.e., extending the same vocabulary as the formulae, and using the same syntax.
 That immediately contributes to comprehensibility (but does not ensure it).
 
 To interpret a formula wrt a given interpretation~\ldots
@@ -317,13 +318,12 @@ To interpret a formula wrt a given interpretation~\ldots
       \item Interpret boolean formulae using the truth tables for connectives.
       \end{packed_itemize}
       This approach is taken internally in Vampire.
-\item For interpretations represented by an interpretation formula in the new TPTP format,
-      theorem proving can be used.
+\item For interpretations represented by interpretation-formulae, theorem proving can be used.
       \begin{packed_itemize}
-      \item If a formula can be proved from interpretation formulae then it is $true$ in the 
-            interpretation represented by formulae.
-      \item If a formula can be disproved from interpretation formulae then it is $false$ in the 
-            interpretation.
+      \item If a formula can be proved from the interpretation-formulae then it is $true$ in the 
+            interpretation represented by the interpretation-formulae.
+      \item If a formula can be disproved from the interpretation-formulae then it is $false$ in 
+            the interpretation represented by the interpretation-formulae.
       \item In practice, a formula might be neither proved nor disproved within reasonable 
             resource limits, so that nothing is known.
       \end{packed_itemize}
@@ -370,10 +370,10 @@ Going down leads to the {\sf Models} of the satisfiable formulae.
 Some of the {\sf Models} have a domain and symbol mappings ({\sf D+M}), and some are induced 
 Herbrand models.
 Going left from the {\sf Satisfiable formulae in $\Sigma$} is the pathway taken by ATP systems 
-that find a {\sf D+M} model, and output a TPTP interpretation formula representing that model.
-If the interpretation formula correctly represents a model of the satisfiable formulae, then
-the satisfiable formulae can be proved ($\vDash$) from the interpretation formula.
-The models of the interpretation formula are a subset ($\subseteq$) of the models of the
+that find a {\sf D+M} model, and output interpretation-formulae representing that model.
+If the interpretation-formulae correctly represents a model of the satisfiable formulae, then
+the satisfiable formulae can be proved ($\vDash$) from the interpretation-formulae.
+The models of the interpretation-formulae are a subset ($\subseteq$) of the models of the
 {\sf Satisfiable formulae in $\Sigma$}.
 Going right from the {\sf Satisfiable formulae in $\Sigma$} is the pathway taken by ATP systems
 that apply model preserving transformations ({\sf MPR}s) on the satisfiable set, possibly 
@@ -400,17 +400,18 @@ applying MPRs
 As noted in Section~\ref{Introduction}, a TPTP format for interpretations with finite domains 
 has previously been defined, and was been adopted by some ATP systems.
 
-The new format uses an {\em interpretation formula}. 
-Examples of single interpretation formulae are in 
-Appendices~\ref{FOF_Finite.s}, \ref{TFF_Finite.s}, \ref{TFF_Integer.s}, \ref{TFF_Peano.s} 
-and~\ref{THF_Finite.s},
-illustrating the components described next. 
-(Interpretations split over multiple interpretation formulae, as in 
-Appendices~\ref{FOF_Finite_Medium.s}, \ref{TFF_Finite_Medium.s}, \ref{TFF_Finite_Fine.s},
-\ref{TFF_Finite_Compact.s}, \ref{THF_Finite_Medium.s} and~\ref{THF_Finite_Compact.s}, are 
-explained below.)
+The new format uses interpretation-formulae.
+Examples of single interpretation-formulae are in Appendices~\ref{FOF_Finite.s}, 
+\ref{TFF_Finite.s}, \ref{TFF_Integer.s}, \ref{TFF_Peano.s} and~\ref{THF_Finite.s}, illustrating 
+the components described next. 
+(Interpretations split over multiple interpretation-formulae, as in 
+Appendices~\ref{FOF_Finite_Medium.s}, \ref{FOF_Finite_Fine.s}, \ref{TFF_Finite_Medium.s}, 
+\ref{TFF_Finite_Fine.s}, and~\ref{THF_Finite_Medium.s} are explained in 
+Section~\ref{NewTarskianSplit}.
+Interpretations that are compacted using quantification, as in \ref{TFF_Finite_Compact.s}
+and~\ref{THF_Finite_Compact.s} are explained in Section~\ref{NewTarskianCompact}.)
 
-An interpretation formula is a conjunction of components:
+A single interpretation-formula is a conjunction of components:
 \begin{packed_itemize}
 \item Domain specifications for each of the types in the problem formulae.
 \item Interpretation of the function symbols, as equalities whose left-hand sides are formed from 
@@ -435,22 +436,20 @@ specified either with pairwise inequalities or with the {\tt \$distinct} predica
 As terms and domain elements are untyped (or, if you will, of type {\tt \$i}), the interpretation
 of symbols can apply the symbols directly to the domain elements; this is not the case for
 TFF and TXF, as is explained next.
-Appendix~\ref{FOF_Finite.s} shows a FOF interpretation with finite domains -- it is a 
+Appendix~\ref{FOF_Finite.s} shows a FOF interpretation-formula with a finite domain -- it is a 
 countermodel for the problem in Appendix~\ref{FOF_Finite.p}.
-A convenient alternative to a polynomial number of inequalities is to use {\tt "distinct object"} 
-constants as domain elements, which are known to be distinct (and often not used in problems, 
-which makes them easy to identify as domain elements).
+A convenient way to make the domain elements distinct is to use {\tt "distinct object"} constants, 
+which are known to be distinct (and often not used in problems, which makes them easy to identify 
+as domain elements).
 Appendix~\ref{FOF_Finite.s} uses {\tt "distinct object"}s.
 Appendix~\ref{FOF_Finite.s.p} shows the verification problem for the interpretation.
-
-FOF interpretations split over multiple interpretation formulae, as in 
-Appendix~\ref{FOF_Finite_Medium.s}, are explained in Section~\ref{NewTarskianSplit}.
 
 %--------------------------------------------------------------------------------------------------
 \subsection{Typed TFF and THF Interpretations}
 \label{NewTarskianTFFTHF}
 
-For TFF and TXF interpretations each type of the problem has a domain, which can be of a new type.
+For TFF and TXF interpretation-formulae, each type of the problem has a domain, which can be of 
+a new type.
 If the problem type is different from the domain type then function and predicate symbols from 
 the problem cannot be directly applied to domain elements of the type that corresponds to the type
 of the argument position.
@@ -490,11 +489,11 @@ The interpretation of symbols applies the corresponding type-promotion function 
 element argument so that that signatures of the symbols are respected.
 
 \begin{packed_itemize}
-\item Appendix~\ref{TFF_Finite.s} shows a TF0 interpretation with finite domains -- it is a 
+\item Appendix~\ref{TFF_Finite.s} shows a TF0 interpretation-formula with finite domains -- it is a 
       countermodel for the problem in Appendix~\ref{TFF_Finite.p}.
       The comments show which parts of the formula specify what aspects of the interpretation.
       Appendix~\ref{TFF_Finite.s.p} shows the verification problem for the interpretation.
-\item Appendix~\ref{TFF_Integer.s} shows a TF0 interpretation with an integer domain -- it 
+\item Appendix~\ref{TFF_Integer.s} shows a TF0 interpretation-formula with an integer domain -- it 
       is a model for the problem in Appendix~\ref{TFF_Infinite.p}.
       Note that $\bullet$~the defined type {\smalltt{\$int}} is the domain type for the formula 
       type {\smalltt{person}}, so that there is no specification of the domain elements and their 
@@ -503,20 +502,48 @@ element argument so that that signatures of the symbols are respected.
       interpretation of function and predicate symbols is not given for argument tuples with 
       negative integers, i.e., this is an example of a partial interpretation.
       Appendix~\ref{TFF_Integer.s.p} shows the verification problem for the interpretation.
-\item Appendix~\ref{TFF_Peano.s} shows a TF0 interpretation with an infinite term domain -- it 
-      is a model for the problem in Appendix~\ref{TFF_Infinite.p}.
+\item Appendix~\ref{TFF_Peano.s} shows a TF0 interpretation-formula with an infinite term domain 
+      -- it is a model for the problem in Appendix~\ref{TFF_Infinite.p}.
       Appendix~\ref{TFF_Peano.s.p} shows the verification problem for the interpretation.
 \end{packed_itemize}
-
-Interpretations split over multiple interpretation formulae, as in 
-Appendices~\ref{TFF_Finite_Medium.s}, \ref{TFF_Finite_Fine.s}, \ref{TFF_Finite_Compact.s}, 
-\ref{THF_Finite_Medium.s}, \ref{THF_Finite_Medium.s}, and~\ref{THF_Finite_Compact.s}, are 
-explained in Section~\ref{NewTarskianSplit}.
 
 %--------------------------------------------------------------------------------------------------
 \subsection{Interpretations Split over Multiple Formulae}
 \label{NewTarskianSplit}
 
+The new TPTP format for {\sf D+M} interpretations described thus far puts all the information 
+about the interpretation in a single interpretation formula.
+In some situations it is useful to separate the various components, e.g., the domains could be
+separated from the symbol mappings.
+The new TPTP format for {\sf D+M} interpretations offers separation in a flexible way, at medium
+and fine grained levels, using annotated formula subroles.
+
+At the medium grained level the {\tt interpretation} role can be extended withe the subroles
+{\tt domain} and {\tt mapping}.
+Two (or more) interpretation formulae are used, each containing the corresponding parts of the 
+interpretation.
+Appendices~\ref{FOF_Finite_Medium.s} and \ref{TFF_Finite_Medium.s} show examples.
+Note that each role and role-subrole pair can be used multiple times according to need, e.g.,
+in Appendix~\ref{FOF_Finite_Medium.s} there are two {\tt interpretation-mapping} annotated
+formulae, one for functions and one for predicates.
+
+At the fine grained level the interpretation formula can be split into the individual domains
+and symbol mappings, with the {\tt domain} and {\tt mapping} subroles given arguments to indicate
+which domain or symbol mapping is recorded.
+For {\tt domain}s the arguments are the domain from the problem and the domain in the 
+interpretation.
+For {\tt mapping}s the arguments are the symbol and its domain result type.
+Appendices~\ref{FOF_Finite_Fine.s} and \ref{TFF_Finite_Fine.s} show examples.
+
+The medium and fine grained splitting can be mixed, as is done in 
+Appendix~\ref{THF_Finite_Medium.s}.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Interpretations Compacted using Quantification}
+\label{NewTarskianCompact}
+
+In the context of using theorem proving to evaluate formulae wrt an interpretation represented
+by a interpretation formula, it is possible to use the full logical language in the interpretation formula
 %--------------------------------------------------------------------------------------------------
 \section{The New Format for Kripke Interpretations}
 \label{NewKripke}
@@ -610,8 +637,7 @@ All these listings are available from
 \end{small}
 
 \newpage
-\subsection{FOF Verification Problem for \ref{FOF_Finite.p} and 
-            \ref{FOF_Finite.s}/\ref{FOF_Finite_Medium.s}}
+\subsection{FOF Verification Problem for \ref{FOF_Finite.p} and \ref{FOF_Finite.s}}
 \label{FOF_Finite.s.p}
 \begin{small}
 \verbatiminput{FOF_Finite.s.p}
@@ -622,6 +648,13 @@ All these listings are available from
 \label{FOF_Finite_Medium.s}
 \begin{small}
 \verbatiminput{FOF_Finite_Medium.s}
+\end{small}
+
+\newpage
+\subsection{FOF Finite Model for \ref{FOF_Finite.p}, Fine Grained}
+\label{FOF_Finite_Fine.s}
+\begin{small}
+\verbatiminput{FOF_Finite_Fine.s}
 \end{small}
 
 %--------------------------------------------------------------------------------------------------
@@ -735,7 +768,7 @@ All these listings are available from
 \end{small}
 
 \newpage
-\subsection{TH0 Finite Model for \ref{THF_Finite.p}, Medium Grained}
+\subsection{TH0 Finite Model for \ref{THF_Finite.p}, Mixed Grained}
 \label{THF_Finite_Medium.s}
 \begin{small}
 \verbatiminput{THF_Finite_Medium.s}

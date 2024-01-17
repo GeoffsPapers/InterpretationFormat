@@ -3,6 +3,7 @@
 scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/FOF_Finite.p .
 scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/FOF_Finite.s .
 scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/FOF_Finite_Medium.s .
+scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/FOF_Finite_Fine.s .
 scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/FOF_Finite.s.p .
 
 scp tptp@quokka:/exp/home/tptp/public_html/TPTP/Proposals/InterpretationsModels/TFF_Finite.p .
