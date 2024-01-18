@@ -412,10 +412,8 @@ Section~\ref{NewTarskianSplit}.
 {\sf D+M} interpretations that are compacted using quantification, as in \ref{TFF_Finite_Compact.s}
 and~\ref{THF_Finite_Compact.s} are explained in Section~\ref{NewTarskianCompact}.
 Examples of interpretation-formulae that induce Herbrand interpretations, as in 
-Appendices~\ref{FOF_Finite_Medium.s}, \ref{FOF_Finite_Fine.s}, \ref{TFF_Finite_Medium.s},
-\ref{TFF_Finite_Fine.s}, and~\ref{THF_Finite_Medium.s} are explained in
+Appendices~\ref{FOF_Saturation.s}, and~\ref{FOF_Formulae.s} are explained in 
 Section~\ref{NewHerbrand}.
-ZZZZZZZZZ
 
 A single interpretation-formula is a conjunction of components:
 \begin{packed_itemize}
@@ -552,7 +550,7 @@ In the context of using theorem proving to evaluate formulae wrt an interpretati
 by a interpretation formula, it is possible to use the full logical language in the interpretation 
 formula.
 This enable some comapcting of the interpretation.
-Appendices~\ref{TFF_Finite_Compact.s} and \ref{THF_Finite_Compact.s} show examples.
+Appendices~\ref{TFF_Finite_Compact.s} and~\ref{THF_Finite_Compact.s} show examples.
 In Appendix~\ref{TFF_Finite_Compact.s} note how universal quantification is used to map
 {\tt loves} to {\tt d\_garfield} for all {\tt d\_cats}~\ldots \\
 \hspace*{0.5cm}\smalltt{! [DC: d\_cat] : ( loves(d2cat(DC)) = d2cat(d\_garfield) )} \\
@@ -562,6 +560,22 @@ functions of type {\tt beverage > syrup} and all {\tt syrups} applying the funct
 \hspace*{0.5cm}\smalltt{! [F: beverage > syrup > beverage,S: syrup] :} \\
 \hspace*{1.0cm}\smalltt{( ( F @ ( d2beverage @ d\_coffee ) @ ( d2syrup @ S ) )} \\
 \hspace*{1.0cm}\smalltt{= ( d2beverage @ d\_coffee ) )}
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Induced Herbrand Interpretations}
+\label{NewHerbrand}
+
+Saturations and sets of formulae induce sets of Herbrand interpretations.
+The new format can be used for these forms, although the actual Herbrand interpretations are
+not easy to extract.
+To indicate that the interpretation-formulae are intended to induce Herbrand interpretations they
+can be given the role {\tt interpretation-herbrand}.
+Appendices~\ref{FOF_Saturation.s} and~\ref{FOF_Formulae.s} show examples.
+Appendices~\ref{FOF_Saturation.s.p} and~\ref{FOF_Formulae.s.p} show the verification problems for 
+the interpretations.
+I believe that these verification problems work, and so do Stephan Schulz and Uwe Waldmann,
+but Andrei Voronkov and Christoph Weidenbach say they do not.
+I'm looking for help on this.
 
 %--------------------------------------------------------------------------------------------------
 \section{The New Format for Kripke Interpretations}
@@ -674,6 +688,34 @@ All these listings are available from
 \label{FOF_Finite_Fine.s}
 \begin{small}
 \verbatiminput{FOF_Finite_Fine.s}
+\end{small}
+
+\newpage
+\subsection{FOF Saturation for \ref{FOF_Finite.p}}
+\label{FOF_Saturation.s}
+\begin{small}
+\verbatiminput{FOF_Saturation.s}
+\end{small}
+
+\newpage
+\subsection{FOF Formula Model for \ref{FOF_Finite.p}}
+\label{FOF_Formulae.s}
+\begin{small}
+\verbatiminput{FOF_Formulae.s}
+\end{small}
+
+\newpage
+\subsection{FOF Verification Problem for \ref{FOF_Finite.p} and \ref{FOF_Saturation.s}}
+\label{FOF_Saturation.s.p}
+\begin{small}
+\verbatiminput{FOF_Saturation.s.p}
+\end{small}
+
+\newpage
+\subsection{FOF Verification Problem for \ref{FOF_Finite.p} and \ref{FOF_Formulae.s}}
+\label{FOF_Formulae.s.p}
+\begin{small}
+\verbatiminput{FOF_Formulae.s.p}
 \end{small}
 
 %--------------------------------------------------------------------------------------------------
