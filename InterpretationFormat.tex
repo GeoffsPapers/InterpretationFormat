@@ -377,12 +377,13 @@ The models of the interpretation-formulae are a subset ($\subseteq$) of the mode
 {\sf Satisfiable formulae in $\Sigma$}.
 Going right from the {\sf Satisfiable formulae in $\Sigma$} is the pathway taken by ATP systems
 that apply model preserving transformations ({\sf MPR}s) on the satisfiable set, possibly 
-including conversion to CNF with Skolemization.
-Whatever transformations are applied, the result is another satisfiable set of formulae that 
-induces a set of Herbrand models that are models of the original {\sf Satisfiable formulae in 
-$\Sigma$}.
-(Transformations such as these might also be applied as part of the process of building a {\sf D+M}
-interpretation formula.)
+including conversion to CNF with Skolemization, to produce a saturation that induces a set of 
+Herbrand models that are models of the original {\sf Satisfiable formulae in $\Sigma$}.
+% (Transformations such as these might also be applied as part of the process of building a 
+% {\sf D+M} interpretation formula.)
+Going right and down from the {\sf Satisfiable formulae in $\Sigma$} is the pathway taken by ATP 
+systems that generate a set of formulae that induces a set of
+Herbrand models that are models of the original {\sf Satisfiable formulae in $\Sigma$}.
 The {\sf Satisfiable formulae in $\Sigma$} can be proved from each of the sets that result from 
 applying MPRs
 
@@ -401,15 +402,20 @@ As noted in Section~\ref{Introduction}, a TPTP format for interpretations with f
 has previously been defined, and was been adopted by some ATP systems.
 
 The new format uses interpretation-formulae.
-Examples of single interpretation-formulae are in Appendices~\ref{FOF_Finite.s}, 
+Examples of single {\sf D+M} interpretation-formulae are in Appendices~\ref{FOF_Finite.s}, 
 \ref{TFF_Finite.s}, \ref{TFF_Integer.s}, \ref{TFF_Peano.s} and~\ref{THF_Finite.s}, illustrating 
 the components described next. 
-(Interpretations split over multiple interpretation-formulae, as in 
+{\sf D+M} interpretations split over multiple interpretation-formulae, as in 
 Appendices~\ref{FOF_Finite_Medium.s}, \ref{FOF_Finite_Fine.s}, \ref{TFF_Finite_Medium.s}, 
 \ref{TFF_Finite_Fine.s}, and~\ref{THF_Finite_Medium.s} are explained in 
 Section~\ref{NewTarskianSplit}.
-Interpretations that are compacted using quantification, as in \ref{TFF_Finite_Compact.s}
-and~\ref{THF_Finite_Compact.s} are explained in Section~\ref{NewTarskianCompact}.)
+{\sf D+M} interpretations that are compacted using quantification, as in \ref{TFF_Finite_Compact.s}
+and~\ref{THF_Finite_Compact.s} are explained in Section~\ref{NewTarskianCompact}.
+Examples of interpretation-formulae that induce Herbrand interpretations, as in 
+Appendices~\ref{FOF_Finite_Medium.s}, \ref{FOF_Finite_Fine.s}, \ref{TFF_Finite_Medium.s},
+\ref{TFF_Finite_Fine.s}, and~\ref{THF_Finite_Medium.s} are explained in
+Section~\ref{NewHerbrand}.
+ZZZZZZZZZ
 
 A single interpretation-formula is a conjunction of components:
 \begin{packed_itemize}
@@ -428,7 +434,7 @@ of new formulae by ATP more tractable.
 The explanations and examples that follow will convince you of that!
 
 %--------------------------------------------------------------------------------------------------
-\subsection{Untyped FOF Interpretations}
+\subsection{Untyped FOF {\sf D+M} Interpretations}
 \label{NewTarskianFOF}
 
 For FOF interpretations domain elements are new ground terms, and their distinctness must be 
@@ -445,7 +451,7 @@ Appendix~\ref{FOF_Finite.s} uses {\tt "distinct object"}s.
 Appendix~\ref{FOF_Finite.s.p} shows the verification problem for the interpretation.
 
 %--------------------------------------------------------------------------------------------------
-\subsection{Typed TFF and THF Interpretations}
+\subsection{Typed TFF and THF {\sf D+M} Interpretations}
 \label{NewTarskianTFFTHF}
 
 For TFF and TXF interpretation-formulae, each type of the problem has a domain, which can be of 
@@ -508,7 +514,7 @@ element argument so that that signatures of the symbols are respected.
 \end{packed_itemize}
 
 %--------------------------------------------------------------------------------------------------
-\subsection{Interpretations Split over Multiple Formulae}
+\subsection{{\sf D+M} Interpretations Split over Multiple Formulae}
 \label{NewTarskianSplit}
 
 The new TPTP format for {\sf D+M} interpretations described thus far puts all the information 
@@ -539,11 +545,24 @@ The medium and fine grained splitting can be mixed, as is done in
 Appendix~\ref{THF_Finite_Medium.s}.
 
 %--------------------------------------------------------------------------------------------------
-\subsection{Interpretations Compacted using Quantification}
+\subsection{{\sf D+M} Interpretations Compacted using Quantification}
 \label{NewTarskianCompact}
 
 In the context of using theorem proving to evaluate formulae wrt an interpretation represented
-by a interpretation formula, it is possible to use the full logical language in the interpretation formula
+by a interpretation formula, it is possible to use the full logical language in the interpretation 
+formula.
+This enable some comapcting of the interpretation.
+Appendices~\ref{TFF_Finite_Compact.s} and \ref{THF_Finite_Compact.s} show examples.
+In Appendix~\ref{TFF_Finite_Compact.s} note how universal quantification is used to map
+{\tt loves} to {\tt d\_garfield} for all {\tt d\_cats}~\ldots \\
+\hspace*{0.5cm}\smalltt{! [DC: d\_cat] : ( loves(d2cat(DC)) = d2cat(d\_garfield) )} \\
+and in Appendix~\ref{THF_Finite_Compact.s} universal quantification is used to say that for all
+functions of type {\tt beverage > syrup} and all {\tt syrups} applying the function to
+{\tt d\_coffee} and the syrup results in {\tt d\_coffee}~\ldots \\
+\hspace*{0.5cm}\smalltt{! [F: beverage > syrup > beverage,S: syrup] :} \\
+\hspace*{1.0cm}\smalltt{( ( F @ ( d2beverage @ d\_coffee ) @ ( d2syrup @ S ) )} \\
+\hspace*{1.0cm}\smalltt{= ( d2beverage @ d\_coffee ) )}
+
 %--------------------------------------------------------------------------------------------------
 \section{The New Format for Kripke Interpretations}
 \label{NewKripke}
@@ -552,9 +571,9 @@ The new format uses an {\em interpretation formula}.
 Examples of single interpretation formulae are in 
 Appendices~\ref{NTF_Finite-Finite-Global.s}~and~\ref{NTF_Finite-Finite-Local.s}, 
 illustrating the components described next. 
-(Interpretations split over multiple interpretation formulae, as in 
+Interpretations split over multiple interpretation formulae, as in 
 Appendices~\ref{NTF_Finite-Finite-Global_Medium.s}, \ref{NTF_Finite-Finite-Global_Fine.s}, 
-and~\ref{NTF_Finite-Finite-Global_Compact.s}, are explained in Section~\ref{NewKripkeSplit}.)
+and~\ref{NTF_Finite-Finite-Global_Compact.s}, are explained in Section~\ref{NewKripkeSplit}.
 
 %--------------------------------------------------------------------------------------------------
 %% \section{Model Verification}
