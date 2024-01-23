@@ -301,11 +301,11 @@ Skolemization.
 \subsection{Do we Have what we Need?}
 \label{HaveNeed}
 
-The new TPTP format represents Tarskian and Herbrand interpretations in 
+The new TPTP format for interpretations represents Tarskian and Herbrand interpretations in 
 {\em interpretation-formulae} -- the details are provided in Sections~\ref{NewTarskian} 
 and~\ref{NewKripke}.
 Interpretation-formulae are written in an extension of the language of the formulae being 
-interpreted, i.e., extending the vocabulary of the formulae, and using the same syntax.
+interpreted, i.e., extending the vocabulary but still using TPTP syntax.
 
 Figure~\ref{ModelLandscape} provides an overview of the situation.
 The starting point is the set of {\sf Satisfiable formulae in $\Sigma$}, which might have been
@@ -318,15 +318,15 @@ that find a Tarskian model, and output interpretation-formulae representing the 
 If the interpretation-formulae correctly represents a model of the satisfiable formulae, then
 the satisfiable formulae can be proved ($\vDash$) from the interpretation-formulae.
 The models of the interpretation-formulae are a subset ($\subseteq$) of the models of the
-{\sf Satisfiable formulae in $\Sigma$}.
+satisfiable formulae.
 Going right from the {\sf Satisfiable formulae in $\Sigma$} is the pathway taken by ATP systems
 that apply model preserving transformations ({\sf MPR}s) on the satisfiable set, possibly 
 including conversion to CNF with Skolemization, to produce a saturation that induces a set of 
-Herbrand models that are models of the original {\sf Satisfiable formulae in $\Sigma$}.
+Herbrand models of the original {\sf Satisfiable formulae in $\Sigma$}.
 % (Transformations such as these might also be applied as part of the process of building a 
 % Tarskian interpretation formula.)
 Going right and down from the {\sf Satisfiable formulae in $\Sigma$} is the pathway taken by ATP 
-systems that generate Herbrand-formulae that induce a set of Herbrand models that are models of 
+systems that generate Herbrand-formulae that induce a set of Herbrand models of 
 the original {\sf Satisfiable formulae in $\Sigma$}.
 The {\sf Satisfiable formulae in $\Sigma$} can be proved from each of the sets that result from 
 applying MPRs
@@ -378,10 +378,11 @@ To interpret a formula wrt interpretation-formulae~\ldots
       I'm looking for help on this.
 \end{packed_itemize}
 
-Given ways to interpret a formula wrt a interpretation, models can be verified.
+Given ways to interpret a formula wrt interpretation-formulae, models represented in
+interpretation-formulae can be verified.
 The TPTP World uses the theorem proving approach to verification: a verification obligation is
-formed with the interpretation-formulae or Herbrand-formulae as axioms, and the problem formulae
-as a conjecture (when verifying a countermodel, the conjecture of the problem is negated).
+formed with the interpretation-formulae as axioms, and the problem formulae as a conjecture (when 
+verifying a countermodel, the conjecture of the problem is negated).
 The verification obligation is then discharged using a trusted theorem prover.
 This processes is implemented in the AGMV model verifier \cite{SS+23-LPAR}, available in the 
 SystemOnTSTP \cite{Sut07-CSR} web interface 
@@ -391,7 +392,23 @@ SystemOnTSTP \cite{Sut07-CSR} web interface
 \section{The New Format for Tarskian Interpretations}
 \label{NewTarskian}
 
-The new TPTP format for interpretations uses interpretation-formulae.
+A single Tarskian interpretation-formula is a conjunction of components:
+\begin{packed_itemize}
+\item A domain for each of the types in the problem formulae.
+\item Interpretation of the function symbols, as equalities whose left-hand sides are formed from 
+      symbols applied to domain elements, and whose right-hand sides are domain elements.
+\item Interpretation of the predicate symbols, as literals formed from symbols applied
+      to domain elements; positive literals are {\em true} and negative literals are {\em false}.
+\end{packed_itemize}
+
+Note how function and predicate symbols are interpreted by applying them directly to domain
+elements (ala \cite[\S5.3.4]{Gal15}), rather than using the presentation of interpretations
+that introduces a new interpretation function for each function/predicate symbol 
+\cite[\S5.3.2]{Gal15}.
+This approach simplifies the representation of interpretations, and makes interpretation of 
+formulae using theorem proving more tractable.
+% The explanations and examples that follow will convince you of that!
+
 Examples of single Tarskian interpretation-formulae are in Appendices~\ref{FOF_Finite.s}, 
 \ref{TFF_Finite.s}, \ref{TFF_Integer.s}, \ref{TFF_Peano.s} and~\ref{THF_Finite.s}, illustrating 
 the components described below. 
@@ -405,69 +422,40 @@ Examples of interpretation-formulae that induce Herbrand interpretations, as in
 Appendices~\ref{FOF_Saturation.s}, and~\ref{FOF_Formulae.s}, are explained in 
 Section~\ref{NewHerbrand}.
 
-\vspace*{1em}
-\noindent
-A single Tarskian interpretation-formula is a conjunction of components:
-\begin{packed_itemize}
-\item A domain for each of the types in the problem formulae.
-\item Interpretation of the function symbols, as equalities whose left-hand sides are formed from 
-      symbols applied to domain elements, and whose right-hand sides are domain elements.
-\item Interpretation of the predicate symbols, as literals formed from symbols applied
-      to domain elements; positive literals are {\em true} and negative literals are {\em false}.
-\end{packed_itemize}
-
-Note that function and predicate symbols are interpreted by directly applying them to domain
-elements (ala \cite[\S5.3.4]{Gal15}), rather than the traditional presentation of interpretations
-that introduces a new interpretation function for each function/predicate symbol 
-\cite[\S5.3.2]{Gal15}.
-This approach simplifies the representation of interpretations, and makes interpretation of 
-formulae using theorem proving more tractable.
-% The explanations and examples that follow will convince you of that!
-
 %--------------------------------------------------------------------------------------------------
 \subsection{FOF Tarskian Interpretations}
 \label{NewTarskianFOF}
 
-A FOF interpretation has a single untyped (or, if you will, of type {\tt \$i}) domain whose
+FOF interpretation-formaule have a single untyped (or, if you will, of type {\tt \$i}) domain whose
 elements are new (not appearing in the problem) ground terms. 
 The distinctness of the domain elements must be made explicit, either with pairwise inequalities, 
 or with the {\tt \$distinct} predicate, or by using {\tt "distinct object"}s as domain elements 
 (they are known to be distinct (and often not used in problems, which makes them easy 
 to identify as domain elements)).
-Appendix~\ref{FOF_Finite.p} shows a problem that has a countermodel with a finite domain, 
-shown in Appendix~\ref{FOF_Finite.s}.
+Appendix~\ref{FOF_Finite.p} shows a FOF problem that has a countermodel with a finite domain, 
+which shown in Appendix~\ref{FOF_Finite.s}.
 Appendix~\ref{FOF_Finite.s} uses {\tt "distinct object"}s for domain elements.
-Appendix~\ref{FOF_Finite.s.p} shows the verification problem for the interpretation.
+Appendix~\ref{FOF_Finite.s.p} shows the verification problem for the model.
 
 %--------------------------------------------------------------------------------------------------
 \subsection{TFF and THF Tarskian Interpretations}
 \label{NewTarskianTFFTHF}
 
-For TFF and TXF interpretation-formulae, each type of the problem has a domain, which can be of 
-a new type.
-If the problem type is different from the domain type then function and predicate symbols from 
-the problem cannot be directly applied to domain elements of the type that corresponds to the type
-of the argument position.
-To resolve this {\em type-promotion} bijection are used to ``convert'' domain elements to terms 
-of the corresponding type, thus keeping the interpretation formula well-typed -- See
-Appendix~\ref{TFF_Finite.s} for examples.
-The interpretation formula is preceded by the necessary type declarations:
-\begin{packed_itemize}
-\item The types in the problem (except defined types, e.g., {\smalltt{\$int}}).
-\item The types of the domains (except defined types).
-\item The types of type-promotion functions.
-\item The types of the domain elements.
-\end{packed_itemize}
-Then, (following along in Appendices~\ref{TFF_Finite.s}, \ref{TFF_Integer.s}, and~\ref{TFF_Peano.s} 
-might help here) each domain is a conjunction of:
+TFF and THF interpretation-formulae have a domain for each type in the problem.
+The domain types can reuse problem types, can be new users types, or can be defined types
+(such as {\tt \$int}).
+If the domain type is different from the problem type then function and predicate symbols from 
+the problem cannot be applied directly to domain elements in the interpretation-formulae.
+To keep interpretation-formulae well-typed, {\em type-promotion} bijections are used to ``convert'' 
+domain elements to terms of the corresponding problem type.
+Each domain specification is a conjunction of (following along in Appendices~\ref{TFF_Finite.s}, 
+\ref{TFF_Integer.s}, and~\ref{TFF_Peano.s} might help here)~\ldots
 \begin{packed_itemize}
 \item The domain for each problem type, as a formula that makes the type-promotion function a 
-      surjection (unless it is unnecessary because the domain type is defined and is the same as 
-      the problem type, e.g., both are {\smalltt{\$int}}), e.g., in 
-      Appendix~\ref{TFF_Finite.s}~\ldots\\
+      surjection (unless it is unnecessary because the problem type and the domain type are the
+      same defined type, e.g., in Appendix~\ref{TFF_Finite.s}~\ldots\\
       \hspace*{0.5cm}\smalltt{! [C: cat] : ? [DC: d\_cat] : C = d2cat(DC)}
-\item The elements of each domain (unless implicit from their defined type, as in
-      Appendix~\ref{TFF_Integer.s}). 
+\item Definition of the elements of the domain (unless implicit from their defined type).
       If the domain is finite this is a universally quantified disjunction of equalities whose 
       right-hand sides are the terms, e.g., in Appendix~\ref{TFF_Finite.s}~\ldots\\
       \hspace*{0.5cm}\smalltt{! [DC: d\_cat]: ( DC = d\_garfield | DC = d\_arlene | DC = d\_nermal )}\\
@@ -475,31 +463,51 @@ might help here) each domain is a conjunction of:
       infinite disjunction of equalities, e.g., in Appendix~\ref{TFF_Peano.s}~\ldots\\
       \hspace*{0.5cm}\smalltt{! [I: peano] : ( I = zero | ? [P: peano] : I = s(P) )}
 \item Specification of the distinctness of the domain elements (unless implicit from their
-      defined type);
+      defined type), e.g., in Appendix~\ref{TFF_Finite.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{\$distinct(d\_garfield,d\_arlene,d\_nermal)}
 \item A formula making the type-promotion function an injection,
       % (unless the type of the domain is the same as the type in the formula), 
-      which together with the surjectivity makes it a bijection.
+      which together with the surjectivity makes it a bijection, e.g., in 
+      Appendix~\ref{TFF_Finite.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [DC1: d\_cat,DC2: d\_cat] :}\\
+      \hspace*{1.0cm}\smalltt{( d2cat(DC1) = d2cat(DC2) => DC1 = DC2 )}
 \end{packed_itemize}
+\vspace*{-0.5em}
 The interpretation of symbols applies the corresponding type-promotion function to each domain
-element argument so that that signatures of the symbols are respected.
+element argument so that that signatures of the symbols are respected, e.g., in
+Appendix~\ref{TFF_Finite.s}~\ldots\\
+\hspace*{0.5cm}\smalltt{owns(d2human(d\_jon),d2cat(d\_garfield))}
 
+\noindent
+The TFF and THF interpretation-formulae are preceded by the necessary type declarations:
 \begin{packed_itemize}
-\item Appendix~\ref{TFF_Finite.s} shows a TF0 interpretation-formula with finite domains -- it is a 
-      countermodel for the problem in Appendix~\ref{TFF_Finite.p}.
+\item The types in the problem (except defined types, e.g., {\smalltt{\$int}}).
+\item The types of the domains (except defined types).
+\item The types of type-promotion functions.
+\item The types of the domain elements.
+\end{packed_itemize}
+
+\paragraph{Examples:}
+\begin{packed_itemize}
+\item Appendix~\ref{TFF_Finite.p} shows a TFF problem that has a countermodel with finite domains,
+      which is shown in Appendix~\ref{TFF_Finite.s}.
       The comments show which parts of the formula specify what aspects of the interpretation.
-      Appendix~\ref{TFF_Finite.s.p} shows the verification problem for the interpretation.
-\item Appendix~\ref{TFF_Integer.s} shows a TF0 interpretation-formula with an integer domain -- it 
-      is a model for the problem in Appendix~\ref{TFF_Infinite.p}.
+      Appendix~\ref{TFF_Finite.s.p} shows the verification problem for the model.
+\item Appendix~\ref{TFF_Infinite.p} shows a TFF problem that has a model with an integer domain,
+      which is shown in Appendix~\ref{TFF_Integer.s}.
       Note that $\bullet$~the defined type {\smalltt{\$int}} is the domain type for the formula 
       type {\smalltt{person}}, so that there is no specification of the domain elements and their 
       distinctness; $\bullet$~universal quantification is used for the interpretation of function 
       and predicate symbols for an infinite number of argument tuples; $\bullet$~the 
       interpretation of function and predicate symbols is not given for argument tuples with 
       negative integers, i.e., this is an example of a partial interpretation.
-      Appendix~\ref{TFF_Integer.s.p} shows the verification problem for the interpretation.
-\item Appendix~\ref{TFF_Peano.s} shows a TF0 interpretation-formula with an infinite term domain 
-      -- it is a model for the problem in Appendix~\ref{TFF_Infinite.p}.
-      Appendix~\ref{TFF_Peano.s.p} shows the verification problem for the interpretation.
+      Appendix~\ref{TFF_Integer.s.p} shows the verification problem for the model.
+\item Appendix~\ref{TFF_Infinite.p} also has a model with an infinite term domain, which is
+      shown in Appendix~\ref{TFF_Peano.s}.
+      Appendix~\ref{TFF_Peano.s.p} shows the verification problem for the model.
+\item Appendix~\ref{THF_Finite.p} shows a problem that has a countermodel with finite domains,
+      which shown in Appendix~\ref{THF_Finite.s}.
+      Appendix~\ref{THF_Finite.s.p} shows the verification problem for the model.
 \end{packed_itemize}
 
 %--------------------------------------------------------------------------------------------------
@@ -507,7 +515,7 @@ element argument so that that signatures of the symbols are respected.
 \label{NewTarskianSplit}
 
 The new TPTP format for Tarskian interpretations described thus far puts all the information 
-about the interpretation in a single interpretation formula.
+about the interpretation in a single interpretation-formula.
 In some situations it is useful to separate the various components, e.g., the domains could be
 separated from the symbol mappings.
 The new TPTP format for Tarskian interpretations offers separation in a flexible way, at medium
@@ -515,23 +523,26 @@ and fine grained levels, using annotated formula subroles.
 
 At the medium grained level the {\tt interpretation} role can be extended withe the subroles
 {\tt domain} and {\tt mapping}.
-Two (or more) interpretation formulae are used, each containing the corresponding parts of the 
+Two (or more) interpretation-formulae are used, each containing the corresponding parts of the 
 interpretation.
-Appendices~\ref{FOF_Finite_Medium.s} and \ref{TFF_Finite_Medium.s} show examples.
+Appendices~\ref{FOF_Finite_Medium.s} and~\ref{TFF_Finite_Medium.s} show examples of
+splitting the models in Appendices~\ref{FOF_Finite.s} and~\ref{TFF_Finite.s} respectively.
 Note that each role and role-subrole pair can be used multiple times according to need, e.g.,
 in Appendix~\ref{FOF_Finite_Medium.s} there are two {\tt interpretation-mapping} annotated
 formulae, one for functions and one for predicates.
 
-At the fine grained level the interpretation formula can be split into the individual domains
-and symbol mappings, with the {\tt domain} and {\tt mapping} subroles given arguments to indicate
+At the fine grained level interpretation-formulae can separate the individual domains and symbol 
+mappings, with the {\tt domain} and {\tt mapping} subroles given arguments to indicate
 which domain or symbol mapping is recorded.
 For {\tt domain}s the arguments are the domain from the problem and the domain in the 
 interpretation.
 For {\tt mapping}s the arguments are the symbol and its domain result type.
-Appendices~\ref{FOF_Finite_Fine.s} and \ref{TFF_Finite_Fine.s} show examples.
+Appendices~\ref{FOF_Finite_Fine.s} and \ref{TFF_Finite_Fine.s} show examples of splitting the 
+models in Appendices~\ref{FOF_Finite.s} and~\ref{TFF_Finite.s} respectively..
 
-The medium and fine grained splitting can be mixed, as is done in 
-Appendix~\ref{THF_Finite_Medium.s}.
+The medium and fine grained splitting can be mixed.
+Appendix~\ref{THF_Finite_Medium.s} shows an example of mixed splitting of 
+Appendix~\ref{THF_Finite.s}.
 
 %--------------------------------------------------------------------------------------------------
 \subsection{Tarskian Interpretations Compacted using Quantification}
