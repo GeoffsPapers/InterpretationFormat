@@ -267,8 +267,8 @@ Ways to make Herbrand interpretations:
 \item RAMC \cite{CZ92,CP95,CP95-TAB}
 \end{packed_itemize}
 
-A {\em Kripke interpretation} \cite{Kri63} for non-classical logic adds a layer of {\em worlds} 
-over Tarskian interpretations.
+A {\em Kripke interpretation} \cite{Kri63} adds a layer of {\em worlds} over Tarskian 
+interpretations.
 There can be a finite or infinite number of worlds.
 There is an {\em accessibility relation} between the worlds, which can be subject to the
 requirements of the logic being used, e.g., for modal logic {\bf M} the accessibility 
@@ -301,9 +301,9 @@ Skolemization.
 \subsection{Do we Have what we Need?}
 \label{HaveNeed}
 
-The new TPTP format represents Tarskian and Herbrand interpretations in formulae, written 
-{\em interpretation-formulae} to avoid confusion -- the details are provided in 
-Sections~\ref{NewTarskian} and~\ref{NewKripke}.
+The new TPTP format represents Tarskian and Herbrand interpretations in 
+{\em interpretation-formulae} -- the details are provided in Sections~\ref{NewTarskian} 
+and~\ref{NewKripke}.
 Interpretation-formulae are written in an extension of the language of the formulae being 
 interpreted, i.e., extending the vocabulary of the formulae, and using the same syntax.
 
@@ -312,7 +312,7 @@ The starting point is the set of {\sf Satisfiable formulae in $\Sigma$}, which m
 formed from {\sf Ax $\cup$ \{{\raisebox{0.4ex}{\texttildelow}}C\}}. 
 $\Sigma$ is the language of the formulae.
 Going down leads to the {\sf Models} of the satisfiable formulae.
-Some of the models are Tarskian models, and some are induced Herbrand models.
+Some of the models are Tarskian models, and some are Herbrand models.
 Going left from the {\sf Satisfiable formulae in $\Sigma$} is the pathway taken by ATP systems 
 that find a Tarskian model, and output interpretation-formulae representing the model.
 If the interpretation-formulae correctly represents a model of the satisfiable formulae, then
