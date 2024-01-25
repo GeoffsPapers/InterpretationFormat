@@ -415,6 +415,9 @@ These questions are answered as follows:
       due to the introduction of types.
       % and type promotion functions.
       The extension to infinite domains is quite simple after that.
+      For Kripke interpretation-formulae it is necessary to make changes that reduce the
+      verification problem to TXF/THF -- the details are explained in 
+      Section~\ref{KripkeVerification}.
 \end{enumerate}
 
 This processes is implemented in the AGMV model verifier \cite{SS+23-LPAR}, available in the
@@ -690,9 +693,11 @@ with a reflexive accessibility relation (meeting the requirements of model logic
 \hspace*{0.5cm}{\tt \$accessible\_world(w2,w2)} \\
 \hspace*{0.5cm}{\tt \$accessible\_world(w1,w2)} \\
 The conjecture is disproved in a local world~\ldots \\
-ZZZZZZZZZZZ
-\hspace*{1.0cm}{\tt \$local\_world = w1}.
-      \hspace*{0.5cm}{\tt \$in\_world(w1,}{\em the Tarskian interpretation}{\tt )}
+\hspace*{0.5cm}{\tt \$local\_world = w1} \\
+The finite Tarskian interpretations for the worlds are provided in the same format as
+interpretation-formulae for Tarskian interpretation described in Section~\ref{NewTarskian}~\ldots \\
+\hspace*{0.5cm}{\tt \$in\_world(w1,}{\em the Tarskian interpretation}{\tt )} \\
+\hspace*{0.5cm}{\tt \$in\_world(w2,}{\em the Tarskian interpretation}{\tt )} \\
 Appendix~\ref{NTF_Finite-Finite-Global.s.p} shows the verification problem for the interpretation.
 
 Appendix~\ref{NTF_Finite-Finite-Local.s} shows a TXF interpretation-formula with finite worlds
@@ -706,30 +711,39 @@ Appendix~\ref{NTF_Finite-Finite-Local.s.p} shows the verification problem for th
 \subsection{Kripke Interpretations Split and Compacted}
 \label{NewKripkeSplitCompact}
 
-In the same way that a Tarskian Tarskian interpretation-formula can be split to separate the
-various components, a Kripke interpretation-formula can be split.
+In the same way that a Tarskian interpretation-formulae can be split to separate the various 
+components, Kripke interpretation-formulae can be split.
 The {\tt interpretation} role can be extended with the subroles {\tt world} and {\tt in\_world}.
-Appendix~\ref{NTF_Finite-Finite-Global_Medium.s} shows a medium gained split of 
+Appendix~\ref{NTF_Finite-Finite-Global_Medium.s} shows a medium grained split of 
 Appendix~\ref{NTF_Finite-Finite-Global.s}.
 An annotated formulae with the role {\tt interpretation-world} contains information about the
 worlds of the interpretation.
-Annotated formulae with the role {\tt interpretation-in\_world} provides information about the
-Tarskian interpretation for the world named as the first argument of the {\tt in\_world} subrole.
+Annotated formulae with the role {\tt interpretation-in\_world} provide information about the
+interpretation in the world named as the first argument of the {\tt in\_world} subrole.
 The second argument of the {\tt in\_world} subrole tells what information is provided, using the
-roles and subroles for Tarskian interpretation-formulae.
+roles and subroles for Tarskian/Herbrand interpretation-formulae.
 For example, in Appendix~\ref{NTF_Finite-Finite-Global_Medium.s} the annotated formula with
 role-subrole {\tt interpretation-in\_world(w1,interpretation-domain)} defines the domain of the
-Tarskian Tarskian interpretation in world {\tt w1}.
+Tarskian interpretation in world {\tt w1}.
 Splitting can be done in a flexible way, e.g., Appendix~\ref{NTF_Finite-Finite-Global_Fine.s}
 shows a more fine grained split of Appendix~\ref{NTF_Finite-Finite-Global.s}.
 
-In the same way that a Tarskian Tarskian interpretation-formula can be compacted, Kripke
+In the same way that Tarskian interpretation-formulae can be compacted, Kripke
 interpretation-formulae can also be compacted, e.g., by factoring out common elements of
 the Tarskian interpretations in the worlds.
 Appendix~\ref{NTF_Finite-Finite-Global_Compact.s} shows a compacted version of
 Appendix~\ref{NTF_Finite-Finite-Global.s}.
 Note the universal quantification over the worlds, which avoids the duplication in the 
 {\tt in\_world} terms.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Kripke Model Verification}
+\label{KripkeVerification}
+
+\begin{packed_itemize}
+\item The new defined types
+ZZZZZZZZZZZ
+\end{packed_itemize}
 
 %--------------------------------------------------------------------------------------------------
 \section{Conclusion}
