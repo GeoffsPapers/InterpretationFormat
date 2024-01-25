@@ -1,5 +1,5 @@
 %------------------------------------------------------------------------------
-fof(equality_lost_domain,interpretation-domain($i,$i),
+fof(equality_lost_domain,interpretation-domain,
     ! [X] : ( X = "a" | X = "f" | X = "john" | X = "gotA") ).
 
 fof(equality_lost_term_mappings,interpretation-mapping,
