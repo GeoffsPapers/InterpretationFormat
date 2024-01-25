@@ -650,33 +650,22 @@ Four new defined symbols are used in Kripke interpretation-formulae:
 \item A new defined predicate {\tt \$accessible\_world}, of type {\tt (\$world * \$world) > \$o},
       is used to specify the accessibility relation between worlds.
 \item A new defined constant {\tt \$local\_world} with of {\tt \$world} is used to specify the
-      world in which a local (the default) conjecture is proved. 
+      world in which a local (the default) conjecture is to be proved. 
 \item A new defined predicate {\tt \$in\_world}, of type {\tt (\$world * \$o) > \$o}, is used for 
       specifying the interpretations in the worlds.
       The use of this predicate with a boolean arguments means the interpretation-formulae is
       written in TXF or THF.
 \end{packed_itemize}
 
-A single Kripke interpretation-formula is a 
-conjunction of 
- (following along in Appendices~\ref{NTF_Finite-Finite-Global.s}, 
-and~\ref{NTF_Finite-Finite-Local.s} might help here) 
-:
+A single Kripke interpretation-formula is a conjunction of (following along in 
+Appendices~\ref{NTF_Finite-Finite-Global.s} and~\ref{NTF_Finite-Finite-Local.s} might help 
+here)~\ldots
 \begin{packed_itemize}
-\item Specification of the worlds, e.g., in Appendix~\ref{NTF_Finite-Finite-Global.s}~\ldots \\
-      \hspace*{0.5cm}{\tt ! [W: \$world] : ( W = w1 | W = w2 )}
-\item Until ATP systems and tools build it in, the distinctness of the worlds, e.g., 
-      in Appendix~\ref{NTF_Finite-Finite-Global.s}~\ldots \\
-      \hspace*{0.5cm}{\tt \$distinct(w1,w2)}.
-\item The local world if any, e.g., in Appendix~\ref{NTF_Finite-Finite-Global.s}~\ldots \\
-      \hspace*{0.5cm}{\tt \$local\_world = w1}
-\item The accessibility relation, e.g.,~\ldots \\
-      \hspace*{0.5cm}{\tt \$accessible\_world(w1,w1)} \\
-      \hspace*{0.5cm}{\tt \$accessible\_world(w2,w2)} \\
-      \hspace*{0.5cm}{\tt \$accessible\_world(w1,w2)}
-\item For each world, the Tarskian interpretation within a {\tt \$in\_world} predicate, 
-      e.g., in Appendix~\ref{NTF_Finite-Finite-Global.s}~\ldots \\
-      \hspace*{0.5cm}{\tt \$in\_world(w1,}{\em the Tarskian interpretation}{\tt )}
+\item Specification of the worlds.
+\item Until ATP systems and tools build it in, the distinctness of the worlds.
+\item The accessibility relation.
+\item The local world if any.
+\item For each world, the Tarskian interpretation within a {\tt \$in\_world} predicate.
 \end{packed_itemize}
 
 \vspace*{0.5em}
@@ -690,9 +679,21 @@ The TXF and THF interpretation-formulae are preceded by the necessary type decla
 \subsection{Finite-Finite Kripke Interpretations}
 \label{NewKripkeFiniteFinite}
 
-Appendix~\ref{NTF_Finite-Finite-Global.s} shows a TXF interpretation-formula with finite worlds
-each of which has a finite Tarskian model -- it is a countermodel for the problem in 
-Appendix~\ref{NTF_Finite-Finite-Global.p}.
+Appendix~\ref{NTF_Finite-Finite-Global.p} shows a NTF that has a countermodel finite worlds
+each of which has a finite Tarskian model, which is shown in
+Appendix~\ref{NTF_Finite-Finite-Global.s}.
+There are two worlds~\ldots
+\hspace*{1.0cm}{\tt ! [W: \$world] : ( W = w1 | W = w2 )} \\
+\hspace*{1.0cm}{\tt \$distinct(w1,w2)} \\
+with a reflexive accessibility relation (meeting the requirements of model logic {\bf M})~\ldots
+, e.g., in Appendix~\ref{NTF_Finite-Finite-Global.s}~\ldots \\
+\hspace*{1.0cm}{\tt \$accessible\_world(w1,w1)} \\
+\hspace*{1.0cm}{\tt \$accessible\_world(w2,w2)} \\
+\hspace*{1.0cm}{\tt \$accessible\_world(w1,w2)} \\
+The conjecture is disproved in a local world~\ldots
+ZZZZZZZZZZZ
+\hspace*{1.0cm}{\tt \$local\_world = w1}.
+      \hspace*{0.5cm}{\tt \$in\_world(w1,}{\em the Tarskian interpretation}{\tt )}
 Appendix~\ref{NTF_Finite-Finite-Global.s.p} shows the verification problem for the interpretation.
 
 Appendix~\ref{NTF_Finite-Finite-Local.s} shows a TXF interpretation-formula with finite worlds
