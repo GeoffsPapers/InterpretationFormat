@@ -590,9 +590,9 @@ Appendices~\ref{FOF_Finite_Fine.s} and \ref{TFF_Finite_Fine.s} show examples of 
 interpretation-formulae in Appendices~\ref{FOF_Finite.s} and~\ref{TFF_Finite.s} respectively, 
 which further split the interpretation-formulae, e.g., in Appendix~\ref{TFF_Finite.s} the 
 annotated formula~\ldots \\
-\hspace*{1.0em}\smalltt{tff(garfield\_domain\_human,interpretation-domain(human,d\_human),}
+\hspace*{1.0em}\smalltt{tff(garfield\_domain\_human,interpretation-domain(human,d\_human),} \\
 contains the {\tt d\_human} domain specification, and~\ldots \\
-\hspace*{1.0em}\smalltt{tff(garfield\_domain\_cat,interpretation-domain(cat,d\_cat),}
+\hspace*{1.0em}\smalltt{tff(garfield\_domain\_cat,interpretation-domain(cat,d\_cat),} \\
 contains the {\tt d\_cat} domain specification.
 
 The medium and fine grained splitting can be mixed.
@@ -688,8 +688,8 @@ The TXF and THF interpretation-formulae are preceded by the necessary type decla
 \subsection{Finite-Finite Kripke Interpretations}
 \label{NewKripkeFiniteFinite}
 
-Appendix~\ref{NTF_Finite-Finite-Global.p} shows a NTF that has a countermodel finite worlds
-each of which has a finite Tarskian model, which is shown in
+Appendix~\ref{NTF_Finite-Finite-Global.p} shows a NTF problem that has a countermodel with
+finite worlds each of which has a finite Tarskian model, which is shown in
 Appendix~\ref{NTF_Finite-Finite-Global.s}.
 There are two worlds~\ldots \\
 \hspace*{0.5cm}\smalltt{! [W: \$world] : ( W = w1 | W = w2 )} \\
@@ -706,11 +706,11 @@ interpretation-formulae for Tarskian interpretation described in Section~\ref{Ne
 \hspace*{0.5cm}\smalltt{\$in\_world(w2,}{\em the Tarskian interpretation}{\tt )} \\
 Appendix~\ref{NTF_Finite-Finite-Global.s.p} shows the verification problem for the interpretation.
 
-Appendix~\ref{NTF_Finite-Finite-Local.s} shows a TXF interpretation-formula with finite worlds
-each of which has a finite Tarskian model -- it is a countermodel for the problem in 
-Appendix~\ref{NTF_Finite-Finite-Local.p}.
+Appendix~\ref{NTF_Finite-Finite-Local.p} shows a NTF problem that has a countermodel with
+finite worlds each of which has a finite Tarskian model, which is shown in
+Appendix~\ref{NTF_Finite-Finite-Local.s}.
 This example illustrates how a local axiom (with role {\tt axiom-local} -- {\tt rotten(banana)})
-needs to be satisfied only in the local world ({\tt w1}).
+needs to be satisfied in only the local world ({\tt w1}).
 Appendix~\ref{NTF_Finite-Finite-Local.s.p} shows the verification problem for the interpretation.
 
 %--------------------------------------------------------------------------------------------------
