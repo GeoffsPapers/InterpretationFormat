@@ -4,6 +4,7 @@
 \usepackage{setspace}
 \usepackage{verbatim}
 \usepackage{amssymb}
+\usepackage[straightquotes]{newtxtt}
 
 %----Suppress extra space in texttt mode
 \AddToHook{cmd/ttfamily/after}{\frenchspacing}
@@ -33,7 +34,7 @@
 % \setlength{\floatsep}{2.0pt plus 2.0pt minus 2.0pt}
 % \setlength{\textfloatsep}{5.0pt plus 2.0pt minus 0.0pt}
 
-\title{The New TPTP Format for \\ Tarskian and Kripke Interpretations}
+\title{The New TPTP Format for Interpretations}
 
 \author{
   Geoff Sutcliffe\inst{1}
@@ -65,8 +66,13 @@
 
 %--------------------------------------------------------------------------------------------------
 \begin{abstract}
-This paper describes a new format for representing Tarskian and Kripke interpretations.
-%formulae in untyped and typed first-order logic, using the TPTP TF0 language.
+This paper describes the new TPTP format for representing interpretations.
+It provides a background survey that helped us ensure that the representation format is adequate
+for different types of interpretations, including Tarskian, Herbrand, and Kripke interpretations.
+The needs of applications that use models output by model finding ATP systems are considered.
+Verification of models is discussed and an implementation is presented.
+The syntax and semantics of the new format is expounded in detail, with multiple examples.
+The properties of interpretations represented in the new format are discussed.
 \end{abstract}
 %--------------------------------------------------------------------------------------------------
 \section{Introduction}
@@ -555,7 +561,7 @@ The new TPTP format for Tarskian interpretations described thus far puts all the
 about the interpretation in a single interpretation-formula.
 In some situations it is useful to separate the various components, e.g., the domains could be
 separated from the symbol mappings.
-The new TPTP format offers plitting in a flexible way, at medium and fine grained levels, using 
+The new TPTP format offers splitting in a flexible way, at medium and fine grained levels, using 
 annotated formula subroles.
 
 At the medium grained level the {\tt interpretation} role can be extended withe the subroles
@@ -582,16 +588,16 @@ interpretation.
 For {\tt mapping}s the arguments are the symbol and its domain result type.
 Appendices~\ref{FOF_Finite_Fine.s} and \ref{TFF_Finite_Fine.s} show examples of splitting the 
 interpretation-formulae in Appendices~\ref{FOF_Finite.s} and~\ref{TFF_Finite.s} respectively, 
-which further split the interpretation-formulae, e.g., in Appendex~\ref{TFF_Finite.s} the 
+which further split the interpretation-formulae, e.g., in Appendix~\ref{TFF_Finite.s} the 
 annotated formula~\ldots \\
-\hspace*{1.0em}\smalltt{tff(garfield\_domain\_human,interpretation-domain(human,d\_human),}.
+\hspace*{1.0em}\smalltt{tff(garfield\_domain\_human,interpretation-domain(human,d\_human),}
 contains the {\tt d\_human} domain specification, and~\ldots \\
 \hspace*{1.0em}\smalltt{tff(garfield\_domain\_cat,interpretation-domain(cat,d\_cat),}
 contains the {\tt d\_cat} domain specification.
 
 The medium and fine grained splitting can be mixed.
 Appendix~\ref{THF_Finite_Medium.s} shows an example of mixed splitting of 
-Appendix~\ref{THF_Finite.s}, where the domains are specefied separately in the annotated
+Appendix~\ref{THF_Finite.s}, where the domains are specified separately in the annotated
 formulae~\ldots \\
 \hspace*{1.0em}\smalltt{thf(hot\_coffee\_beverage,interpretation-domain(beverage,d\_beverage),} \\
 and~\ldots \\
@@ -632,7 +638,7 @@ Appendices~\ref{FOF_Saturation.s.p} and~\ref{FOF_Formulae.s.p} show the verifica
 the interpretations.
 
 %--------------------------------------------------------------------------------------------------
-\section{The Format for Kripke Interpretations}
+\section{Kripke Interpretations}
 \label{NewKripke}
  
 The TPTP format for Kripke interpretations also uses interpretation-formulae.
@@ -686,18 +692,18 @@ Appendix~\ref{NTF_Finite-Finite-Global.p} shows a NTF that has a countermodel fi
 each of which has a finite Tarskian model, which is shown in
 Appendix~\ref{NTF_Finite-Finite-Global.s}.
 There are two worlds~\ldots \\
-\hspace*{0.5cm}{\tt ! [W: \$world] : ( W = w1 | W = w2 )} \\
-\hspace*{0.5cm}{\tt \$distinct(w1,w2)} \\
+\hspace*{0.5cm}\smalltt{! [W: \$world] : ( W = w1 | W = w2 )} \\
+\hspace*{0.5cm}\smalltt{\$distinct(w1,w2)} \\
 with a reflexive accessibility relation (meeting the requirements of model logic {\bf M})~\ldots \\
-\hspace*{0.5cm}{\tt \$accessible\_world(w1,w1)} \\
-\hspace*{0.5cm}{\tt \$accessible\_world(w2,w2)} \\
-\hspace*{0.5cm}{\tt \$accessible\_world(w1,w2)} \\
+\hspace*{0.5cm}\smalltt{\$accessible\_world(w1,w1)} \\
+\hspace*{0.5cm}\smalltt{\$accessible\_world(w2,w2)} \\
+\hspace*{0.5cm}\smalltt{\$accessible\_world(w1,w2)} \\
 The conjecture is disproved in a local world~\ldots \\
-\hspace*{0.5cm}{\tt \$local\_world = w1} \\
+\hspace*{0.5cm}\smalltt{\$local\_world = w1} \\
 The finite Tarskian interpretations for the worlds are provided in the same format as
 interpretation-formulae for Tarskian interpretation described in Section~\ref{NewTarskian}~\ldots \\
-\hspace*{0.5cm}{\tt \$in\_world(w1,}{\em the Tarskian interpretation}{\tt )} \\
-\hspace*{0.5cm}{\tt \$in\_world(w2,}{\em the Tarskian interpretation}{\tt )} \\
+\hspace*{0.5cm}\smalltt{\$in\_world(w1,}{\em the Tarskian interpretation}{\tt )} \\
+\hspace*{0.5cm}\smalltt{\$in\_world(w2,}{\em the Tarskian interpretation}{\tt )} \\
 Appendix~\ref{NTF_Finite-Finite-Global.s.p} shows the verification problem for the interpretation.
 
 Appendix~\ref{NTF_Finite-Finite-Local.s} shows a TXF interpretation-formula with finite worlds
@@ -740,10 +746,61 @@ Note the universal quantification over the worlds, which avoids the duplication 
 \subsection{Kripke Model Verification}
 \label{KripkeVerification}
 
+Kripke models for formulae in NTF/NHF are written in TXF/THF using the new defined type and
+predicates described in Section~\ref{NewKripke}.
+To verify these models using the theorem proving approach described in Section~\ref{Verification},
+the new type, new predicates, and the non-classical connectives in the problem, have to be
+expressed in TXF/THF.
+To date we have done this for alethic modal logic, which has the {\tt \$necessary} and 
+{\tt \$possible} connectives.
+
+The new type and predicates are converted to plain types and predicates by defining {\tt '}single 
+quoted{\tt '} versions of them, e.g., in TFF~\ldots \\
+\hspace*{0.5cm}\smalltt{tff(dollar\_world\_type,type,'\$world': \$tType).} \\
+\hspace*{0.5cm}\smalltt{tff(dollar\_accessible\_world\_decl,type,} \\
+\hspace*{0.8cm}\smalltt{'\$accessible\_world': ('\$world' * '\$world') > \$o).} \\
+\hspace*{0.5cm}\smalltt{tff(dollar\_local\_world\_decl,type, '\$local\_world': '\$world').} \\
+\hspace*{0.5cm}\smalltt{tff(dollar\_in\_world\_decl,type, '\$in\_world': ('\$world' * \$o) > \$o).} \\
+The modal connectives are redefined in {\tt '}single quotes{\tt '}, with a world as an additional
+argument~\ldots \\
+\hspace*{0.5cm}\smalltt{tff(dollar\_necessary\_decl,type, '\$necessary': ( '\$world' * \$o ) > \$o ).} \\
+\hspace*{0.5cm}\smalltt{tff(dollar\_possible\_decl,type, '\$possible': ( '\$world' * \$o ) > \$o ).} \\
+
+The meanings of the connectives are then axiomatized wrt a current world~\ldots
 \begin{packed_itemize}
-\item The new defined types
-ZZZZZZZZZZZ
+\item A formula is necessarily $true$ wrt the current world if it is $true$ wrt the interpretations
+      in all worlds that are accessible from the current world.
+      See the {\tt necessary\_defn} axiom in Appendices~\ref{NTF_Finite-Finite-Global.s.p}
+      and~\ref{NTF_Finite-Finite-Local.s.p}.
+\item A formula is possibly $true$ wrt the current world if it is $true$ wrt the interpretation
+      in some world that is accessible from the current world.
+      See the {\tt possible\_defn} axiom in Appendices~\ref{NTF_Finite-Finite-Global.s.p}
+      and~\ref{NTF_Finite-Finite-Local.s.p}.
+\item The duality of {\tt \$necessary} and {\tt \$possible} is axiomatized wrt worlds.
+      See the {\tt duality} axiom in Appendices~\ref{NTF_Finite-Finite-Global.s.p}
+      and~\ref{NTF_Finite-Finite-Local.s.p}.
 \end{packed_itemize}
+
+The verification problem has the connective axioms and the Kripke interpretation-formulae 
+(with the type and predicates {\tt '}quoted{\tt '}) as axioms.
+The problem axioms and negated conjecture (with the modal connectives {\tt '}quoted{\tt '})
+are proved.
+Global (the default) axioms and global (specified with the {\tt conjecture-local} role)
+negated conjectures are proved in all worlds' interpretations, e.g., in 
+Appendix~\ref{NTF_Finite-Finite-Global.s.p} the axioms are all global, and are proved in
+all worlds' interpretations by universal quantification over the worlds~\ldots \\
+\hspace*{0.5cm}\smalltt{! [W: '\$world'] : ? [I: \$o] : ( '\$in\_world'(W,(I)) \& ( (I) =>} \\
+Note how the world is provided as an additional argument to the {\tt '}quoted{\tt '} modal
+connectives, e.g., in Appendix~\ref{NTF_Finite-Finite-Global.s.p}~\ldots \\
+\hspace*{0.5cm}\smalltt{’\$possible’(W,gets\_rich(P))} \\
+Local (specified with the {\tt axiom-local} role) axioms and local (the default) negated
+conjectures are proved in the local world's interpretation, e.g., 
+in Appendix~\ref{NTF_Finite-Finite-Local.s.p} the local axiom {\tt rotten(banana)} and
+the conjecture are proved in the local world's interpretation~\ldots \\
+\hspace*{0.5cm}\smalltt{? [I: \$o] : ( '\$in\_world'('\$local\_world',(I)) \& ( (I) =>} \\
+Note how the local world is provided as an additional argument to the {\tt '}quoted{\tt '} 
+modal connectives, e.g., in Appendix~\ref{NTF_Finite-Finite-Local.s.p}~\ldots \\
+\hspace*{0.5cm}\smalltt{'\$necessary'('\$local\_world',( healthy(apple) \& ~ rotten(banana) ))}
 
 %--------------------------------------------------------------------------------------------------
 \section{Conclusion}

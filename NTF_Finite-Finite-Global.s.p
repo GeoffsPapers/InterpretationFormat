@@ -100,17 +100,20 @@ tff(working_worlds,axiom,
         & ~ gets_rich(d2person(d_chris)) )) ) ).
 
 tff(prove_formulae,conjecture,
-    ? [I: $o] :
-      ( '$in_world'('$local_world',(I))
-      & ( (I)
-       => ( ! [P: person] :
-            ? [R: product] :
-              ( work_hard(P,R)
-             => '$possible'('$local_world',gets_rich(P)) )
-          & ~ ? [P: person] : '$necessary'('$local_world',gets_rich(P))
-          & work_hard(alex,leo)
-          & work_hard(chris,leo)
-          & '$possible'('$local_world',
+    ( ! [W: '$world'] :
+      ? [I: $o] :
+        ( '$in_world'(W,(I))
+        & ( (I)
+         => ( ! [P: person] :
+                ( ? [R: product] : work_hard(P,R)
+               => '$possible'(W,gets_rich(P)) )
+            & ~ ? [P: person] : '$necessary'(W,gets_rich(P))
+            & work_hard(alex,leo)
+            & work_hard(chris,leo) ) ) )
+    & ? [I: $o] :
+        ( '$in_world'('$local_world',(I))
+        & ( (I)
+         => '$possible'('$local_world',
               ( gets_rich(alex)
               & ~ gets_rich(chris) )) ) ) ) ).
 %------------------------------------------------------------------------------
