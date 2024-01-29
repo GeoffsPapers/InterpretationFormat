@@ -19,7 +19,7 @@ tff(gets_rich_decl,type,gets_rich: person > $o).
 tff(work_hard_to_get_rich,axiom,
     ! [P: person] :
       ( ? [R: product] : work_hard(P,R)
-     => {$possible} @ ( gets_rich(P) ) ) ).
+     => ( {$possible} @ (gets_rich(P)) ) ) ).
 
 %----Nobody necessarily gets rich.
 tff(not_all_get_rich,axiom,
