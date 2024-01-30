@@ -117,12 +117,12 @@ typed extended first-order form (TXF)
 \cite{SK18}, 
 typed higher-order form (THF)
 \cite{SB10,KSR16}, 
-and non-classical forms (NTF).
+and non-classical forms (NXF, NHF).
 Most relevant to this work, the TPTP languages are used for writing ATP problems, 
 derivations, and interpretations \cite{SS+06,Sut08-KEAPPA}.
 Examples of problems are in Appendices~\ref{FOF_Finite.p}, \ref{TFF_Finite.p},
-\ref{TFF_Infinite.p}, \ref{THF_Finite.p}, \ref{NTF_Finite-Finite-Global.p}, 
-and~\ref{NTF_Finite-Finite-Local.p}.
+\ref{TFF_Infinite.p}, \ref{THF_Finite.p}, \ref{NXF_Finite-Finite-Global.p}, 
+and~\ref{NXF_Finite-Finite-Local.p}.
 
 A TPTP format for interpretations with finite domains was previously been defined \cite{SS+06},
 and has served the ATP community adequately for almost 20 years. 
@@ -630,7 +630,7 @@ the interpretations.
  
 The TPTP format for Kripke interpretations also uses interpretation-formulae.
 A single Kripke interpretation-formula is a conjunction of components (see simple FOF and TFF 
-examples in Appendices~\ref{NTF_Finite-Finite-Global.s} and~\ref{NTF_Finite-Finite-Local.s}.
+examples in Appendices~\ref{NXF_Finite-Finite-Global.s} and~\ref{NXF_Finite-Finite-Local.s}.
 As was noted in Section~\ref{Have}, Kripke interpretations can have either a finite or an
 infinite number of worlds, and the interpretations in a world can be Tarskian or Herbrand.
 {\em I don't really have a firm handle on the cases with an infinite number of worlds, but I 
@@ -654,7 +654,7 @@ Four new defined symbols are used in Kripke interpretation-formulae:
 \end{packed_itemize}
 
 A single Kripke interpretation-formula is a conjunction of (following along in 
-Appendices~\ref{NTF_Finite-Finite-Global.s} and~\ref{NTF_Finite-Finite-Local.s} might help 
+Appendices~\ref{NXF_Finite-Finite-Global.s} and~\ref{NXF_Finite-Finite-Local.s} might help 
 here)~\ldots
 \begin{packed_itemize}
 \item Specification of the worlds.
@@ -675,9 +675,9 @@ The TXF and THF interpretation-formulae are preceded by the necessary type decla
 \subsection{Finite-Finite Kripke Interpretations}
 \label{NewKripkeFiniteFinite}
 
-Appendix~\ref{NTF_Finite-Finite-Global.p} shows a NTF problem that has a countermodel with
+Appendix~\ref{NXF_Finite-Finite-Global.p} shows a NXF problem that has a countermodel with
 finite worlds each of which has a finite Tarskian model, which is shown in
-Appendix~\ref{NTF_Finite-Finite-Global.s}.
+Appendix~\ref{NXF_Finite-Finite-Global.s}.
 There are two worlds~\ldots \\
 \hspace*{0.5cm}\smalltt{! [W: \$world] : ( W = w1 | W = w2 )} \\
 \hspace*{0.5cm}\smalltt{\$distinct(w1,w2)} \\
@@ -691,14 +691,14 @@ The finite Tarskian interpretations for the worlds are provided in the same form
 interpretation-formulae for Tarskian interpretation described in Section~\ref{NewTarskian}~\ldots \\
 \hspace*{0.5cm}\smalltt{\$in\_world(w1,}{\em the Tarskian interpretation}{\tt )} \\
 \hspace*{0.5cm}\smalltt{\$in\_world(w2,}{\em the Tarskian interpretation}{\tt )} \\
-Appendix~\ref{NTF_Finite-Finite-Global.s.p} shows the verification problem for the interpretation.
+Appendix~\ref{NXF_Finite-Finite-Global.s.p} shows the verification problem for the interpretation.
 
-Appendix~\ref{NTF_Finite-Finite-Local.p} shows a NTF problem that has a countermodel with
+Appendix~\ref{NXF_Finite-Finite-Local.p} shows a NXF problem that has a countermodel with
 finite worlds each of which has a finite Tarskian model, which is shown in
-Appendix~\ref{NTF_Finite-Finite-Local.s}.
+Appendix~\ref{NXF_Finite-Finite-Local.s}.
 This example illustrates how a local axiom (with role {\tt axiom-local} -- {\tt rotten(banana)})
 needs to be satisfied in only the local world ({\tt w1}).
-Appendix~\ref{NTF_Finite-Finite-Local.s.p} shows the verification problem for the interpretation.
+Appendix~\ref{NXF_Finite-Finite-Local.s.p} shows the verification problem for the interpretation.
 
 %--------------------------------------------------------------------------------------------------
 \subsection{Kripke Interpretations Split and Compacted}
@@ -707,25 +707,25 @@ Appendix~\ref{NTF_Finite-Finite-Local.s.p} shows the verification problem for th
 In the same way that a Tarskian interpretation-formulae can be split to separate the various 
 components, Kripke interpretation-formulae can be split.
 The {\tt interpretation} role can be extended with the subroles {\tt world} and {\tt in\_world}.
-Appendix~\ref{NTF_Finite-Finite-Global_Medium.s} shows a medium grained split of 
-Appendix~\ref{NTF_Finite-Finite-Global.s}.
+Appendix~\ref{NXF_Finite-Finite-Global_Medium.s} shows a medium grained split of 
+Appendix~\ref{NXF_Finite-Finite-Global.s}.
 An annotated formulae with the role {\tt interpretation-world} contains information about the
 worlds of the interpretation.
 Annotated formulae with the role {\tt interpretation-in\_world} provide information about the
 interpretation in the world named as the first argument of the {\tt in\_world} subrole.
 The second argument of the {\tt in\_world} subrole tells what information is provided, using the
 roles and subroles for Tarskian/Herbrand interpretation-formulae.
-For example, in Appendix~\ref{NTF_Finite-Finite-Global_Medium.s} the annotated formula with
+For example, in Appendix~\ref{NXF_Finite-Finite-Global_Medium.s} the annotated formula with
 role-subrole {\tt interpretation-in\_world(w1,interpretation-domain)} defines the domain of the
 Tarskian interpretation in world {\tt w1}.
-Splitting can be done in a flexible way, e.g., Appendix~\ref{NTF_Finite-Finite-Global_Fine.s}
-shows a more fine grained split of Appendix~\ref{NTF_Finite-Finite-Global.s}.
+Splitting can be done in a flexible way, e.g., Appendix~\ref{NXF_Finite-Finite-Global_Fine.s}
+shows a more fine grained split of Appendix~\ref{NXF_Finite-Finite-Global.s}.
 
 In the same way that Tarskian interpretation-formulae can be compacted, Kripke
 interpretation-formulae can also be compacted, e.g., by factoring out common elements of
 the Tarskian interpretations in the worlds.
-Appendix~\ref{NTF_Finite-Finite-Global_Compact.s} shows a compacted version of
-Appendix~\ref{NTF_Finite-Finite-Global.s}.
+Appendix~\ref{NXF_Finite-Finite-Global_Compact.s} shows a compacted version of
+Appendix~\ref{NXF_Finite-Finite-Global.s}.
 Note the universal quantification over the worlds, which avoids the duplication in the 
 {\tt in\_world} terms.
 
@@ -733,43 +733,62 @@ Note the universal quantification over the worlds, which avoids the duplication 
 \subsection{Kripke Model Verification}
 \label{KripkeVerification}
 
-Kripke models for formulae in NTF/NHF are written in TXF/THF using the new defined type and
+Kripke models for formulae in NXF/NHF are written in TXF/THF using the new defined type and
 predicates described in Section~\ref{NewKripke}.
 Two ways of verifying Kripke models in interpretation-formulae have been implemented, using the 
 theorem proving approach described in Section~\ref{Verification}.
-The first approach forms a verification problem in NTF that is then embedded into TF0 and
-discharged using a trusted TF0 ATP system.
+The first approach forms a verification problem in NXF that is then embedded into TH0, which is
+discharged using a trusted TH0 ATP system.
 The second approach forms a verification problem in TXF/THF that is discharged using a trusted 
 TXF/THF ATP system.
 
-\paragraph{Embedding in TF0:}~\\
-In this approach the Kripke interpretation-formulae is given the {\tt axiom} role, and
-each of the problem axioms and the negated problem conjecture are given the {\tt conjecture} role
-with a subrole of {\tt local} or {\tt global} according to their role in the problem.
-Through the use of a special logic specification {\tt \$\$fomlModel} the new type and predicates
-are recognized, enabling the problem to be embedded into TF0.
-The resultant TF0 verification problem is discharged using a trusted TF0 ATP system.
-Appendix~\ref{NTF_Finite-Finite-Global.s.NTF.p} shows the NTF verification problem for the problem
-in Appendix~\ref{NTF_Finite-Finite-Global.p} and its countermodel in
-Appendix~\ref{NTF_Finite-Finite-Global.s}.
-Appendix~\ref{NTF_Finite-Finite-Local.s.NTF.p} shows the NTF verification problem for the problem
-in Appendix~\ref{NTF_Finite-Finite-Local.p} and its countermodel in
-Appendix~\ref{NTF_Finite-Finite-Local.s}.
+\paragraph{Directly in NXF:}~\\
+In this approach a NXF verification problem is built from the problem formulae and the Kripke 
+interpretation-formulae.\footnote{%
+To date we have done this for NXF. Extension to NHF might be possible.}
+Appendix~\ref{NXF_Finite-Finite-Global.s.NXF.p} shows the NXF verification problem for the problem
+in Appendix~\ref{NXF_Finite-Finite-Global.p} and its countermodel in
+Appendix~\ref{NXF_Finite-Finite-Global.s}.
+Appendix~\ref{NXF_Finite-Finite-Local.s.NXF.p} shows the NXF verification problem for the problem
+in Appendix~\ref{NXF_Finite-Finite-Local.p} and its countermodel in
+Appendix~\ref{NXF_Finite-Finite-Local.s}.
 
-ZZZZZZZZZZZ
+In the NXF verification problem the Kripke interpretation-formulae is given the {\tt axiom} role,
+and each of the problem axioms and the negated problem conjecture are given the {\tt conjecture} 
+role with a subrole of {\tt local} or {\tt global} according to their role in the problem, e.g., 
+in Appendix~\ref{NXF_Finite-Finite-Global.p} the axiom of the problem~\ldots \\
+\hspace*{0.5cm}\smalltt{tff(not\_all\_get\_rich,axiom,} \\
+\hspace*{0.8cm}\smalltt{\{{\raisebox{0.4ex}{\texttildelow}} ? [P: person] : ({\$necessary} @ (gets\_rich(P)) ) ).}\\
+is global (the default), so the NXF verification conjecture in 
+Appendix~\ref{NXF_Finite-Finite-Global.s.NXF.p} has the {\tt global} subrole~\ldots \\
+\hspace*{0.5cm}\smalltt{tff(not\_all\_get\_rich,conjecture-global,} \\
+\hspace*{0.8cm}\smalltt{\{{\raisebox{0.4ex}{\texttildelow}} ? [P: person] : ( {\$necessary} @ (gets\_rich(P)) ) ).} \\
+The conjecture of the problem is local (the default)~\ldots \\
+\hspace*{0.5cm}\smalltt{tff(only\_alex\_gets\_rich,conjecture,} \\
+\hspace*{0.8cm}\smalltt{( {\$possible} @ (gets\_rich(alex) \& \{{\raisebox{0.4ex}{\texttildelow}} gets\_rich(chris)) ) ).} \\
+so the NXF verification (negated) conjecture has the {\tt local} subrole~\ldots \\
+\hspace*{0.5cm}\smalltt{tff(only\_alex\_gets\_rich,conjecture-local,} \\
+\hspace*{0.8cm}\smalltt{\{{\raisebox{0.4ex}{\texttildelow}} ( {\$possible} @ (( gets\_rich(alex) \& \{{\raisebox{0.4ex}{\texttildelow}} gets\_rich(chris) )) ) ).} \\
+A special logic specification {\tt \$\$fomlModel} is used.
 
-\paragraph{Conversion to TXF/THF:}~\\
+The NXF verification problem is embedded into TH0 using the NTFLET tool \cite{Ste22-LE}.
+NTFLET recognizes the the new type and predicates in the embedding process, and combines
+the NXF conjectures into a single TH0 conjecture.
+The resultant TH0 verification problem is discharged using a trusted TH0 ATP system.
+
+\paragraph{Conversion to TXF:}~\\
 The new type and predicates, and the non-classical connectives in the problem, are expressed 
-in TXF/THF, and the resultant TXF/THF verification problem is discharged using a trusted TXF/THF 
+in TXF, and the resultant TXF verification problem is discharged using a trusted TXF 
 ATP system.\footnote{%
-To date we have done this for alethic modal logic, which has the {\tt \$necessary} and 
-{\tt \$possible} connectives.}
-Appendix~\ref{NTF_Finite-Finite-Global.s.p} shows the verification problem for the problem
-in Appendix~\ref{NTF_Finite-Finite-Global.p} and its countermodel in 
-Appendix~\ref{NTF_Finite-Finite-Global.s}.
-Appendix~\ref{NTF_Finite-Finite-Local.s.p} shows the verification problem for the problem
-in Appendix~\ref{NTF_Finite-Finite-Local.p} and its countermodel in 
-Appendix~\ref{NTF_Finite-Finite-Local.s}.
+To date we have done this for alethic modal logic in NXF, which has the {\tt \$necessary} and 
+{\tt \$possible} connectives.
+Extension to NHF might be possible.}
+Appendix~\ref{NXF_Finite-Finite-Global.s.p} shows the verification problem for the problem
+in Appendix~\ref{NXF_Finite-Finite-Global.p} and its countermodel in 
+Appendix~\ref{NXF_Finite-Finite-Global.s}.
+Appendix~\ref{NXF_Finite-Finite-Local.s.p} shows the verification problem for the problem
+in Appendix~\ref{NXF_Finite-Finite-Local.p} and its countermodel in 
+Appendix~\ref{NXF_Finite-Finite-Local.s}.
 
 The new type and predicates are converted to plain types and predicates by defining {\tt '}single 
 quoted{\tt '} versions of them, e.g., in TFF~\ldots \\
@@ -786,15 +805,15 @@ The meanings of the connectives are then axiomatized wrt a current world~\ldots
 \begin{packed_itemize}
 \item A formula is necessarily $true$ wrt the current world if it is $true$ wrt the interpretations
       in all worlds that are accessible from the current world.
-      See the {\tt necessary\_defn} axiom in Appendices~\ref{NTF_Finite-Finite-Global.s.p}
-      and~\ref{NTF_Finite-Finite-Local.s.p}.
+      See the {\tt necessary\_defn} axiom in Appendices~\ref{NXF_Finite-Finite-Global.s.p}
+      and~\ref{NXF_Finite-Finite-Local.s.p}.
 \item A formula is possibly $true$ wrt the current world if it is $true$ wrt the interpretation
       in some world that is accessible from the current world.
-      See the {\tt possible\_defn} axiom in Appendices~\ref{NTF_Finite-Finite-Global.s.p}
-      and~\ref{NTF_Finite-Finite-Local.s.p}.
+      See the {\tt possible\_defn} axiom in Appendices~\ref{NXF_Finite-Finite-Global.s.p}
+      and~\ref{NXF_Finite-Finite-Local.s.p}.
 \item The duality of {\tt \$necessary} and {\tt \$possible} is axiomatized wrt worlds.
-      See the {\tt duality} axiom in Appendices~\ref{NTF_Finite-Finite-Global.s.p}
-      and~\ref{NTF_Finite-Finite-Local.s.p}.
+      See the {\tt duality} axiom in Appendices~\ref{NXF_Finite-Finite-Global.s.p}
+      and~\ref{NXF_Finite-Finite-Local.s.p}.
 \end{packed_itemize}
 
 The verification problem has the connective axioms and the Kripke interpretation-formulae 
@@ -803,34 +822,37 @@ The problem axioms and negated conjecture (with the modal connectives {\tt '}quo
 are proved.
 Global (the default) axioms and global (specified with the {\tt conjecture-local} role)
 negated conjectures are proved in all worlds' interpretations, e.g., in 
-Appendix~\ref{NTF_Finite-Finite-Global.s.p} the axioms are all global, and are proved in
+Appendix~\ref{NXF_Finite-Finite-Global.s.p} the axioms are all global, and are proved in
 all worlds' interpretations by universal quantification over the worlds~\ldots \\
 \hspace*{0.5cm}\smalltt{! [W: '\$world'] : ? [I: \$o] : ( '\$in\_world'(W,(I)) \& ( (I) =>} \\
 Note how the world is provided as an additional argument to the {\tt '}quoted{\tt '} modal
-connectives, e.g., in Appendix~\ref{NTF_Finite-Finite-Global.s.p}~\ldots \\
+connectives, e.g., in Appendix~\ref{NXF_Finite-Finite-Global.s.p}~\ldots \\
 \hspace*{0.5cm}\smalltt{’\$possible’(W,gets\_rich(P))} \\
 Local (specified with the {\tt axiom-local} role) axioms and local (the default) negated
 conjectures are proved in the local world's interpretation, e.g., 
-in Appendix~\ref{NTF_Finite-Finite-Local.s.p} the local axiom {\tt rotten(banana)} and
+in Appendix~\ref{NXF_Finite-Finite-Local.s.p} the local axiom {\tt rotten(banana)} and
 the conjecture are proved in the local world's interpretation~\ldots \\
 \hspace*{0.5cm}\smalltt{? [I: \$o] : ( '\$in\_world'('\$local\_world',(I)) \& ( (I) =>} \\
 Note how the local world is provided as an additional argument to the {\tt '}quoted{\tt '} 
-modal connectives, e.g., in Appendix~\ref{NTF_Finite-Finite-Local.s.p}~\ldots \\
+modal connectives, e.g., in Appendix~\ref{NXF_Finite-Finite-Local.s.p}~\ldots \\
 \hspace*{0.5cm}\smalltt{'\$necessary'('\$local\_world',( healthy(apple) \& ~ rotten(banana) ))}
 
 %--------------------------------------------------------------------------------------------------
 \section{Conclusion}
 \label{Conclusion}
 
-This paper 
+This paper describes the new TPTP format for representing interpretations.
+It provides a background survey that helped us ensure that the representation format is adequate
+for different types of interpretations, including Tarskian, Herbrand, and Kripke interpretations.
+Some tools that support processing the new format have been noted.
 
-This new TPTP format for interpretations provides very many options and features, and it is
-expected that only the basic features will be adopted initially. 
+The new TPTP format provides very many options and features, and it is expected that only the 
+basic features will be adopted initially. 
 For ATP systems that already output the old TPTP format for finite Tarskian interpretations
 all that is needed is to replace the {\tt fi\_domain}, {\tt fi\_functors}, and {\tt fi\_predicates}
 roles by {\tt interpretation}. 
-To be more informative, replace {\tt fi\_domain} by {\tt interpretation-domain}, and replace
-{\tt fi\_functors} and {\tt fi\_predicates} by {\tt interpretation-mapping}.
+To be more informative, {\tt fi\_domain} can be replaced by by {\tt interpretation-domain}, and 
+{\tt fi\_functors} and {\tt fi\_predicates} can be replaced by {\tt interpretation-mapping}.
 
 Section~\ref{Need} listed three needs for interpretations: 
 \begin{packed_itemize}
@@ -848,17 +870,19 @@ In the light of the above (and hey, maybe there are more techniques than just th
       tractable, and comprehensible.
 \item Infinite interpretations represented by interpretation-formulae are verifiable, often 
       intractable, and might not be comprehensible.
-\item Saturations (in interpretation-formulae) are verifiable, often intractable, and almost 
-      always incomprehensible.
 \item Herbrand-formulae (in interpretation-formulae) are verifiable, can be tractable, and can 
       be comprehensible.
+\item Saturations (in interpretation-formulae) are verifiable, often intractable, and almost 
+      always incomprehensible.
 \item The verifiability, tractability, and comprehensibility of Kripke interpretations varies
       between individual cases.
 \item Use of the same language as the problem formulae for writing interpretation-formulae
       contributes to comprehensibility (but does not ensure it).
 \end{packed_itemize}
 
-This work is being extended 
+This work will be extended to deal with more non-classical languages.
+But for now we are pausing to allow ATP system developers to react to the format, which might 
+lead to improvements, and hopefully will lead to them implementing the format in the ATP systems.
 
 %--------------------------------------------------------------------------------------------------
 \bibliographystyle{plain}
@@ -1064,85 +1088,85 @@ All these listings are available from
 \section{NXF, Finite Worlds with Finite Interpretations}
 \label{NXF}
 
-\subsection{NTF Problem with Global Axioms, \\ with a Finite-Finite Countermodel}
-\label{NTF_Finite-Finite-Global.p}
+\subsection{NXF Problem with Global Axioms, \\ with a Finite-Finite Countermodel}
+\label{NXF_Finite-Finite-Global.p}
 \begin{small}
-\verbatiminput{NTF_Finite-Finite-Global.p}
+\verbatiminput{NXF_Finite-Finite-Global.p}
 \end{small}
 
 \newpage
-\subsection{TXF Finite-Finite Model for \ref{NTF_Finite-Finite-Global.p}}
-\label{NTF_Finite-Finite-Global.s}
+\subsection{TXF Finite-Finite Model for \ref{NXF_Finite-Finite-Global.p}}
+\label{NXF_Finite-Finite-Global.s}
 \begin{small}
-\verbatiminput{NTF_Finite-Finite-Global.s}
+\verbatiminput{NXF_Finite-Finite-Global.s}
 \end{small}
 
 \newpage
-\subsection{TXF Verification Problem for \ref{NTF_Finite-Finite-Global.p} and 
-\ref{NTF_Finite-Finite-Global.s}}
-\label{NTF_Finite-Finite-Global.s.p}
+\subsection{NXF Verification Problem for \ref{NXF_Finite-Finite-Global.p} and 
+\ref{NXF_Finite-Finite-Global.s}}
+\label{NXF_Finite-Finite-Global.s.NXF.p}
 \begin{small}
-\verbatiminput{NTF_Finite-Finite-Global.s.p}
+\verbatiminput{NXF_Finite-Finite-Global.s.NXF.p}
 \end{small}
 
 \newpage
-\subsection{NTF Verification Problem for \ref{NTF_Finite-Finite-Global.p} and 
-\ref{NTF_Finite-Finite-Global.s}}
-\label{NTF_Finite-Finite-Global.s.NTF.p}
+\subsection{TXF Verification Problem for \ref{NXF_Finite-Finite-Global.p} and 
+\ref{NXF_Finite-Finite-Global.s}}
+\label{NXF_Finite-Finite-Global.s.p}
 \begin{small}
-\verbatiminput{NTF_Finite-Finite-Global.s.NTF.p}
+\verbatiminput{NXF_Finite-Finite-Global.s.p}
 \end{small}
 
 \newpage
-\subsection{NTF Problem with Global and Local Axioms, \\
+\subsection{NXF Problem with Global and Local Axioms, \\
             with a Finite-Finite Countermodel}
-\label{NTF_Finite-Finite-Local.p}
+\label{NXF_Finite-Finite-Local.p}
 \begin{small}
-\verbatiminput{NTF_Finite-Finite-Local.p}
+\verbatiminput{NXF_Finite-Finite-Local.p}
 \end{small}
 
 \newpage
-\subsection{TXF Finite-Finite Model for \ref{NTF_Finite-Finite-Local.p}}
-\label{NTF_Finite-Finite-Local.s}
+\subsection{TXF Finite-Finite Model for \ref{NXF_Finite-Finite-Local.p}}
+\label{NXF_Finite-Finite-Local.s}
 \begin{small}
-\verbatiminput{NTF_Finite-Finite-Local.s}
+\verbatiminput{NXF_Finite-Finite-Local.s}
 \end{small}
 
 \newpage
-\subsection{TXF Verification Problem for \ref{NTF_Finite-Finite-Local.p} and
-\ref{NTF_Finite-Finite-Local.s}}
-\label{NTF_Finite-Finite-Local.s.p}
+\subsection{NXF Verification Problem for \ref{NXF_Finite-Finite-Local.p} and
+\ref{NXF_Finite-Finite-Local.s}}
+\label{NXF_Finite-Finite-Local.s.NXF.p}
 \begin{small}
-\verbatiminput{NTF_Finite-Finite-Local.s.p}
+\verbatiminput{NXF_Finite-Finite-Local.s.NXF.p}
 \end{small}
 
 \newpage
-\subsection{NTF Verification Problem for \ref{NTF_Finite-Finite-Local.p} and
-\ref{NTF_Finite-Finite-Local.s}}
-\label{NTF_Finite-Finite-Local.s.NTF.p}
+\subsection{TXF Verification Problem for \ref{NXF_Finite-Finite-Local.p} and
+\ref{NXF_Finite-Finite-Local.s}}
+\label{NXF_Finite-Finite-Local.s.p}
 \begin{small}
-\verbatiminput{NTF_Finite-Finite-Local.s.NTF.p}
+\verbatiminput{NXF_Finite-Finite-Local.s.p}
 \end{small}
 
 \newpage
-\subsection{TXF Finite-Finite Model for \ref{NTF_Finite-Finite-Global.p}, Medium Grained}
-\label{NTF_Finite-Finite-Global_Medium.s}
+\subsection{TXF Finite-Finite Model for \ref{NXF_Finite-Finite-Global.p}, Medium Grained}
+\label{NXF_Finite-Finite-Global_Medium.s}
 \begin{small}
-\verbatiminput{NTF_Finite-Finite-Global_Medium.s}
+\verbatiminput{NXF_Finite-Finite-Global_Medium.s}
 \end{small}
 
 \newpage
-\subsection{TXF Finite-Finite Model for \ref{NTF_Finite-Finite-Global.p}, Fine Grained}
-\label{NTF_Finite-Finite-Global_Fine.s}
+\subsection{TXF Finite-Finite Model for \ref{NXF_Finite-Finite-Global.p}, Fine Grained}
+\label{NXF_Finite-Finite-Global_Fine.s}
 \begin{small}
-\verbatiminput{NTF_Finite-Finite-Global_Fine.s}
+\verbatiminput{NXF_Finite-Finite-Global_Fine.s}
 \end{small}
 
 \newpage
-\subsection{TXF Finite-Finite Model for \ref{NTF_Finite-Finite-Global.p}, Compacted}
-\label{NTF_Finite-Finite-Global_Compact.s}
+\subsection{TXF Finite-Finite Model for \ref{NXF_Finite-Finite-Global.p}, Compacted}
+\label{NXF_Finite-Finite-Global_Compact.s}
 \begin{small}
-\verbatiminput{NTF_Finite-Finite-Global_Compact.s}
+\verbatiminput{NXF_Finite-Finite-Global_Compact.s}
 \end{small}
 
 %--------------------------------------------------------------------------------------------------
