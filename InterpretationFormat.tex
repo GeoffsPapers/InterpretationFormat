@@ -70,8 +70,9 @@ This paper describes the new TPTP format for representing interpretations.
 It provides a background survey that helped us ensure that the representation format is adequate
 for different types of interpretations, including Tarskian, Herbrand, and Kripke interpretations.
 The needs of applications that use models output by model finding ATP systems are considered.
-Verification of models is discussed and an implementation is presented.
 The syntax and semantics of the new format is expounded in detail, with multiple examples.
+Verification of models is discussed and an implementation is presented.
+Some tools that support processing the new format are noted.
 The properties of interpretations represented in the new format are discussed.
 \end{abstract}
 %--------------------------------------------------------------------------------------------------
@@ -339,7 +340,7 @@ To interpret a formula wrt interpretation-formulae~\ldots
 % $\Phi$ is $true$ in $I$, i.e., $I$ is a model of formula $\Phi$)~\ldots
 \begin{packed_itemize}
 \item For Kripke interpretation-formulae, theorem proving can be used.
-      RIGHT ALEX - THAT's WHAT AGMMV DOES FOR TFF?
+      This is described in Section~\ref{KripkeVerification}.
 \item For Tarskian interpretation-formulae, theorem proving can be used.
       \begin{packed_itemize}
       \item If a formula can be proved from the interpretation-formulae then it is $true$ in the 
