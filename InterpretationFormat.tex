@@ -459,16 +459,27 @@ Section~\ref{NewHerbrand}.
 \subsection{FOF Tarskian Interpretations}
 \label{NewTarskianFOF}
 
-FOF interpretation-formaule have a single untyped (or, if you will, of type {\tt \$i}) domain whose
+FOF interpretation-formulae have a single untyped (or, if you will, of type {\tt \$i}) domain whose
 elements are new (not appearing in the problem) ground terms. 
+The mappings apply the function and predicate symbols to the domain elements.
+Appendix~\ref{FOF_Finite.p} shows a FOF problem that has a countermodel with a finite domain, 
+which shown in Appendix~\ref{FOF_Finite.s}.
+Appendix~\ref{FOF_Finite.s.p} shows the verification problem for the model.
+
 The distinctness of the domain elements must be made explicit, either with pairwise inequalities, 
 or with the {\tt \$distinct} predicate, or by using {\tt "distinct object"}s as domain elements 
 (they are known to be distinct (and often not used in problems, which makes them easy 
-to identify as domain elements)).
-Appendix~\ref{FOF_Finite.p} shows a FOF problem that has a countermodel with a finite domain, 
-which shown in Appendix~\ref{FOF_Finite.s}.
-Appendix~\ref{FOF_Finite.s} uses {\tt "distinct object"}s for domain elements.
-Appendix~\ref{FOF_Finite.s.p} shows the verification problem for the model.
+to identify as domain elements)), e.g., in Appendix~\ref{FOF_Finite.s}~\ldots \\
+\hspace*{0.5cm}\smalltt{! [X] : ( X = "a" | X = "f" | X = "john" | X = "gotA")} \\
+The function mappings are equalities between functions applied to domain eleme, e.g., in Appendix~\ref{FOF_Finite.s}~\ldots \\
+\hspace*{0.5cm}\smalltt{grade\_of("john") = "f"}\\
+and the predicate mappings are atoms, e.g., in Appendix~\ref{FOF_Finite.s}~\ldots \\
+\hspace*{0.5cm}\smalltt{created\_equal("john","gotA")}\\
+Note that for a complete interpretation all function and predicate mappings need to be provided,
+even if they make no sense in a typed sense, e.g., in Appendix~\ref{FOF_Finite.s}~\ldots \\
+\hspace*{0.5cm}\smalltt{grade\_of("f") = "a"}\\
+\hspace*{0.5cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}} created\_equal("a","john")}
+
 
 %--------------------------------------------------------------------------------------------------
 \subsection{TFF and THF Tarskian Interpretations}
@@ -713,24 +724,49 @@ The {\tt interpretation} role can be extended with the subroles {\tt world} and 
 Appendix~\ref{NXF_Finite-Finite-Global_Medium.s} shows a medium grained split of 
 Appendix~\ref{NXF_Finite-Finite-Global.s}.
 An annotated formulae with the role {\tt interpretation-world} contains information about the
-worlds of the interpretation.
+worlds of the interpretation, e.g., in Appendix~\ref{NXF_Finite-Finite-Global_Medium.s} the
+annotated formula~\ldots \\
+\hspace*{0.5cm}\smalltt{tff(leo\_workers\_worlds,interpretation-world,} \\
+contains the information about the two worlds.
 Annotated formulae with the role {\tt interpretation-in\_world} provide information about the
 interpretation in the world named as the first argument of the {\tt in\_world} subrole.
 The second argument of the {\tt in\_world} subrole tells what information is provided, using the
-roles and subroles for Tarskian/Herbrand interpretation-formulae.
-For example, in Appendix~\ref{NXF_Finite-Finite-Global_Medium.s} the annotated formula with
-role-subrole {\tt interpretation-in\_world(w1,interpretation-domain)} defines the domain of the
-Tarskian interpretation in world {\tt w1}.
-Splitting can be done in a flexible way, e.g., Appendix~\ref{NXF_Finite-Finite-Global_Fine.s}
-shows a more fine grained split of Appendix~\ref{NXF_Finite-Finite-Global.s}.
+roles and subroles for Tarskian/Herbrand interpretation-formulae, e.g., in 
+Appendix~\ref{NXF_Finite-Finite-Global_Medium.s} the annotated formula~\ldots \\
+\hspace*{0.5cm}\smalltt{tff(leo\_workers\_w1\_domain,interpretation-in\_world(w1,interpretation-domain),} \\
+contains the information about the domain in world {\tt w1}, and the annotated formula~\ldots \\
+\hspace*{0.5cm}\smalltt{tff(leo\_workers\_w1\_mappings,interpretation-in\_world(w1,interpretation-mapping),} \\
+contains the information about the mappings in world {\tt w1}.
+
+Splitting can be done in a flexible way, using the fine-grained splitting available for
+Tarskian interpretation-formulae.
+Appendix~\ref{NXF_Finite-Finite-Global_Fine.s} shows a more fine grained split of 
+Appendix~\ref{NXF_Finite-Finite-Global.s}.
+For example, in Appendix~\ref{NXF_Finite-Finite-Global_Fine.s} the annotated formula~\ldots \\
+\hspace*{0.5cm}\smalltt{tff(leo\_workers\_w1\_person,} \\
+\hspace*{0.8cm}\smalltt{interpretation-in\_world(w1,interpretation-domain(person,d\_person)),} \\
+contains the information about the {\tt d\_person} in world {\tt w1}, and the annotated 
+formula~\ldots \\
+\hspace*{0.5cm}\smalltt{tff(leo\_workers\_w2\_gets\_rich,} \\
+\hspace*{0.8cm}\smalltt{interpretation-in\_world(w2,interpretation-mapping(gets\_rich,\$o)),} \\
+contains the information about the mappings for the {\tt gets\_rich} predicate in world {\tt w2}.
 
 In the same way that Tarskian interpretation-formulae can be compacted, Kripke
 interpretation-formulae can also be compacted, e.g., by factoring out common elements of
 the Tarskian interpretations in the worlds.
 Appendix~\ref{NXF_Finite-Finite-Global_Compact.s} shows a compacted version of
 Appendix~\ref{NXF_Finite-Finite-Global.s}.
-Note the universal quantification over the worlds, which avoids the duplication in the 
-{\tt in\_world} terms.
+For example, in Appendix~\ref{NXF_Finite-Finite-Global_Compact.s} the annotated formula~\ldots \\
+\hspace*{0.5cm}\smalltt{tff(leo\_workers\_W\_product,} \\
+\hspace*{0.8cm}\smalltt{interpretation-in\_world(W,interpretation-domain),} \\
+contains the information about the domain that is the same in all worlds, and the 
+annotated formula~\ldots \\
+\hspace*{0.5cm}\smalltt{tff(leo\_workers\_W\_work\_hard,} \\
+\hspace*{0.8cm}\smalltt{interpretation-in\_world(W,interpretation-mapping(work\_hard,\$o)),} \\
+contains the mappings for the predicate symbol {\tt work\_hard} that are the same in all worlds.
+Note how universal quantification over the worlds~\ldots \\
+\hspace*{0.5cm}\smalltt{! [W: \$world] :} \\
+avoids the duplication of information that is common in all worlds.
 
 %--------------------------------------------------------------------------------------------------
 \subsection{Kripke Model Verification}

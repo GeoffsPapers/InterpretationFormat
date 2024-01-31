@@ -28,7 +28,7 @@ tff(leo_workers_worlds,interpretation-world,
 
 tff(leo_workers_W_product,
     interpretation-in_world(W,interpretation-domain),
-    ! [W: $world]
+    ! [W: $world] :
       $in_world(W,
         ( ( ! [P: product] : ? [DP: d_product] : P = d2product(DP)
           & ! [DP: d_product] : DP = d_leo
@@ -45,20 +45,20 @@ tff(leo_workers_W_product,
 
 tff(leo_workers_W_alex_chris,
     interpretation-in_world(W,interpretation-mapping),
-    ! [W: $world]
+    ! [W: $world] :
       $in_world(W,
         ( ( alex = d2person(d_alex) )
         & ( chris = d2person(d_chris) ) ) ).
 
 tff(leo_workers_W_leo,
     interpretation-in_world(W,interpretation-mapping(leo,d_product)),
-    ! [W: $world]
+    ! [W: $world] :
       $in_world(W,
         ( leo = d2product(d_leo) ) ) ) ).
 
 tff(leo_workers_W_work_hard,
     interpretation-in_world(W,interpretation-mapping(work_hard,$o)),
-    ! [W: $world]
+    ! [W: $world] :
       $in_world(W,
         ( work_hard(d2person(d_alex),d2product(d_leo))
         & work_hard(d2person(d_chris),d2product(d_leo)) ) ) ).

@@ -28,5 +28,4 @@ fof(equality_lost,interpretation,
       & ~ created_equal("gotA","f")
       & created_equal("gotA","john")
       & created_equal("gotA","gotA") ) ) ).
-
 %------------------------------------------------------------------------------

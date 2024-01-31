@@ -38,7 +38,7 @@ tff(fruity_worlds,interpretation,
         & ( healthy(d2fruit(d_apple))
           & healthy(d2fruit(d_banana))
           & ~ rotten(d2fruit(d_apple))
-          & rotten(d2fruit(d_banana)) ) )
+          & rotten(d2fruit(d_banana)) ) ) )
     & $in_world(w2,
         ( ( ! [F: fruit] : ? [DF: d_fruit] : F = d2fruit(DF)
           & ! [DF: d_fruit] : ( DF = d_apple | DF = d_banana )
@@ -52,5 +52,5 @@ tff(fruity_worlds,interpretation,
         & ( healthy(d2fruit(d_apple))
           & healthy(d2fruit(d_banana))
           & ~ rotten(d2fruit(d_apple))
-          & ~ rotten(d2fruit(d_banana)) ) ) ) ) ) ).
+          & ~ rotten(d2fruit(d_banana)) ) ) ) ) ).
 %------------------------------------------------------------------------------
