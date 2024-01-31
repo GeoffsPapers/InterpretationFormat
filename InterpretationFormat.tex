@@ -106,7 +106,7 @@ and industry.
 The TPTP World includes the TPTP problem library \cite{Sut09}, 
 the TSTP solution library \cite{Sut10}, 
 tools and services for processing ATP problems and solutions \cite{Sut10}, 
-it supports the CADE ATP System Competition (CASC) \cite{Sut16}.
+and it supports the CADE ATP System Competition (CASC) \cite{Sut16}.
 The TPTP language \cite{Sut23-IGPL} is one of the keys to the success of the TPTP World.
 Originally the TPTP World supported only first-order clause normal form (CNF)
 \cite{SS98-JAR}.
@@ -196,7 +196,7 @@ properties of interpretation representation can be considered.
 \item Verification of models (checking that the formulae evaluate to $true$ wrt the model), 
       should be possible.
 \item Evaluation of formulae wrt an interpretation should be tractable.
-      This correspnds to the {\em atom test} and {\em formula evaluation} postulates suggested
+      This corresponds to the {\em atom test} and {\em formula evaluation} postulates suggested
       by \cite{FL96,CLP04}.
 \item Interpretations should be sufficiently comprehensible for manual inspection.
 \end{packed_itemize}
@@ -207,8 +207,9 @@ properties of interpretation representation can be considered.
 
 A {\em Tarskian interpretation} \cite{TV56} of formulae in first-order logic consists of a 
 non-empty domain of unequal elements for each type used in the formulae (just one domain for 
-untyped logic), and mappings for the function and predicate symbols with respect to the 
-domains \cite{Hun96,Gal15}.
+untyped logic), mappings for the function symbols from tuples of domain elements to the domain,
+and mappings for the predicate symbols from tuples of domain elements to $\{true,false\}$
+\cite{Hun96,Gal15}.
 An overview of some ways of building and representing Tarskian interpretations is provided 
 by \cite{CLP04}, and \cite{Pel03-EQMC} provides a comprehensive list of approaches.
 A {\em complete} interpretation can interpret all expressions that can be written in the language 
@@ -276,7 +277,8 @@ There is an {\em accessibility relation} between the worlds, which can be subjec
 requirements of the logic being used, e.g., for modal logic {\bf M} the accessibility 
 relation must be reflexive.
 Within each world there is a Tarskian interpretation, and there can be some interaction
-between the worlds' Tarskian interpretations if the terms designate globally MORE TO BE SAID.
+between the worlds' Tarskian interpretations if the terms designate globally MORE TO BE SAID BY
+ALEX.
 Formulae can be interpreted wrt Kripke interpretations (with finite worlds and local terms)~\ldots
 \begin{packed_itemize}
 \item Interpret quantifiers over worlds using Kripke semantics.
@@ -484,7 +486,7 @@ Each domain specification is a conjunction of (following along in Appendices~\re
 \begin{packed_itemize}
 \item The domain for each problem type, as a formula that makes the type-promotion function a 
       surjection (unless it is unnecessary because the problem type and the domain type are the
-      same defined type, e.g., in Appendix~\ref{TFF_Finite.s}~\ldots\\
+      same defined type, e.g., both are {\tt \$int}), e.g., in Appendix~\ref{TFF_Finite.s}~\ldots\\
       \hspace*{0.5cm}\smalltt{! [C: cat] : ? [DC: d\_cat] : C = d2cat(DC)}
 \item Definition of the elements of the domain (unless implicit from their defined type).
       If the domain is finite this is a universally quantified disjunction of equalities whose 
