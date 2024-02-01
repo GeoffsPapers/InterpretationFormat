@@ -463,15 +463,17 @@ FOF interpretation-formulae have a single untyped (or, if you will, of type {\tt
 elements are new (not appearing in the problem) ground terms. 
 The mappings apply the function and predicate symbols to the domain elements.
 Appendix~\ref{FOF_Finite.p} shows a FOF problem that has a countermodel with a finite domain, 
-which shown in Appendix~\ref{FOF_Finite.s}.
+which is shown in Appendix~\ref{FOF_Finite.s}.
 Appendix~\ref{FOF_Finite.s.p} shows the verification problem for the model.
 
 The distinctness of the domain elements must be made explicit, either with pairwise inequalities, 
-or with the {\tt \$distinct} predicate, or by using {\tt "distinct object"}s as domain elements 
-(they are known to be distinct (and often not used in problems, which makes them easy 
-to identify as domain elements)), e.g., in Appendix~\ref{FOF_Finite.s}~\ldots \\
+or with the {\tt \$distinct} predicate, or by using {\tt "double quoted"} terms as domain 
+elements (different {\tt "double quoted"} terms are known to be unequal (and often not used in 
+problems, which makes them easy to identify as domain elements)), e.g., in 
+Appendix~\ref{FOF_Finite.s}~\ldots \\
 \hspace*{0.5cm}\smalltt{! [X] : ( X = "a" | X = "f" | X = "john" | X = "gotA")} \\
-The function mappings are equalities between functions applied to domain eleme, e.g., in Appendix~\ref{FOF_Finite.s}~\ldots \\
+The function mappings are equalities between functions applied to domain elements, e.g., in 
+Appendix~\ref{FOF_Finite.s}~\ldots \\
 \hspace*{0.5cm}\smalltt{grade\_of("john") = "f"}\\
 and the predicate mappings are atoms, e.g., in Appendix~\ref{FOF_Finite.s}~\ldots \\
 \hspace*{0.5cm}\smalltt{created\_equal("john","gotA")}\\
