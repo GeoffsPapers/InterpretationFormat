@@ -261,8 +261,9 @@ system with the explicit intention of representing Herbrand models:
       a model from a saturated branch) \cite{Hah01}, eq-interpretations \cite{Pel03-EQMC}, and 
       predicate definitions over the term algebra \cite{SK12}.
       iProver \cite{Kor08,SK12} is an ATP system that outputs the latter format.
-\item {\em Saturations} \cite{BG+01,Pel03-JSC} are a fixed point for a set of clauses at which 
-      further application of a complete inference system does not generate any new clauses.
+\item {\em Saturations} \cite{BG+01,Pel03-JSC} are a special case of Herbrand-formulae.
+      A saturated is a fixed point for a set of clauses at which further application of a 
+      complete inference system does not generate any new clauses.
       This approach is adopted in saturation-based ATP systems such as E \cite{SCV19},
       Prover9 \cite{McC-Prover9-URL}, Vampire, and Zipperposition \cite{VB+21}.
 \end{packed_itemize}
@@ -352,15 +353,12 @@ To interpret a formula wrt interpretation-formulae~\ldots
       \item In practice, a formula might be neither proved nor disproved within reasonable 
             resource limits, so that nothing is known.
       \end{packed_itemize}
-\item For Herbrand interpretations induced by saturations or Herbrand-formulae, theorem proving 
-      can be used~\ldots
+\item For Herbrand interpretations induced by Herbrand-formulae, theorem proving can be used~\ldots
       \begin{packed_itemize}
-      \item If a formula can be proved from the saturation or Herbrand-formulae then it is 
-            $true$ in all the Herbrand interpretations induced by the saturation or 
-            Herbrand-formulae.
-      \item If a formula can be disproved from the saturation or Herbrand-formulae then it is 
-            $false$ in in all the Herbrand interpretations induced by the saturation or 
-            Herbrand-formulae.
+      \item If a formula can be proved from the Herbrand-formulae then it is $true$ in all the 
+            Herbrand interpretations induced by the Herbrand-formulae.
+      \item If a formula can be disproved from the Herbrand-formulae then it is $false$ in all 
+            the Herbrand interpretations induced by the Herbrand-formulae.
       \item In practice, a formula might be neither proved nor disproved within reasonable 
             resource limits, so that nothing is known.
       \end{packed_itemize}
@@ -548,10 +546,10 @@ The TFF and THF interpretation-formulae are preceded by the necessary type decla
       interpretation of function and predicate symbols is not given for argument tuples with 
       negative integers, i.e., this is an example of a partial interpretation.
       Appendix~\ref{TFF_Integer.s.p} shows the verification problem for the model.
-\item Appendix~\ref{TFF_Infinite.p} also has a model with an infinite term domain, which is
-      shown in Appendix~\ref{TFF_Peano.s}.
+\item The problem in Appendix~\ref{TFF_Infinite.p} also has a model with an infinite term domain,
+      which is shown in Appendix~\ref{TFF_Peano.s}.
       Appendix~\ref{TFF_Peano.s.p} shows the verification problem for the model.
-\item Appendix~\ref{THF_Finite.p} shows a problem that has a countermodel with finite domains,
+\item Appendix~\ref{THF_Finite.p} shows a THF problem that has a countermodel with finite domains,
       which shown in Appendix~\ref{THF_Finite.s}.
       Appendix~\ref{THF_Finite.s.p} shows the verification problem for the model.
 \end{packed_itemize}
@@ -628,17 +626,20 @@ functions of type {\tt beverage > syrup} and all {\tt syrups}, applying the func
 \hspace*{0.8cm}\smalltt{= ( d2beverage @ d\_coffee ) )}
 
 %--------------------------------------------------------------------------------------------------
-\subsection{Saturations and Herbrand-formulae}
+\subsection{Herbrand-formulae and Saturations}
 \label{NewHerbrand}
 
-Saturations and Herbrand-formulae induce sets of Herbrand interpretations.
+Herbrand-formulae induce sets of Herbrand interpretations.
 Interpretation-formulae can be used for these, although the actual Herbrand interpretations are
 not easy to extract.
 To indicate that the interpretation-formulae are intended to induce Herbrand interpretations they
-are given the role and subrole{\tt interpretation-herbrand}.
-Appendices~\ref{FOF_Saturation.s} and~\ref{FOF_Formulae.s} show examples.
-Appendices~\ref{FOF_Saturation.s.p} and~\ref{FOF_Formulae.s.p} show the verification problems for 
-the interpretations.
+are given the role and subrole {\tt interpretation-herbrand}.
+The problem in Appendix~\ref{FOF_Finite.p} has a Herbrand-formulae model formed from predicate 
+definitions over the term algebra, which is shown in Appendix~\ref{FOF_Formulae.s}.
+The problem in Appendix~\ref{FOF_Finite.p} has a saturation, which is shown in
+Appendix~\ref{FOF_Saturation.s}.
+Appendices~\ref{FOF_Formulae.s.p} and~\ref{FOF_Saturation.s.p} show the corresponding verification 
+problems for the models.
 
 %--------------------------------------------------------------------------------------------------
 \section{Kripke Interpretations}
@@ -977,13 +978,6 @@ All these listings are available from
 \end{small}
 
 \newpage
-\subsection{FOF Saturation for \ref{FOF_Finite.p}}
-\label{FOF_Saturation.s}
-\begin{small}
-\verbatiminput{FOF_Saturation.s}
-\end{small}
-
-\newpage
 \subsection{FOF Formula Model for \ref{FOF_Finite.p}}
 \label{FOF_Formulae.s}
 \begin{small}
@@ -991,10 +985,10 @@ All these listings are available from
 \end{small}
 
 \newpage
-\subsection{FOF Verification Problem for \ref{FOF_Finite.p} and \ref{FOF_Saturation.s}}
-\label{FOF_Saturation.s.p}
+\subsection{FOF Saturation for \ref{FOF_Finite.p}}
+\label{FOF_Saturation.s}
 \begin{small}
-\verbatiminput{FOF_Saturation.s.p}
+\verbatiminput{FOF_Saturation.s}
 \end{small}
 
 \newpage
@@ -1002,6 +996,13 @@ All these listings are available from
 \label{FOF_Formulae.s.p}
 \begin{small}
 \verbatiminput{FOF_Formulae.s.p}
+\end{small}
+
+\newpage
+\subsection{FOF Verification Problem for \ref{FOF_Finite.p} and \ref{FOF_Saturation.s}}
+\label{FOF_Saturation.s.p}
+\begin{small}
+\verbatiminput{FOF_Saturation.s.p}
 \end{small}
 
 %--------------------------------------------------------------------------------------------------
