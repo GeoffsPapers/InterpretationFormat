@@ -142,7 +142,7 @@ models.
 SAT solvers generally output models as specified by the SAT competitions \cite{JL+12}, in a 
 simple format similar to the DIMACS input format \cite{Bab93}.
 Some individual model finding systems have defined their own formats for models, e.g., the 
-output formats of Nitpick and Z3 \cite{dMB08}.
+output formats of Nitpick \cite{BN10-ITP} and Z3 \cite{dMB08}.
 % +++
 % Nikolaj says ...
 % Z3 It produces models that define functions by expressions. For example a model of succ is 
@@ -694,6 +694,9 @@ The TXF and THF interpretation-formulae are preceded by the necessary type decla
 Appendix~\ref{NXF_Finite-Finite-Global.p} shows a NXF problem that has a countermodel with
 finite worlds each of which has a finite Tarskian model, which is shown in
 Appendix~\ref{NXF_Finite-Finite-Global.s}.
+(The countermodel was found by embedding the problem into THF using the NTFLET tool 
+\cite{Ste22,Ste22-LE}, running Nitpick on the THF problem, and converting Nitpick's output
+to the TPTP format by hand.)
 There are two worlds~\ldots \\
 \hspace*{0.5cm}\smalltt{! [W: \$world] : ( W = w1 | W = w2 )} \\
 \hspace*{0.5cm}\smalltt{\$distinct(w1,w2)} \\
@@ -813,7 +816,7 @@ so the NXF verification (negated) conjecture has the {\tt local} subrole~\ldots 
 \hspace*{0.8cm}\smalltt{\{{\raisebox{0.4ex}{\texttildelow}} ( {\$possible} @ (( gets\_rich(alex) \& \{{\raisebox{0.4ex}{\texttildelow}} gets\_rich(chris) )) ) ).} \\
 A special logic specification {\tt \$\$fomlModel} is used.
 
-The NXF verification problem is embedded into TH0 using the NTFLET tool \cite{Ste22,Ste22-LE}.
+The NXF verification problem is embedded into TH0 using the NTFLET tool.
 NTFLET recognizes the the new type and predicates in the embedding process, and combines
 the NXF conjectures into a single TH0 conjecture.
 The resultant TH0 verification problem is discharged using a trusted TH0 ATP system.
