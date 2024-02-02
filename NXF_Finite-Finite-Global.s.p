@@ -54,10 +54,11 @@ tff(d_leo_decl,type, d_leo: d_product ).
 tff(working_worlds,axiom,
     ( ! [W: '$world'] : ( ( W = w1 ) | ( W = w2 ) )
     & ( w1 != w2 )
-    & ( '$local_world' = w1 )
+    & ( '$local_world' = w2 )
     & '$accessible_world'(w1,w1)
     & '$accessible_world'(w2,w2)
     & '$accessible_world'(w1,w2)
+    & '$accessible_world'(w2,w1)
     & '$in_world'(w1,
         ( ! [P: person] : ? [DP: d_person] : ( P = d2person(DP) )
         & ! [DP: d_person] : ( ( DP = d_alex ) | ( DP = d_chris ) )
@@ -76,7 +77,7 @@ tff(working_worlds,axiom,
         & ( leo = d2product(d_leo) )
         & work_hard(d2person(d_alex),d2product(d_leo))
         & work_hard(d2person(d_chris),d2product(d_leo))
-        & ~ gets_rich(d2person(d_alex))
+        & gets_rich(d2person(d_alex))
         & gets_rich(d2person(d_chris)) ) )
     & '$in_world'(w2,
         ( ! [P: person] : ? [DP: d_person] : ( P = d2person(DP) )
@@ -96,7 +97,7 @@ tff(working_worlds,axiom,
         & ( leo = d2product(d_leo) )
         & work_hard(d2person(d_alex),d2product(d_leo))
         & work_hard(d2person(d_chris),d2product(d_leo))
-        & gets_rich(d2person(d_alex))
+        & ~ gets_rich(d2person(d_alex))
         & ~ gets_rich(d2person(d_chris)) )) ) ).
 
 tff(prove_formulae,conjecture,
@@ -109,11 +110,12 @@ tff(prove_formulae,conjecture,
                => '$possible'(W,gets_rich(P)) )
             & ~ ? [P: person] : '$necessary'(W,gets_rich(P))
             & work_hard(alex,leo)
-            & work_hard(chris,leo) ) ) )
+            & work_hard(chris,leo) 
+            & chris != alex ) ) )
     & ? [I: $o] :
         ( '$in_world'('$local_world',(I))
         & ( (I)
-         => '$possible'('$local_world',
-              ( gets_rich(alex)
-              & ~ gets_rich(chris) )) ) ) ) ).
+         => ~ '$possible'('$local_world',
+                ( gets_rich(alex)
+                & ~ gets_rich(chris) )) ) ) ) ).
 %------------------------------------------------------------------------------

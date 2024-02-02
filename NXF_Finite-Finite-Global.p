@@ -32,6 +32,10 @@ tff(alex_works_on_leo,axiom,
 tff(chris_works_on_leo,axiom,
     work_hard(chris,leo) ).
 
+%----Chris is not Alex
+tff(chris_not_alex,axiom,
+    chris != alex ).
+
 %----It's possible that Alex gets rich but Chris does not.
 tff(only_alex_gets_rich,conjecture,
     ( {$possible} @ (gets_rich(alex) & ~ gets_rich(chris)) ) ).

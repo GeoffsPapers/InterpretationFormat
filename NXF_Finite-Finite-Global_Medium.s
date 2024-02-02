@@ -21,10 +21,11 @@ tff(w2_decl,type,w2:     $world).
 tff(leo_workers_worlds,interpretation-world,
     ( ! [W: $world] : ( W = w1 | W = w2 )
     & $distinct(w1,w2)
-    & $local_world = w1
+    & $local_world = w2
     & $accessible_world(w1,w1)     %----Logic is M
     & $accessible_world(w2,w2)
-    & $accessible_world(w1,w2) ) ). 
+    & $accessible_world(w1,w2)
+    & $accessible_world(w2,w1) ) ). 
 
 tff(leo_workers_w1_domain,
     interpretation-in_world(w1,interpretation-domain),
@@ -66,7 +67,7 @@ tff(leo_workers_w1_mappings,
         & leo = d2product(d_leo) )
       & ( work_hard(d2person(d_alex),d2product(d_leo))
         & work_hard(d2person(d_chris),d2product(d_leo))
-        & ~ gets_rich(d2person(d_alex))
+        & gets_rich(d2person(d_alex))
         & gets_rich(d2person(d_chris)) ) ) ) ). 
 
 tff(leo_workers_w2_mappings,
@@ -77,6 +78,6 @@ tff(leo_workers_w2_mappings,
         & leo = d2product(d_leo) )
       & ( work_hard(d2person(d_alex),d2product(d_leo))
         & work_hard(d2person(d_chris),d2product(d_leo))
-        & gets_rich(d2person(d_alex))
+        & ~ gets_rich(d2person(d_alex))
         & ~ gets_rich(d2person(d_chris)) ) ) ) ). 
 %------------------------------------------------------------------------------
