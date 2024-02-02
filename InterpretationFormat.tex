@@ -626,7 +626,7 @@ functions of type {\tt beverage > syrup} and all {\tt syrups}, applying the func
 \hspace*{0.8cm}\smalltt{= ( d2beverage @ d\_coffee ) )}
 
 %--------------------------------------------------------------------------------------------------
-\subsection{Herbrand-formulae and Saturations}
+\section{Herbrand-formulae and Saturations}
 \label{NewHerbrand}
 
 Herbrand-formulae induce sets of Herbrand interpretations.
@@ -646,7 +646,7 @@ problems for the models.
 \label{NewKripke}
  
 The TPTP format for Kripke interpretations also uses interpretation-formulae.
-A single Kripke interpretation-formula is a conjunction of components (see simple FOF and TFF 
+A single Kripke interpre\-tation-formula is a conjunction of components (see simple FOF and TFF 
 examples in Appendices~\ref{NXF_Finite-Finite-Global.s} and~\ref{NXF_Finite-Finite-Local.s}.
 As was noted in Section~\ref{Have}, Kripke interpretations can have either a finite or an
 infinite number of worlds, and the interpretations in a world can be Tarskian or Herbrand.
@@ -735,7 +735,7 @@ worlds of the interpretation, e.g., in Appendix~\ref{NXF_Finite-Finite-Global_Me
 annotated formula~\ldots \\
 \hspace*{0.5cm}\smalltt{tff(leo\_workers\_worlds,interpretation-world,} \\
 contains the information about the two worlds.
-Annotated formulae with the role {\tt interpretation-in\_world} provide information about the
+Annotated formulae with the role {\tt interpretation\-in\_world} provide information about the
 interpretation in the world named as the first argument of the {\tt in\_world} subrole.
 The second argument of the {\tt in\_world} subrole tells what information is provided, using the
 roles and subroles for Tarskian/Herbrand interpretation-formulae, e.g., in 
@@ -898,7 +898,7 @@ For ATP systems that already output the old TPTP format for finite Tarskian inte
 all that is needed is to replace the {\tt fi\_domain}, {\tt fi\_functors}, and {\tt fi\_predicates}
 roles by {\tt interpretation}. 
 To be more informative, {\tt fi\_domain} can be replaced by by {\tt interpretation-domain}, and 
-{\tt fi\_functors} and {\tt fi\_predicates} can be replaced by {\tt interpretation-mapping}.
+{\tt fi\_functors} and {\tt fi\_predicates} can be replaced by {\tt interpretation\-mapping}.
 
 Section~\ref{Need} listed three needs for interpretations: 
 \begin{packed_itemize}
