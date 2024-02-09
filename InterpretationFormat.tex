@@ -94,8 +94,8 @@ A salient application area that uses this form of ATP is verification \cite{DKW0
 countermodel is used to pinpoint the reason why a proof obligation fails, and correspondingly 
 points to the location of the fault in the system being verified.
 Other applications of model finding include checking the consistency of an axiomatization 
-\cite{SS+17}, and finding a solution to a problem that is coded as a model finding problem 
-\cite{Win82}.
+\cite{SS+17}, operations research \cite{Hoo93}, commonsense reasoning \cite{KR94}, and solving 
+model finding problems \cite{Win82}.
 
 The TPTP World \cite{Sut17} (\href{https://www.tptp.org}{\tt www.tptp.org}) is a well established 
 infrastructure that supports research, development, and deployment of 
@@ -127,7 +127,7 @@ and~\ref{NXF_Finite-Finite-Local.p}.
 
 A TPTP format for interpretations with finite domains was previously been defined \cite{SS+06},
 and has served the ATP community adequately for almost 20 years. 
-The old format is output by several ATP systems, e.g., Paradox \cite{CS03}, FMDarwin \cite{BF+06}, 
+The old format is output by several ATP systems, e.g., Paradox \cite{CS03}, FM-Darwin \cite{BF+06}, 
 Vampire \cite{KV13}.
 Recently the need for a format for interpretations with infinite domains, and for a format for 
 Kripke interpretations \cite{Kri63}, has led to the development of a new TPTP format for 
@@ -193,11 +193,13 @@ model finder does not need to be trusted,
 Given the innate desirability of obtaining explicit models of satisfiable formulae, desirable
 properties of interpretation representation can be considered.
 \begin{packed_itemize}
-\item Verification of models (checking that the formulae evaluate to $true$ wrt the model), 
-      should be possible.
+\item Evaluation of formulae wrt an interpretation should be possible, because many uses of
+      interpretations can be reduced to evaluation in a simple way \cite[\S3.2]{CLP04}.
 \item Evaluation of formulae wrt an interpretation should be tractable.
       This corresponds to the {\em atom test} and {\em formula evaluation} postulates suggested
       by \cite{FL96,CLP04}.
+\item Verification of models (checking that the formulae evaluate to $true$ wrt the model), 
+      should be possible.
 \item Interpretations should be sufficiently comprehensible for manual inspection.
 \end{packed_itemize}
 
@@ -224,7 +226,7 @@ Two types of Tarskian interpretations are clear (and more might exist)~\ldots
       At each iteration the formulae are reduced to either propositional 
       \cite{CS03,McC03-MACE4-TR} or function free \cite{BF+09} logic, both of which are decidable.
       An ATP system can then decide if there is a model.
-      There are several ATP systems that produce finite Tarskian models, e.g., Paradox, FMDarwin, 
+      There are several ATP systems that produce finite Tarskian models, e.g., Paradox, FM-Darwin, 
       and Vampire.
 \item {\em Infinite} Tarskian interpretations have one or more infinite domains.
       Infinite domains can be explicitly generated (e.g., terms representing Peano numbers) or 
@@ -256,11 +258,14 @@ system with the explicit intention of representing Herbrand models:
       {\em Herbrand-formulae} to avoid confusion, can be produced.
       Examples include saturations (discussed separately in the next bullet point), a disjunction 
       of implicit generalisations (DIGs) \cite{LM87}, sets of constrained unit clauses 
-      \cite{CZ92,CP95,CP95-TAB}, SGGS clause sequences \cite{BP16}, various representations of 
-      tableaux (as long as you use a proof confluent calculus, it is normally possible to construct 
-      a model from a saturated branch) \cite{Hah01}, eq-interpretations \cite{Pel03-EQMC}, and 
+      \cite{CZ92,CP95,CP95-TAB}, SGGS clause sequences \cite{BP16}, tableaux \cite{Hah01}
+      % (as long as you use a proof confluent calculus, it is normally possible to construct 
+      % a model from a saturated branch) 
+      and hyper-tableaux \cite{BFN96}, eq-interpretations \cite{Pel03-EQMC}, and 
       predicate definitions over the term algebra \cite{SK12}.
-      iProver \cite{Kor08,SK12} is an ATP system that outputs the latter format.
+      E-KRHyper \cite{PW07} was an ATP systems that produced hyper-tableaux, and
+      iProver \cite{Kor08,SK12} is an ATP system that outputs predicate definitions 
+      over the term algebra.
 \item {\em Saturations} \cite{BG+01,Pel03-JSC} are a special case of Herbrand-formulae.
       A saturated is a fixed point for a set of clauses at which further application of a 
       complete inference system does not generate any new clauses.
