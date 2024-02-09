@@ -1,12 +1,12 @@
 %------------------------------------------------------------------------------
 %----Definitions to make it non-modal
-tff(dollar_world_type,type,'$world': $tType).
+tff(dollar_world_type,type,       '$world': $tType ).
 tff(dollar_accessible_world_decl,type,
-    '$accessible_world': ('$world' * '$world') > $o).
-tff(dollar_local_world_decl,type, '$local_world': '$world').
-tff(dollar_in_world_decl,type, '$in_world': ('$world' * $o) > $o).
-tff(dollar_necessary_decl,type, '$necessary': ('$world' * $o) > $o).
-tff(dollar_possible_decl,type, '$possible': ('$world' * $o) > $o).
+    '$accessible_world': ( '$world' * '$world' ) > $o ).
+tff(dollar_local_world_decl,type, '$local_world': '$world' ).
+tff(dollar_in_world_decl,type,    '$in_world': ( '$world' * $o ) > $o ).
+tff(dollar_necessary_decl,type,   '$necessary': ( '$world' * $o ) > $o ).
+tff(dollar_possible_decl,type,    '$possible': ( '$world' * $o ) > $o ).
 
 tff(necessary_defn,axiom,
     ! [CW: '$world',F: $o] :
@@ -33,24 +33,24 @@ tff(duality,axiom,
       & ( ~ '$possible'(W,(F))
       <=> '$necessary'(W,~ (F)) ) ) ).
 
-tff(fruit_type,type,fruit: $tType).
-tff(apple_decl,type,apple: fruit).
-tff(banana_decl,type,banana: fruit).
-tff(healthy_decl,type,healthy: fruit > $o).
-tff(rotten_decl,type,rotten: fruit > $o).
+tff(fruit_type,type,    fruit: $tType ).
+tff(apple_decl,type,    apple: fruit ).
+tff(banana_decl,type,   banana: fruit ).
+tff(healthy_decl,type,  healthy: fruit > $o ).
+tff(rotten_decl,type,   rotten: fruit > $o ).
+
+tff(d_fruit_type,type,  d_fruit: $tType ).
+tff(d2fruit_decl,type,  d2fruit: d_fruit > fruit ).
+tff(d_apple_decl,type,  d_apple: d_fruit ).
+tff(d_banana_decl,type, d_banana: d_fruit ).
 
 tff(w1_decl,type, w1: '$world').
 tff(w2_decl,type, w2: '$world').
-tff(d_fruit_type,type,d_fruit: $tType).
-tff(d2fruit_decl,type, d2fruit: d_fruit > fruit ).
-tff(d_apple_decl,type,d_apple: d_fruit).
-tff(d_banana_decl,type,d_banana: d_fruit).
 
 tff(fruity_worlds,axiom,
     ( ( ! [W: '$world'] : ( W = w1 | W = w2 )
       & '$local_world' = w1
-      & '$accessible_world'(w1,w1)     %----Logic is M
-      & '$accessible_world'(w2,w2)
+      & '$accessible_world'(w1,w1) & '$accessible_world'(w2,w2)
       & '$accessible_world'(w1,w2) )
     & ( '$in_world'(w1,
           ( ( ! [F: fruit] : ? [DF: d_fruit] : F = d2fruit(DF)
@@ -94,6 +94,5 @@ tff(prove_formulae,conjecture,
         & ( (I)
          => ( rotten(banana)
             & ~ '$necessary'('$local_world',
-                  ( healthy(apple)
-                  & ~ rotten(banana) )) ) ) ) ) ).
+                  ( healthy(apple) & ~ rotten(banana) )) ) ) ) ) ).
 %------------------------------------------------------------------------------

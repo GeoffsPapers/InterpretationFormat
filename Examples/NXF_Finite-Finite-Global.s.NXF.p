@@ -1,53 +1,24 @@
 %------------------------------------------------------------------------------
 tff(the_logic,logic,$$fomlModel).
 
-tff(person_decl,type,
-    person: $tType ).
+tff(person_decl,type,    person: $tType ).
+tff(product_decl,type,   product: $tType ).
+tff(alex_decl,type,      alex: person ).
+tff(chris_decl,type,     chris: person ).
+tff(leo_decl,type,       leo: product ).
+tff(work_hard_decl,type, work_hard: ( person * product ) > $o ).
+tff(gets_rich_decl,type, gets_rich: person > $o ).
 
-tff(product_decl,type,
-    product: $tType ).
+tff(d_person_type,type,  d_person: $tType ).
+tff(d2person_decl,type,  d2person: d_person > person ).
+tff(d_alex_decl,type,    d_alex: d_person ).
+tff(d_chris_decl,type,   d_chris: d_person ).
+tff(d_product_type,type, d_product: $tType ).
+tff(d2product_decl,type, d2product: d_product > product ).
+tff(d_leo_decl,type,     d_leo: d_product ).
 
-tff(alex_decl,type,
-    alex: person ).
-
-tff(chris_decl,type,
-    chris: person ).
-
-tff(leo_decl,type,
-    leo: product ).
-
-tff(work_hard_decl,type,
-    work_hard: ( person * product ) > $o ).
-
-tff(gets_rich_decl,type,
-    gets_rich: person > $o ).
-
-tff(d_person_type,type,
-    d_person: $tType ).
-
-tff(d2person_decl,type,
-    d2person: d_person > person ).
-
-tff(d_alex_decl,type,
-    d_alex: d_person ).
-
-tff(d_chris_decl,type,
-    d_chris: d_person ).
-
-tff(d_product_type,type,
-    d_product: $tType ).
-
-tff(d2product_decl,type,
-    d2product: d_product > product ).
-
-tff(d_leo_decl,type,
-    d_leo: d_product ).
-
-tff(w1_decl,type,
-    w1: $world ).
-
-tff(w2_decl,type,
-    w2: $world ).
+tff(w1_decl,type,        w1: $world ).
+tff(w2_decl,type,        w2: $world ).
 
 tff(leo_workers,interpretation,
     ( ! [W: $world] :

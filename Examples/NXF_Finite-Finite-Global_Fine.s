@@ -22,10 +22,8 @@ tff(leo_workers_worlds,interpretation-world,
     ( ! [W: $world] : ( W = w1 | W = w2 )
     & $distinct(w1,w2)
     & $local_world = w2
-    & $accessible_world(w1,w1)     %----Logic is M
-    & $accessible_world(w2,w2)
-    & $accessible_world(w1,w2)
-    & $accessible_world(w2,w1) ) ). 
+    & $accessible_world(w1,w1) & $accessible_world(w2,w2)
+    & $accessible_world(w1,w2) & $accessible_world(w2,w1) ) ). 
 
 tff(leo_workers_w1_person,
     interpretation-in_world(w1,interpretation-domain(person,d_person)),
@@ -69,33 +67,27 @@ tff(leo_workers_w2_product,
 
 tff(leo_workers_w1_alex,
     interpretation-in_world(w1,interpretation-mapping(alex,d_person)),
-    $in_world(w1,
-      ( alex = d2person(d_alex) )) ).
+    $in_world(w1, ( alex = d2person(d_alex) )) ).
 
 tff(leo_workers_w2_alex,
     interpretation-in_world(w2,interpretation-mapping(alex,d_person)),
-    $in_world(w2,
-      ( alex = d2person(d_alex) )) ).
+    $in_world(w2, ( alex = d2person(d_alex) )) ).
 
 tff(leo_workers_w1_chris,
     interpretation-in_world(w1,interpretation-mapping(chris,d_person)),
-    $in_world(w1,
-      ( chris = d2person(d_chris) )) ).
+    $in_world(w1, ( chris = d2person(d_chris) )) ).
 
 tff(leo_workers_w2_chris,
     interpretation-in_world(w2,interpretation-mapping(chris,d_person)),
-    $in_world(w2,
-      ( chris = d2person(d_chris) )) ).
+    $in_world(w2, ( chris = d2person(d_chris) )) ).
 
 tff(leo_workers_w1_leo,
     interpretation-in_world(w1,interpretation-mapping(leo,d_product)),
-    $in_world(w1,
-      ( leo = d2product(d_leo) )) ).
+    $in_world(w1, ( leo = d2product(d_leo) )) ).
 
 tff(leo_workers_w2_leo,
     interpretation-in_world(w2,interpretation-mapping(leo,d_product)),
-    $in_world(w2,
-      ( leo = d2product(d_leo) )) ).
+    $in_world(w2, ( leo = d2product(d_leo) )) ).
 
 tff(leo_workers_w1_work_hard,
     interpretation-in_world(w1,interpretation-mapping(work_hard,$o)),
@@ -112,13 +104,11 @@ tff(leo_workers_w2_work_hard,
 tff(leo_workers_w1_gets_rich,
     interpretation-in_world(w1,interpretation-mapping(gets_rich,$o)),
     $in_world(w1,
-      ( gets_rich(d2person(d_alex))
-      & gets_rich(d2person(d_chris)) ) ) ). 
+      ( gets_rich(d2person(d_alex)) & gets_rich(d2person(d_chris)) ) ) ). 
 
 tff(leo_workers_w2_gets_rich,
     interpretation-in_world(w2,interpretation-mapping(gets_rich,$o)),
     $in_world(w2,
-      ( ~ gets_rich(d2person(d_alex))
-      & ~ gets_rich(d2person(d_chris)) ) ) ). 
+      ( ~ gets_rich(d2person(d_alex)) & ~ gets_rich(d2person(d_chris)) ) ) ). 
 %------------------------------------------------------------------------------
 

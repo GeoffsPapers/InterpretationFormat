@@ -1,67 +1,61 @@
 %------------------------------------------------------------------------------
 tff(the_logic,logic,$$fomlModel).
 
-tff(sequence_type,type,
-    sequence: $tType ).
+tff(fruit_type,type,    fruit: $tType ).
+tff(apple_decl,type,    apple: fruit ).
+tff(banana_decl,type,   banana: fruit ).
+tff(healthy_decl,type,  healthy: fruit > $o ).
+tff(rotten_decl,type,   rotten: fruit > $o ).
 
-tff(null_decl,type,
-    null: sequence ).
+tff(d_fruit_type,type,  d_fruit: $tType ).
+tff(d2fruit_decl,type,  d2fruit: d_fruit > fruit ).
+tff(d_apple_decl,type,  d_apple: d_fruit ).
+tff(d_banana_decl,type, d_banana: d_fruit ).
 
-tff(toss_decl,type,
-    toss: sequence > sequence ).
+tff(w1_decl,type,       w1: $world ).
+tff(w2_decl,type,       w2: $world ).
 
-tff(all_heads_decl,type,
-    all_heads: sequence > $o ).
-
-tff(int2sequence_decl,type,
-    int2sequence: $int > sequence ).
-
-tff(w1_decl,type,
-    w1: $world ).
-
-tff(w2_decl,type,
-    w2: $world ).
-
-tff(tossed_worlds,interpretation,
-    ( ! [W: $world] :
-        ( ( W = w1 )
-        | ( W = w2 ) )
+tff(fruity_worlds,interpretation,
+    ( ! [W: $world] : ( ( W = w1 ) | ( W = w2 ) )
     & ( $local_world = w1 )
-    & $accessible_world(w1,w1)
-    & $accessible_world(w2,w2)
+    & $accessible_world(w1,w1) & $accessible_world(w2,w2)
     & $accessible_world(w1,w2)
     & $in_world(w1,
-        ( ! [S: sequence] :
-          ? [I: $int] : ( S = int2sequence(I) )
-        & ! [X: $int,Y: $int] :
-            ( ( int2sequence(X) = int2sequence(Y) )
-           => ( X = Y ) )
-        & ( null = int2sequence(1) )
-        & ( toss(int2sequence(1)) = int2sequence(2) )
-        & ! [I: $int] : ( toss(int2sequence(I)) = int2sequence($product(I,2)) )
-        & all_heads(int2sequence(1))
-        & ! [I: $int] :
-            ( all_heads(int2sequence(I))
-          <=> ( $greatereq(I,2)
-              & ( $remainder_e(I,2) = 0 )
-              & all_heads(int2sequence($quotient_e(I,2))) ) ) ))
+        ( ! [F: fruit] :
+          ? [DF: d_fruit] : ( F = d2fruit(DF) )
+        & ! [DF: d_fruit] :
+            ( ( DF = d_apple )
+            | ( DF = d_banana ) )
+        & $distinct(d_apple,d_banana)
+        & ? [DP: d_fruit] : ( DP = d_apple )
+        & ? [DP: d_fruit] : ( DP = d_banana )
+        & ! [DF1: d_fruit,DF2: d_fruit] :
+            ( ( d2fruit(DF1) = d2fruit(DF2) )
+           => ( DF1 = DF2 ) )
+        & ( apple = d2fruit(d_apple) )
+        & ( banana = d2fruit(d_banana) )
+        & healthy(d2fruit(d_apple))
+        & healthy(d2fruit(d_banana))
+        & ~ rotten(d2fruit(d_apple))
+        & rotten(d2fruit(d_banana)) ))
     & $in_world(w2,
-        ( ! [S: sequence] :
-          ? [I: $int] : ( S = int2sequence(I) )
-        & ! [X: $int,Y: $int] :
-            ( ( int2sequence(X) = int2sequence(Y) )
-           => ( X = Y ) )
-        & ( null = int2sequence(1) )
-        & ( toss(int2sequence(1)) = int2sequence(3) )
-        & ! [I: $int] :
-            ( ( I != 1 )
-           => ( toss(int2sequence(I)) = int2sequence($product(I,2)) ) )
-        & all_heads(int2sequence(1))
-        & ! [I: $int] :
-            ( all_heads(int2sequence(I))
-          <=> ( $greatereq(I,2)
-              & ( $remainder_e(I,2) = 0 )
-              & all_heads(int2sequence($quotient_e(I,2))) ) ) )) ) ).
+        ( ! [F: fruit] :
+          ? [DF: d_fruit] : ( F = d2fruit(DF) )
+        & ! [DF: d_fruit] :
+            ( ( DF = d_apple )
+            | ( DF = d_banana ) )
+        & $distinct(d_apple,d_banana)
+        & ? [DP: d_fruit] : ( DP = d_apple )
+        & ? [DP: d_fruit] : ( DP = d_banana )
+        & ! [DF1: d_fruit,DF2: d_fruit] :
+            ( ( d2fruit(DF1) = d2fruit(DF2) )
+           => ( DF1 = DF2 ) )
+        & ( apple = d2fruit(d_apple) )
+        & ( banana = d2fruit(d_banana) )
+        & healthy(d2fruit(d_apple))
+        & healthy(d2fruit(d_banana))
+        & ~ rotten(d2fruit(d_apple))
+        & ~ rotten(d2fruit(d_banana)) )) ) ).
 
 tff(apple_not_banana,conjecture-global,
     apple != banana ).
