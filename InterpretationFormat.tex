@@ -278,21 +278,23 @@ While the domain of the Herbrand interpretations induced by a saturation is know
 Herbrand Universe, there might not be an explicit symbol interpretation that can be used 
 constructively by users.
 
-A {\em Kripke interpretation} \cite{Kri63} adds a layer of so-called {\em possible worlds} over Tarskian 
+A {\em Kripke interpretation} \cite{Kri63} adds a layer of {\em possible worlds} over Tarskian 
 interpretations.
 There can be a finite or infinite number of worlds.
 There is an {\em accessibility relation} between the worlds, which can be subject to the
 requirements of the logic being used, e.g., for modal logic {\bf M} the accessibility 
 relation must be reflexive~\cite{Gar18}.
-Within each world there is a Tarskian interpretation, each possibly having different domains, and terms
-may denote objects that do not exist (in the respective domain) at the world of evaluation.
-If {\em local terms} are assumed, the denotation of any ground term at some world may only be
-chosen from the domain of that world. Quantification only quantifies over objects of the domain from the
-world at hand ({\em actualist quantification}), but the domains of the Tarskian interpretations at each
-world may be chosen to coincide in order to simplify matters ({\em possibilist quantification}).
+Within each world there is a Tarskian interpretation, each possibly having different domains.
+If {\em local terms} are assumed, the designation of a ground term in a world may be chosen 
+from only the domain in that world. 
+If {\em global terms} are assumed, the designation of a ground term in a world may be chosen 
+from the domain in any world.
+Quantification is over the domains in the world of evaluation ({\em actualist quantification}), 
+but the domains in the worlds can be chosen to coincide to simplify matters ({\em possibilist 
+quantification}).
 Formulae can be interpreted wrt Kripke interpretations (with finite worlds and local terms)~\ldots
 \begin{packed_itemize}
-\item Interpret quantifiers over worlds using Kripke semantics (modal operators).
+\item Interpret modal operators using Kripke semantics.
 \item Interpret formulae within a world wrt the Tarskian interpretation in the world.
 \end{packed_itemize}
 
@@ -382,32 +384,33 @@ To interpret a formula wrt interpretation-formulae~\ldots
 \label{Verification}
 
 Given ways to interpret a formula wrt interpretation-formulae, models represented in
-interpretation-formulae can be verified.
-Verification has (at least) the following aspects: \alex{I argue that point 3. is validaton and not verification. So verification would be 1,2,4 and validation would be 3. Both is important, of course, but if we split this we can argue that we can fully verify but we cannot validate.}
+interpretation-formulae can be checked.
+This has (at least) the following aspects: 
 \begin{packed_enumerate}
-\item Are the type declarations and interpretation formula syntactically well-formed 
-      and well-typed? \alex{Types are syntax, see e.g. \url{https://lawrencecpaulson.github.io/2022/03/16/Types_vs_Sets.html} :-)}
-\item Are the interpretation-formulae satisfiable?
-\item Do the interpretation-formulae correctly represent the interpretation found by the 
-      ATP system?
-\item Is the interpretation represented by the interpretation-formulae a model for the given 
-      formulae?
+\item Validate that the interpretation-formulae correctly represent the interpretation found 
+      by the ATP system.
+\item Verify that the type declarations and interpretation formula syntactically well-formed 
+      and well-typed. 
+\item Verify that the interpretation-formulae satisfiable.
+\item Verify that the interpretation represented by the interpretation-formulae is a model for 
+      the given formulae.
 \end{packed_enumerate}
 
 These questions are answered as follows:
 \begin{enumerate}
-\item This can be confirmed using standard parsing and type checking tools, e.g., \cite{VS06,HR15,Ste23-TU}.
+\item This cannot be confirmed, as that representation is internal to the ATP system that found
+      the model.
+\item This can be confirmed using standard parsing and type checking tools, e.g., 
+      \cite{VS06,HR15,Ste23}.
 \item This can be empirically confirmed using a trusted model finder (in the same way the GDV 
       derivation verifier \cite{Sut06} uses the Otter system \cite{McC03-Otter} as a trusted 
       theorem prover).
       Hopefully, confirming that the interpretation formula is satisfiable is much easier than 
       finding the model itself, so the ATP system used to check the satisfiability can be weaker 
       and more trusted than the ATP system that found the model.
-\item This cannot be confirmed, as that representation is internal to the ATP system that found
-      the model.
 \item The TPTP World uses the theorem proving approach to verification, in which the problem 
       formulae $\Phi$ are proved from the interpretation-formulae $\varphi$ using a trusted 
-      theorem prover.  \alex{Usually $\Phi$ is used as set, and $\varphi$ as formula. Update here?}
+      theorem prover.
       $\varphi$ are given as axioms, and $\Phi$ as the conjecture to be proved.
       The soundness of this approach is provided by showing that if $\Phi$ can be proved from 
       $\varphi$ then the interpretation $I$ represented by $\varphi$ is a model of $\Phi$.
@@ -467,8 +470,8 @@ Section~\ref{NewHerbrand}.
 \subsection{FOF Tarskian Interpretations}
 \label{NewTarskianFOF}
 
-FOF interpretation-formulae have a single untyped (or, if you will, of type {\tt \$i}) domain whose \alex{TPTP types never introduced before. Ignore?}
-elements are new (not appearing in the problem) ground terms. 
+FOF interpretation-formulae have a single untyped domain whose elements are new (not appearing 
+in the problem) ground terms. 
 The mappings apply the function and predicate symbols to the domain elements.
 Appendix~\ref{FOF_Finite.p} shows a FOF problem that has a countermodel with a finite domain, 
 which is shown in Appendix~\ref{FOF_Finite.s}.
