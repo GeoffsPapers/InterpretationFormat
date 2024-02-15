@@ -34,6 +34,8 @@
 % \setlength{\floatsep}{2.0pt plus 2.0pt minus 2.0pt}
 % \setlength{\textfloatsep}{5.0pt plus 2.0pt minus 0.0pt}
 
+\newcommand{\alex}[1]{{\color{red}{{#1}}}}
+
 \title{The New TPTP Format for Interpretations}
 
 \author{
@@ -267,8 +269,8 @@ system with the explicit intention of representing Herbrand models:
       iProver \cite{Kor08,SK12} is an ATP system that outputs predicate definitions 
       over the term algebra.
 \item {\em Saturations} \cite{BG+01,Pel03-JSC} are a special case of Herbrand-formulae.
-      A saturated is a fixed point for a set of clauses at which further application of a 
-      complete inference system does not generate any new clauses.
+      A saturation is a fixed point for a set of clauses at which further application of a
+      complete inference system does not generate any new clauses (wrt some notion of redundancy).
       This approach is adopted in saturation-based ATP systems such as E \cite{SCV19},
       Prover9 \cite{McC-Prover9-URL}, Vampire, and Zipperposition \cite{VB+21}.
 \end{packed_itemize}
@@ -276,18 +278,21 @@ While the domain of the Herbrand interpretations induced by a saturation is know
 Herbrand Universe, there might not be an explicit symbol interpretation that can be used 
 constructively by users.
 
-A {\em Kripke interpretation} \cite{Kri63} adds a layer of {\em worlds} over Tarskian 
+A {\em Kripke interpretation} \cite{Kri63} adds a layer of so-called {\em possible worlds} over Tarskian 
 interpretations.
 There can be a finite or infinite number of worlds.
 There is an {\em accessibility relation} between the worlds, which can be subject to the
 requirements of the logic being used, e.g., for modal logic {\bf M} the accessibility 
-relation must be reflexive.
-Within each world there is a Tarskian interpretation, and there can be some interaction
-between the worlds' Tarskian interpretations if the terms designate globally MORE TO BE SAID BY
-ALEX.
+relation must be reflexive~\cite{Gar18}.
+Within each world there is a Tarskian interpretation, each possibly having different domains, and terms
+may denote objects that do not exist (in the respective domain) at the world of evaluation.
+If {\em local terms} are assumed, the denotation of any ground term at some world may only be
+chosen from the domain of that world. Quantification only quantifies over objects of the domain from the
+world at hand ({\em actualist quantification}), but the domains of the Tarskian interpretations at each
+world may be chosen to coincide in order to simplify matters ({\em possibilist quantification}).
 Formulae can be interpreted wrt Kripke interpretations (with finite worlds and local terms)~\ldots
 \begin{packed_itemize}
-\item Interpret quantifiers over worlds using Kripke semantics.
+\item Interpret quantifiers over worlds using Kripke semantics (modal operators).
 \item Interpret formulae within a world wrt the Tarskian interpretation in the world.
 \end{packed_itemize}
 
@@ -369,7 +374,7 @@ To interpret a formula wrt interpretation-formulae~\ldots
       \end{packed_itemize}
       I believe that this verification technique works, and so do Stephan Schulz and Uwe Waldmann,
       but Andrei Voronkov and Christoph Weidenbach say they do not.
-      I'm looking for help on this.
+      I'm looking for help on this. \alex{This is a comment, right?}
 \end{packed_itemize}
 
 %--------------------------------------------------------------------------------------------------
@@ -378,10 +383,10 @@ To interpret a formula wrt interpretation-formulae~\ldots
 
 Given ways to interpret a formula wrt interpretation-formulae, models represented in
 interpretation-formulae can be verified.
-Verification has (at least) the following aspects:
+Verification has (at least) the following aspects: \alex{I argue that point 3. is validaton and not verification. So verification would be 1,2,4 and validation would be 3. Both is important, of course, but if we split this we can argue that we can fully verify but we cannot validate.}
 \begin{packed_enumerate}
 \item Are the type declarations and interpretation formula syntactically well-formed 
-      and semantically well-typed?
+      and well-typed? \alex{Types are syntax, see e.g. \url{https://lawrencecpaulson.github.io/2022/03/16/Types_vs_Sets.html} :-)}
 \item Are the interpretation-formulae satisfiable?
 \item Do the interpretation-formulae correctly represent the interpretation found by the 
       ATP system?
@@ -391,7 +396,7 @@ Verification has (at least) the following aspects:
 
 These questions are answered as follows:
 \begin{enumerate}
-\item This can be confirmed using standard parsing and type checking tools, e.g., \cite{VS06,HR15}.
+\item This can be confirmed using standard parsing and type checking tools, e.g., \cite{VS06,HR15,Ste23-TU}.
 \item This can be empirically confirmed using a trusted model finder (in the same way the GDV 
       derivation verifier \cite{Sut06} uses the Otter system \cite{McC03-Otter} as a trusted 
       theorem prover).
@@ -402,7 +407,7 @@ These questions are answered as follows:
       the model.
 \item The TPTP World uses the theorem proving approach to verification, in which the problem 
       formulae $\Phi$ are proved from the interpretation-formulae $\varphi$ using a trusted 
-      theorem prover. 
+      theorem prover.  \alex{Usually $\Phi$ is used as set, and $\varphi$ as formula. Update here?}
       $\varphi$ are given as axioms, and $\Phi$ as the conjecture to be proved.
       The soundness of this approach is provided by showing that if $\Phi$ can be proved from 
       $\varphi$ then the interpretation $I$ represented by $\varphi$ is a model of $\Phi$.
@@ -410,7 +415,7 @@ These questions are answered as follows:
       first-order logic in \cite{SS+23-LPAR}, by proving that if a formulae $\Phi$ can be 
       proved from the interpretation-formulae $\varphi$ then the interpretation $I$ 
       represented by $\varphi$ is a model of $\Phi$.
-      We believe the theorem lifts naturally to TFF and THF, but is technically complicated 
+      We believe the theorem lifts naturally to TFF and THF, but is technically more complicated 
       due to the introduction of types.
       % and type promotion functions.
       The extension to infinite domains is quite simple after that.
@@ -462,7 +467,7 @@ Section~\ref{NewHerbrand}.
 \subsection{FOF Tarskian Interpretations}
 \label{NewTarskianFOF}
 
-FOF interpretation-formulae have a single untyped (or, if you will, of type {\tt \$i}) domain whose
+FOF interpretation-formulae have a single untyped (or, if you will, of type {\tt \$i}) domain whose \alex{TPTP types never introduced before. Ignore?}
 elements are new (not appearing in the problem) ground terms. 
 The mappings apply the function and predicate symbols to the domain elements.
 Appendix~\ref{FOF_Finite.p} shows a FOF problem that has a countermodel with a finite domain, 
@@ -651,7 +656,7 @@ problems for the models.
 \label{NewKripke}
  
 The TPTP format for Kripke interpretations also uses interpretation-formulae.
-A single Kripke interpre\-tation-formula is a conjunction of components (see simple FOF and TFF 
+A single Kripke interpre\-tation-formula is a conjunction of components (see simple FOF and TFF  \alex{Are you sure about FOF here? Both is TFF, no?}
 examples in Appendices~\ref{NXF_Finite-Finite-Global.s} and~\ref{NXF_Finite-Finite-Local.s}.
 As was noted in Section~\ref{Have}, Kripke interpretations can have either a finite or an
 infinite number of worlds, and the interpretations in a world can be Tarskian or Herbrand.
@@ -809,17 +814,17 @@ and each of the problem axioms and the negated problem conjecture are given the 
 role with a subrole of {\tt local} or {\tt global} according to their role in the problem, e.g., 
 in Appendix~\ref{NXF_Finite-Finite-Global.p} the axiom of the problem~\ldots \\
 \hspace*{0.5cm}\smalltt{tff(not\_all\_get\_rich,axiom,} \\
-\hspace*{0.8cm}\smalltt{\{{\raisebox{0.4ex}{\texttildelow}} ? [P: person] : ({\$necessary} @ (gets\_rich(P)) ) ).}\\
+\hspace*{0.8cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}} ? [P: person] : ( \{\$necessary\} @ (gets\_rich(P)) ) ).}\\
 is global (the default), so the NXF verification conjecture in 
 Appendix~\ref{NXF_Finite-Finite-Global.s.NXF.p} has the {\tt global} subrole~\ldots \\
 \hspace*{0.5cm}\smalltt{tff(not\_all\_get\_rich,conjecture-global,} \\
-\hspace*{0.8cm}\smalltt{\{{\raisebox{0.4ex}{\texttildelow}} ? [P: person] : ( {\$necessary} @ (gets\_rich(P)) ) ).} \\
+\hspace*{0.8cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}} ? [P: person] : ( \{\$necessary\} @ (gets\_rich(P)) ) ).} \\
 The conjecture of the problem is local (the default)~\ldots \\
 \hspace*{0.5cm}\smalltt{tff(only\_alex\_gets\_rich,conjecture,} \\
-\hspace*{0.8cm}\smalltt{( {\$possible} @ (gets\_rich(alex) \& \{{\raisebox{0.4ex}{\texttildelow}} gets\_rich(chris)) ) ).} \\
+\hspace*{0.8cm}\smalltt{\{\$possible\} @ (gets\_rich(alex) \& {\raisebox{0.4ex}{\texttildelow}} gets\_rich(chris) ) ).} \\
 so the NXF verification (negated) conjecture has the {\tt local} subrole~\ldots \\
 \hspace*{0.5cm}\smalltt{tff(only\_alex\_gets\_rich,conjecture-local,} \\
-\hspace*{0.8cm}\smalltt{\{{\raisebox{0.4ex}{\texttildelow}} ( {\$possible} @ (( gets\_rich(alex) \& \{{\raisebox{0.4ex}{\texttildelow}} gets\_rich(chris) )) ) ).} \\
+\hspace*{0.8cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}} ( \{\$possible\} @ ( gets\_rich(alex) \& {\raisebox{0.4ex}{\texttildelow}} gets\_rich(chris) ) ) ).} \\
 A special logic specification {\tt \$\$fomlModel} is used.
 
 The NXF verification problem is embedded into TH0 using the NTFLET tool.
