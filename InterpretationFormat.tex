@@ -814,17 +814,17 @@ and each of the problem axioms and the negated problem conjecture are given the 
 role with a subrole of {\tt local} or {\tt global} according to their role in the problem, e.g., 
 in Appendix~\ref{NXF_Finite-Finite-Global.p} the axiom of the problem~\ldots \\
 \hspace*{0.5cm}\smalltt{tff(not\_all\_get\_rich,axiom,} \\
-\hspace*{0.8cm}\smalltt{\{{\raisebox{0.4ex}{\texttildelow}} ? [P: person] : ({\$necessary} @ (gets\_rich(P)) ) ).}\\
+\hspace*{0.8cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}} ? [P: person] : ( \{\$necessary\} @ (gets\_rich(P)) ) ).}\\
 is global (the default), so the NXF verification conjecture in 
 Appendix~\ref{NXF_Finite-Finite-Global.s.NXF.p} has the {\tt global} subrole~\ldots \\
 \hspace*{0.5cm}\smalltt{tff(not\_all\_get\_rich,conjecture-global,} \\
-\hspace*{0.8cm}\smalltt{\{{\raisebox{0.4ex}{\texttildelow}} ? [P: person] : ( {\$necessary} @ (gets\_rich(P)) ) ).} \\
+\hspace*{0.8cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}} ? [P: person] : ( \{\$necessary\} @ (gets\_rich(P)) ) ).} \\
 The conjecture of the problem is local (the default)~\ldots \\
 \hspace*{0.5cm}\smalltt{tff(only\_alex\_gets\_rich,conjecture,} \\
-\hspace*{0.8cm}\smalltt{( {\$possible} @ (gets\_rich(alex) \& \{{\raisebox{0.4ex}{\texttildelow}} gets\_rich(chris)) ) ).} \\
+\hspace*{0.8cm}\smalltt{\{\$possible\} @ (gets\_rich(alex) \& {\raisebox{0.4ex}{\texttildelow}} gets\_rich(chris) ) ).} \\
 so the NXF verification (negated) conjecture has the {\tt local} subrole~\ldots \\
 \hspace*{0.5cm}\smalltt{tff(only\_alex\_gets\_rich,conjecture-local,} \\
-\hspace*{0.8cm}\smalltt{\{{\raisebox{0.4ex}{\texttildelow}} ( {\$possible} @ (( gets\_rich(alex) \& \{{\raisebox{0.4ex}{\texttildelow}} gets\_rich(chris) )) ) ).} \\
+\hspace*{0.8cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}} ( \{\$possible\} @ ( gets\_rich(alex) \& {\raisebox{0.4ex}{\texttildelow}} gets\_rich(chris) ) ) ).} \\
 A special logic specification {\tt \$\$fomlModel} is used.
 
 The NXF verification problem is embedded into TH0 using the NTFLET tool.
