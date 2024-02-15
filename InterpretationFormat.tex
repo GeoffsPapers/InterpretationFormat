@@ -407,7 +407,7 @@ These questions are answered as follows:
       the model.
 \item The TPTP World uses the theorem proving approach to verification, in which the problem 
       formulae $\Phi$ are proved from the interpretation-formulae $\varphi$ using a trusted 
-      theorem prover. 
+      theorem prover.  \alex{Usually $\Phi$ is used as set, and $\varphi$ as formula. Update here?}
       $\varphi$ are given as axioms, and $\Phi$ as the conjecture to be proved.
       The soundness of this approach is provided by showing that if $\Phi$ can be proved from 
       $\varphi$ then the interpretation $I$ represented by $\varphi$ is a model of $\Phi$.
@@ -415,7 +415,7 @@ These questions are answered as follows:
       first-order logic in \cite{SS+23-LPAR}, by proving that if a formulae $\Phi$ can be 
       proved from the interpretation-formulae $\varphi$ then the interpretation $I$ 
       represented by $\varphi$ is a model of $\Phi$.
-      We believe the theorem lifts naturally to TFF and THF, but is technically complicated 
+      We believe the theorem lifts naturally to TFF and THF, but is technically more complicated 
       due to the introduction of types.
       % and type promotion functions.
       The extension to infinite domains is quite simple after that.
@@ -467,7 +467,7 @@ Section~\ref{NewHerbrand}.
 \subsection{FOF Tarskian Interpretations}
 \label{NewTarskianFOF}
 
-FOF interpretation-formulae have a single untyped (or, if you will, of type {\tt \$i}) domain whose
+FOF interpretation-formulae have a single untyped (or, if you will, of type {\tt \$i}) domain whose \alex{TPTP types never introduced before. Ignore?}
 elements are new (not appearing in the problem) ground terms. 
 The mappings apply the function and predicate symbols to the domain elements.
 Appendix~\ref{FOF_Finite.p} shows a FOF problem that has a countermodel with a finite domain, 
