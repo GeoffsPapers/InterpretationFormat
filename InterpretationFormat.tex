@@ -34,6 +34,8 @@
 % \setlength{\floatsep}{2.0pt plus 2.0pt minus 2.0pt}
 % \setlength{\textfloatsep}{5.0pt plus 2.0pt minus 0.0pt}
 
+\newcommand{\alex}[1]{{\color{red}{{#1}}}}
+
 \title{The New TPTP Format for Interpretations}
 
 \author{
@@ -372,7 +374,7 @@ To interpret a formula wrt interpretation-formulae~\ldots
       \end{packed_itemize}
       I believe that this verification technique works, and so do Stephan Schulz and Uwe Waldmann,
       but Andrei Voronkov and Christoph Weidenbach say they do not.
-      I'm looking for help on this.
+      I'm looking for help on this. \alex{This is a comment, right?}
 \end{packed_itemize}
 
 %--------------------------------------------------------------------------------------------------
@@ -381,10 +383,10 @@ To interpret a formula wrt interpretation-formulae~\ldots
 
 Given ways to interpret a formula wrt interpretation-formulae, models represented in
 interpretation-formulae can be verified.
-Verification has (at least) the following aspects:
+Verification has (at least) the following aspects: \alex{I argue that point 3. is validaton and not verification. So verification would be 1,2,4 and validation would be 3. Both is important, of course, but if we split this we can argue that we can fully verify but we cannot validate.}
 \begin{packed_enumerate}
 \item Are the type declarations and interpretation formula syntactically well-formed 
-      and semantically well-typed?
+      and well-typed? \alex{Types are syntax, see e.g. \url{https://lawrencecpaulson.github.io/2022/03/16/Types_vs_Sets.html} :-)}
 \item Are the interpretation-formulae satisfiable?
 \item Do the interpretation-formulae correctly represent the interpretation found by the 
       ATP system?
