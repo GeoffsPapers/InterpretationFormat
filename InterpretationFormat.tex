@@ -374,9 +374,9 @@ To interpret a formula wrt interpretation-formulae~\ldots
       \item In practice, a formula might be neither proved nor disproved within reasonable 
             resource limits, so that nothing is known.
       \end{packed_itemize}
-      I believe that this verification technique works, and so do Stephan Schulz and Uwe Waldmann,
-      but Andrei Voronkov and Christoph Weidenbach say they do not.
-      I'm looking for help on this. \alex{This is a comment, right?}
+      {\em I believe that this verification technique works, and so do Stephan Schulz and 
+      Uwe Waldmann, but Andrei Voronkov and Christoph Weidenbach say they do not.
+      I'm looking for help on this.}
 \end{packed_itemize}
 
 %--------------------------------------------------------------------------------------------------
@@ -659,8 +659,6 @@ problems for the models.
 \label{NewKripke}
  
 The TPTP format for Kripke interpretations also uses interpretation-formulae.
-A single Kripke interpre\-tation-formula is a conjunction of components (see simple FOF and TFF  \alex{Are you sure about FOF here? Both is TFF, no?}
-examples in Appendices~\ref{NXF_Finite-Finite-Global.s} and~\ref{NXF_Finite-Finite-Local.s}.
 As was noted in Section~\ref{Have}, Kripke interpretations can have either a finite or an
 infinite number of worlds, and the interpretations in a world can be Tarskian or Herbrand.
 {\em I don't really have a firm handle on the cases with an infinite number of worlds, but I 
@@ -683,9 +681,7 @@ Four new defined symbols are used in Kripke interpretation-formulae:
       written in TXF or THF.
 \end{packed_itemize}
 
-A single Kripke interpretation-formula is a conjunction of (following along in 
-Appendices~\ref{NXF_Finite-Finite-Global.s} and~\ref{NXF_Finite-Finite-Local.s} might help 
-here)~\ldots
+A single Kripke interpretation-formula is a conjunction of~\ldots
 \begin{packed_itemize}
 \item Specification of the worlds.
 \item Until ATP systems and tools build it in, the distinctness of the worlds.
@@ -695,7 +691,7 @@ here)~\ldots
 \end{packed_itemize}
 
 \vspace*{0.5em}
-The TXF and THF interpretation-formulae are preceded by the necessary type declarations:
+The interpretation-formulae are preceded by the necessary type declarations:
 \begin{packed_itemize}
 \item The types for the interpretations in the worlds.
 \item The worlds declared of type {\tt \$world}, e.g., {\tt w1: \$world}.
@@ -708,9 +704,10 @@ The TXF and THF interpretation-formulae are preceded by the necessary type decla
 Appendix~\ref{NXF_Finite-Finite-Global.p} shows a NXF problem that has a countermodel with
 finite worlds each of which has a finite Tarskian model, which is shown in
 Appendix~\ref{NXF_Finite-Finite-Global.s}.
-(The countermodel was found by embedding the problem into THF using the NTFLET tool 
+The problem has all global axioms and a local conjecture.
+The countermodel was found by embedding the problem into THF using the NTFLET tool 
 \cite{Ste22,Ste22-LE}, running Nitpick on the THF problem, and converting Nitpick's output
-to the TPTP format by hand.)
+to the TPTP format by hand.
 There are two worlds~\ldots \\
 \hspace*{0.5cm}\smalltt{! [W: \$world] : ( W = w1 | W = w2 )} \\
 \hspace*{0.5cm}\smalltt{\$distinct(w1,w2)} \\
@@ -730,6 +727,7 @@ Appendix~\ref{NXF_Finite-Finite-Global.s.p} shows the verification problem for t
 Appendix~\ref{NXF_Finite-Finite-Local.p} shows a NXF problem that has a countermodel with
 finite worlds each of which has a finite Tarskian model, which is shown in
 Appendix~\ref{NXF_Finite-Finite-Local.s}.
+The problem has both local and global axioms, and a local conjecture.
 This example illustrates how a local axiom (with role {\tt axiom-local} -- {\tt rotten(banana)})
 needs to be satisfied in only the local world ({\tt w1}).
 Appendix~\ref{NXF_Finite-Finite-Local.s.p} shows the verification problem for the interpretation.
@@ -792,23 +790,17 @@ avoids the duplication of information that is common in all worlds.
 \subsection{Kripke Model Verification}
 \label{KripkeVerification}
 
-Kripke models for formulae in NXF/NHF are written in TXF/THF using the new defined type and
-predicates described in Section~\ref{NewKripke}.
-Two ways of verifying Kripke models in interpretation-formulae have been implemented, using the 
-theorem proving approach described in Section~\ref{Verification}.
-The first approach forms a verification problem in NXF that is then embedded into TH0, which is
-discharged using a trusted TH0 ATP system.
-The second approach forms a verification problem in TXF/THF that is discharged using a trusted 
-TXF/THF ATP system.
-
-\paragraph{Directly in NXF:}~\\
-In this approach a NXF verification problem is built from the problem formulae and the Kripke 
-interpretation-formulae.\footnote{%
-To date we have done this for NXF. Extension to NHF might be possible.}
-Appendix~\ref{NXF_Finite-Finite-Global.s.NXF.p} shows the NXF verification problem for the problem
+Kripke models for formulae in NXF/NHF are written as interpretation-formulae in TXF/THF, using 
+the new defined type and predicates described in Section~\ref{NewKripke}.
+The models are verified using the theorem proving approach described in 
+Section~\ref{Verification}.\footnote{%
+To date we have done this for NXF problem formulae and TXF interpretation-formnulae. 
+Extension to NHF might be possible.}
+An NXF verification problem is built from NXF problem formulae and the TXF interpretation-formulae.
+Appendix~\ref{NXF_Finite-Finite-Global.s.p} shows the NXF verification problem for the problem
 in Appendix~\ref{NXF_Finite-Finite-Global.p} and its countermodel in
 Appendix~\ref{NXF_Finite-Finite-Global.s}.
-Appendix~\ref{NXF_Finite-Finite-Local.s.NXF.p} shows the NXF verification problem for the problem
+Appendix~\ref{NXF_Finite-Finite-Local.s.p} shows the NXF verification problem for the problem
 in Appendix~\ref{NXF_Finite-Finite-Local.p} and its countermodel in
 Appendix~\ref{NXF_Finite-Finite-Local.s}.
 
@@ -819,7 +811,7 @@ in Appendix~\ref{NXF_Finite-Finite-Global.p} the axiom of the problem~\ldots \\
 \hspace*{0.5cm}\smalltt{tff(not\_all\_get\_rich,axiom,} \\
 \hspace*{0.8cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}} ? [P: person] : ( \{\$necessary\} @ (gets\_rich(P)) ) ).}\\
 is global (the default), so the NXF verification conjecture in 
-Appendix~\ref{NXF_Finite-Finite-Global.s.NXF.p} has the {\tt global} subrole~\ldots \\
+Appendix~\ref{NXF_Finite-Finite-Global.s.p} has the {\tt global} subrole~\ldots \\
 \hspace*{0.5cm}\smalltt{tff(not\_all\_get\_rich,conjecture-global,} \\
 \hspace*{0.8cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}} ? [P: person] : ( \{\$necessary\} @ (gets\_rich(P)) ) ).} \\
 The conjecture of the problem is local (the default)~\ldots \\
@@ -833,68 +825,68 @@ A special logic specification {\tt \$\$fomlModel} is used.
 The NXF verification problem is embedded into TH0 using the NTFLET tool.
 NTFLET recognizes the the new type and predicates in the embedding process, and combines
 the NXF conjectures into a single TH0 conjecture.
-The resultant TH0 verification problem is discharged using a trusted TH0 ATP system.
+The resultant TH0 problem is discharged using a trusted TH0 ATP system.
 
-\paragraph{Conversion to TXF:}~\\
-The new type and predicates, and the non-classical connectives in the problem, are expressed 
-in TXF, and the resultant TXF verification problem is discharged using a trusted TXF 
-ATP system.\footnote{%
-To date we have done this for alethic modal logic in NXF, which has the {\tt \$necessary} and 
-{\tt \$possible} connectives.
-Extension to NHF might be possible.}
-Appendix~\ref{NXF_Finite-Finite-Global.s.p} shows the verification problem for the problem
-in Appendix~\ref{NXF_Finite-Finite-Global.p} and its countermodel in 
-Appendix~\ref{NXF_Finite-Finite-Global.s}.
-Appendix~\ref{NXF_Finite-Finite-Local.s.p} shows the verification problem for the problem
-in Appendix~\ref{NXF_Finite-Finite-Local.p} and its countermodel in 
-Appendix~\ref{NXF_Finite-Finite-Local.s}.
-
-The new type and predicates are converted to plain types and predicates by defining {\tt '}single 
-quoted{\tt '} versions of them, e.g., in TFF~\ldots \\
-\hspace*{0.5cm}\smalltt{tff(dollar\_world\_type,type,'\$world': \$tType).} \\
-\hspace*{0.5cm}\smalltt{tff(dollar\_accessible\_world\_decl,type,} \\
-\hspace*{0.8cm}\smalltt{'\$accessible\_world': ('\$world' * '\$world') > \$o).} \\
-\hspace*{0.5cm}\smalltt{tff(dollar\_local\_world\_decl,type, '\$local\_world': '\$world').} \\
-\hspace*{0.5cm}\smalltt{tff(dollar\_in\_world\_decl,type, '\$in\_world': ('\$world' * \$o) > \$o).} \\
-The modal connectives are redefined in {\tt '}single quotes{\tt '}, with a world as an additional
-argument~\ldots \\
-\hspace*{0.5cm}\smalltt{tff(dollar\_necessary\_decl,type, '\$necessary': ( '\$world' * \$o ) > \$o ).} \\
-\hspace*{0.5cm}\smalltt{tff(dollar\_possible\_decl,type, '\$possible': ( '\$world' * \$o ) > \$o ).} \\
-The meanings of the connectives are then axiomatized wrt a current world~\ldots
-\begin{packed_itemize}
-\item A formula is necessarily $true$ wrt the current world if it is $true$ wrt the interpretations
-      in all worlds that are accessible from the current world.
-      See the {\tt necessary\_defn} axiom in Appendices~\ref{NXF_Finite-Finite-Global.s.p}
-      and~\ref{NXF_Finite-Finite-Local.s.p}.
-\item A formula is possibly $true$ wrt the current world if it is $true$ wrt the interpretation
-      in some world that is accessible from the current world.
-      See the {\tt possible\_defn} axiom in Appendices~\ref{NXF_Finite-Finite-Global.s.p}
-      and~\ref{NXF_Finite-Finite-Local.s.p}.
-\item The duality of {\tt \$necessary} and {\tt \$possible} is axiomatized wrt worlds.
-      See the {\tt duality} axiom in Appendices~\ref{NXF_Finite-Finite-Global.s.p}
-      and~\ref{NXF_Finite-Finite-Local.s.p}.
-\end{packed_itemize}
-
-The verification problem has the connective axioms and the Kripke interpretation-formulae 
-(with the type and predicates {\tt '}quoted{\tt '}) as axioms.
-The problem axioms and negated conjecture (with the modal connectives {\tt '}quoted{\tt '})
-are proved.
-Global (the default) axioms and global (specified with the {\tt conjecture-local} role)
-negated conjectures are proved in all worlds' interpretations, e.g., in 
-Appendix~\ref{NXF_Finite-Finite-Global.s.p} the axioms are all global, and are proved in
-all worlds' interpretations by universal quantification over the worlds~\ldots \\
-\hspace*{0.5cm}\smalltt{! [W: '\$world'] : ? [I: \$o] : ( '\$in\_world'(W,(I)) \& ( (I) =>} \\
-Note how the world is provided as an additional argument to the {\tt '}quoted{\tt '} modal
-connectives, e.g., in Appendix~\ref{NXF_Finite-Finite-Global.s.p}~\ldots \\
-\hspace*{0.5cm}\smalltt{’\$possible’(W,gets\_rich(P))} \\
-Local (specified with the {\tt axiom-local} role) axioms and local (the default) negated
-conjectures are proved in the local world's interpretation, e.g., 
-in Appendix~\ref{NXF_Finite-Finite-Local.s.p} the local axiom {\tt rotten(banana)} and
-the conjecture are proved in the local world's interpretation~\ldots \\
-\hspace*{0.5cm}\smalltt{? [I: \$o] : ( '\$in\_world'('\$local\_world',(I)) \& ( (I) =>} \\
-Note how the local world is provided as an additional argument to the {\tt '}quoted{\tt '} 
-modal connectives, e.g., in Appendix~\ref{NXF_Finite-Finite-Local.s.p}~\ldots \\
-\hspace*{0.5cm}\smalltt{'\$necessary'('\$local\_world',( healthy(apple) \& ~ rotten(banana) ))}
+% \paragraph{Conversion to TXF:}~\\
+% The new type and predicates, and the non-classical connectives in the problem, are expressed 
+% in TXF, and the resultant TXF verification problem is discharged using a trusted TXF 
+% ATP system.\footnote{%
+% To date we have done this for alethic modal logic in NXF, which has the {\tt \$necessary} and 
+% {\tt \$possible} connectives.
+% Extension to NHF might be possible.}
+% Appendix~\ref{NXF_Finite-Finite-Global.s.p} shows the verification problem for the problem
+% in Appendix~\ref{NXF_Finite-Finite-Global.p} and its countermodel in 
+% Appendix~\ref{NXF_Finite-Finite-Global.s}.
+% Appendix~\ref{NXF_Finite-Finite-Local.s.p} shows the verification problem for the problem
+% in Appendix~\ref{NXF_Finite-Finite-Local.p} and its countermodel in 
+% Appendix~\ref{NXF_Finite-Finite-Local.s}.
+% 
+% The new type and predicates are converted to plain types and predicates by defining {\tt '}single 
+% quoted{\tt '} versions of them, e.g., in TFF~\ldots \\
+% \hspace*{0.5cm}\smalltt{tff(dollar\_world\_type,type,'\$world': \$tType).} \\
+% \hspace*{0.5cm}\smalltt{tff(dollar\_accessible\_world\_decl,type,} \\
+% \hspace*{0.8cm}\smalltt{'\$accessible\_world': ('\$world' * '\$world') > \$o).} \\
+% \hspace*{0.5cm}\smalltt{tff(dollar\_local\_world\_decl,type, '\$local\_world': '\$world').} \\
+% \hspace*{0.5cm}\smalltt{tff(dollar\_in\_world\_decl,type, '\$in\_world': ('\$world' * \$o) > \$o).} \\
+% The modal connectives are redefined in {\tt '}single quotes{\tt '}, with a world as an additional
+% argument~\ldots \\
+% \hspace*{0.5cm}\smalltt{tff(dollar\_necessary\_decl,type, '\$necessary': ( '\$world' * \$o ) > \$o ).} \\
+% \hspace*{0.5cm}\smalltt{tff(dollar\_possible\_decl,type, '\$possible': ( '\$world' * \$o ) > \$o ).} \\
+% The meanings of the connectives are then axiomatized wrt a current world~\ldots
+% \begin{packed_itemize}
+% \item A formula is necessarily $true$ wrt the current world if it is $true$ wrt the interpretations
+%       in all worlds that are accessible from the current world.
+%       See the {\tt necessary\_defn} axiom in Appendices~\ref{NXF_Finite-Finite-Global.s.p}
+%       and~\ref{NXF_Finite-Finite-Local.s.p}.
+% \item A formula is possibly $true$ wrt the current world if it is $true$ wrt the interpretation
+%       in some world that is accessible from the current world.
+%       See the {\tt possible\_defn} axiom in Appendices~\ref{NXF_Finite-Finite-Global.s.p}
+%       and~\ref{NXF_Finite-Finite-Local.s.p}.
+% \item The duality of {\tt \$necessary} and {\tt \$possible} is axiomatized wrt worlds.
+%       See the {\tt duality} axiom in Appendices~\ref{NXF_Finite-Finite-Global.s.p}
+%       and~\ref{NXF_Finite-Finite-Local.s.p}.
+% \end{packed_itemize}
+% 
+% The verification problem has the connective axioms and the Kripke interpretation-formulae 
+% (with the type and predicates {\tt '}quoted{\tt '}) as axioms.
+% The problem axioms and negated conjecture (with the modal connectives {\tt '}quoted{\tt '})
+% are proved.
+% Global (the default) axioms and global (specified with the {\tt conjecture-local} role)
+% negated conjectures are proved in all worlds' interpretations, e.g., in 
+% Appendix~\ref{NXF_Finite-Finite-Global.s.p} the axioms are all global, and are proved in
+% all worlds' interpretations by universal quantification over the worlds~\ldots \\
+% \hspace*{0.5cm}\smalltt{! [W: '\$world'] : ? [I: \$o] : ( '\$in\_world'(W,(I)) \& ( (I) =>} \\
+% Note how the world is provided as an additional argument to the {\tt '}quoted{\tt '} modal
+% connectives, e.g., in Appendix~\ref{NXF_Finite-Finite-Global.s.p}~\ldots \\
+% \hspace*{0.5cm}\smalltt{’\$possible’(W,gets\_rich(P))} \\
+% Local (specified with the {\tt axiom-local} role) axioms and local (the default) negated
+% conjectures are proved in the local world's interpretation, e.g., 
+% in Appendix~\ref{NXF_Finite-Finite-Local.s.p} the local axiom {\tt rotten(banana)} and
+% the conjecture are proved in the local world's interpretation~\ldots \\
+% \hspace*{0.5cm}\smalltt{? [I: \$o] : ( '\$in\_world'('\$local\_world',(I)) \& ( (I) =>} \\
+% Note how the local world is provided as an additional argument to the {\tt '}quoted{\tt '} 
+% modal connectives, e.g., in Appendix~\ref{NXF_Finite-Finite-Local.s.p}~\ldots \\
+% \hspace*{0.5cm}\smalltt{'\$necessary'('\$local\_world',( healthy(apple) \& ~ rotten(banana) ))}
 
 %--------------------------------------------------------------------------------------------------
 \section{Conclusion}
@@ -1187,22 +1179,21 @@ lead to improvements, and hopefully will lead to them implementing the format in
 \newpage
 \subsection{NXF Verification Problem for \ref{NXF_Finite-Finite-Global.p} and 
 \ref{NXF_Finite-Finite-Global.s}
-(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global.s.NXF.p}{Online})}
-\label{NXF_Finite-Finite-Global.s.NXF.p}
-\begin{small}
-\verbatiminput{Examples/NXF_Finite-Finite-Global.s.NXF.p}
-\end{small}
-
-\newpage
-\subsection{TXF Verification Problem for \ref{NXF_Finite-Finite-Global.p} and 
-\ref{NXF_Finite-Finite-Global.s}
 (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global.s.p}{Online})}
 \label{NXF_Finite-Finite-Global.s.p}
 \begin{small}
 \verbatiminput{Examples/NXF_Finite-Finite-Global.s.p}
 \end{small}
 
-\newpage
+% \newpage
+% \subsection{TXF Verification Problem for \ref{NXF_Finite-Finite-Global.p} and 
+% \ref{NXF_Finite-Finite-Global.s}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global.s.TXF.p}{Online})}
+% \label{NXF_Finite-Finite-Global.s.TXF.p}
+% \begin{small}
+% \verbatiminput{Examples/NXF_Finite-Finite-Global.s.TXF.p}
+% \end{small}
+
 \newpage
 \subsection{NXF Problem with Global and Local Axioms, \\
             with a Finite-Finite Countermodel
@@ -1223,20 +1214,20 @@ lead to improvements, and hopefully will lead to them implementing the format in
 \newpage
 \subsection{NXF Verification Problem for \ref{NXF_Finite-Finite-Local.p} and
 \ref{NXF_Finite-Finite-Local.s}
-(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Local.s.NXF.p}{Online})}
-\label{NXF_Finite-Finite-Local.s.NXF.p}
-\begin{small}
-\verbatiminput{Examples/NXF_Finite-Finite-Local.s.NXF.p}
-\end{small}
-
-\newpage
-\subsection{TXF Verification Problem for \ref{NXF_Finite-Finite-Local.p} and
-\ref{NXF_Finite-Finite-Local.s}
 (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Local.s.p}{Online})}
 \label{NXF_Finite-Finite-Local.s.p}
 \begin{small}
 \verbatiminput{Examples/NXF_Finite-Finite-Local.s.p}
 \end{small}
+
+% \newpage
+% \subsection{TXF Verification Problem for \ref{NXF_Finite-Finite-Local.p} and
+% \ref{NXF_Finite-Finite-Local.s}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Local.s.TXF.p}{Online})}
+% \label{NXF_Finite-Finite-Local.s.TXF.p}
+% \begin{small}
+% \verbatiminput{Examples/NXF_Finite-Finite-Local.s.TXF.p}
+% \end{small}
 
 \newpage
 \subsection{TXF Finite-Finite Model for \ref{NXF_Finite-Finite-Global.p}, Medium Grained \\
