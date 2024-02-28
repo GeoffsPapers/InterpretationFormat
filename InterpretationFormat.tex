@@ -88,8 +88,8 @@ The axioms and the conjecture to be proved (and hence become a theorem) are writ
 appropriately expressive logic, and the proofs are often similarly written in logic \cite{SS+06}.
 In the last two decades the converse task of disproving conjectures, proving that a conjecture is 
 not a theorem of the axioms, has become increasingly important.
-This process depends on finding a {\em countermodel} for the conjecture, i.e., finding an 
-{\em interpretation} (a structure that maps formulae to truth values) that is a {\em model}
+This process depends on finding a \emph{countermodel} for the conjecture, i.e., finding an 
+\emph{interpretation} (a structure that maps formulae to truth values) that is a \emph{model}
 of the axioms (maps the axioms to $true$) but not a model for the conjecture (maps the conjecture
 to $false$).
 A salient application area that uses this form of ATP is verification \cite{DKW08}, where a 
@@ -117,9 +117,9 @@ typed extended first-order form (TXF) \cite{SK18},
 typed higher-order form (THF) \cite{SB10,KSR16}, 
 and non-classical forms (NXF, NHF) \cite{SF+22}.
 Most relevant to this work, the TPTP languages are used for writing ATP problems, derivations, 
-and {\em interpretations} \cite{SS+06,Sut08-KEAPPA}.
+and \emph{interpretations} \cite{SS+06,Sut08-KEAPPA}.
 
-A TPTP format for interpretations with finite domains was previously been defined \cite{SS+06},
+A TPTP format for interpretations with finite domains has previously been defined \cite{SS+06},
 and has served the ATP community adequately for almost 20 years. 
 The old format is output by several ATP systems, e.g., Paradox \cite{CS03}, FM-Darwin \cite{BF+06}, 
 Vampire \cite{KV13}.
@@ -190,7 +190,7 @@ properties of interpretation representation can be considered.
 \item Evaluation of formulae wrt an interpretation should be possible, because many uses of
       interpretations can be reduced to evaluation \cite[\S3.2]{CLP04}.
 \item Evaluation of formulae wrt an interpretation should be tractable.
-      This corresponds to the {\em atom test} and {\em formula evaluation} postulates suggested
+      This corresponds to the \emph{atom test} and \emph{formula evaluation} postulates suggested
       by \cite{FL96,CLP04}.
 \item Verification of models (checking that the problem formulae evaluate to $true$ wrt the model), 
       should be possible.
@@ -201,18 +201,18 @@ properties of interpretation representation can be considered.
 \subsection{What do we Have?}
 \label{Have}
 
-A {\em Tarskian interpretation} \cite{TV56} of formulae logic consists of a non-empty domain of 
-unequal elements for each type used in the formulae (just one domain for untyped logic), mappings 
+A \emph{Tarskian interpretation} \cite{TV56} of formulae logic consists of a non-empty domain of 
+distinct elements for each type used in the formulae (just one domain for untyped logic), mappings 
 for function symbols from tuples of domain elements to the domain, and mappings for predicate 
 symbols from tuples of domain elements to $\{true,false\}$ \cite{Hun96,Gal15}.
 An overview of some ways of building and representing Tarskian interpretations is provided 
 by \cite{CLP04}, and \cite{Pel03-EQMC} provides a comprehensive list of approaches.
-A {\em complete} interpretation can be used to evaluate all formulae that can be written in the 
-language of the problem formulae, but a {\em partial} interpretation can be used to evaluate the
+A \emph{complete} interpretation can be used to evaluate all formulae that can be written in the 
+language of the problem formulae, but a \emph{partial} interpretation can be used to evaluate the
 problem formulae but not necessarily all possible formulae, \cite{BSW23}.
 Two types of Tarskian interpretations are clear (and more might exist)~\ldots
 \begin{packed_itemize}
-\item {\em Finite} Tarskian interpretations have only finite domains.
+\item \emph{Finite} Tarskian interpretations have only finite domains.
       The domain and symbol mappings can be be explicitly enumerated.
       Finite models are typically produced by starting with domains of size one, and incrementing 
       the sizes until a model is found.
@@ -221,7 +221,7 @@ Two types of Tarskian interpretations are clear (and more might exist)~\ldots
       logics is used to decide if there is a model.
       There are several ATP systems that produce finite Tarskian models, e.g., Paradox, FM-Darwin, 
       and Vampire.
-\item {\em Infinite} Tarskian interpretations have one or more infinite domains.
+\item \emph{Infinite} Tarskian interpretations have one or more infinite domains.
       Infinite domains can be explicitly generated, e.g., terms representing Peano numbers, or 
       implicitly specified, e.g., some set of algebraic numbers such as the integers \cite{BB13}.
       % HOW IS THIS DONE?
@@ -239,7 +239,7 @@ Formulae can be evaluated wrt (finite) Tarskian interpretations~\ldots
 This approach is taken internally in Vampire.
 
 \vspace*{0.8em}
-A {\em Herbrand interpretation} \cite{Her30} has the Herbrand universe as the domain, the mapping 
+A \emph{Herbrand interpretation} \cite{Her30} has the Herbrand universe as the domain, the mapping 
 for function symbols is the ``identity'', and the mapping for predicate symbols is from the 
 Herbrand base to $\{true,false\}$.
 Every set of formulae induces its set of Herbrand models.
@@ -247,8 +247,8 @@ Such sets of formulae can be the result of applying model preserving transformat
 problem formulae (even the input itself induces its set of Herbrand models), or be generated 
 by an ATP system with the explicit intention of representing Herbrand models:
 \begin{packed_itemize}
-\item {\em Formulae} that are intended to represent Herbrand interpretations are written 
-      {\em Herbrand-formulae} to avoid confusion.
+\item \emph{Formulae} that are intended to represent Herbrand interpretations are written 
+      \emph{Herbrand-formulae} to avoid confusion.
       Examples include saturations (discussed separately in the next bullet point), a disjunction 
       of implicit generalisations (DIGs) \cite{LM87}, sets of constrained unit clauses 
       \cite{CZ92,CP95,CP95-TAB}, SGGS clause sequences \cite{BP16}, tableaux \cite{Hah01}
@@ -259,7 +259,7 @@ by an ATP system with the explicit intention of representing Herbrand models:
       E-KRHyper \cite{PW07} was an ATP systems that produced hyper-tableaux, and
       iProver \cite{Kor08,SK12} is an ATP system that outputs predicate definitions 
       over the term algebra.
-\item {\em Saturations} \cite{BG+01,Pel03-JSC} are a special case of Herbrand-formulae.
+\item \emph{Saturations} \cite{BG+01,Pel03-JSC} are a special case of Herbrand-formulae.
       A saturation is a fixed point for a set of clauses at which further application of a
       complete inference system does not generate any new clauses (wrt some notion of redundancy).
       This approach is adopted in saturation-based ATP systems such as E \cite{SCV19},
@@ -269,19 +269,19 @@ While the domain of a Herbrand interpretation induced by Herbrand formulae is kn
 Herbrand universe, there might not be an explicit symbol interpretation that can be used 
 constructively by users.
 
-A {\em Kripke interpretation} \cite{Kri63} adds a layer of {\em possible worlds} over Tarskian 
+A \emph{Kripke interpretation} \cite{Kri63} adds a layer of \emph{possible worlds} over Tarskian 
 interpretations.
 There can be a finite or infinite number of worlds.
-There is an {\em accessibility relation} between the worlds, which can be subject to the
-requirements of the logic being used, e.g., for modal logic {\bf M} the accessibility 
+There is an \emph{accessibility relation} between the worlds, which can be subject to the
+requirements of the logic being used, e.g., for modal logic \textbf{M} the accessibility 
 relation must be reflexive~\cite{Gar18}.
 Within each world there is a Tarskian interpretation, each possibly having different domains.
-If {\em local terms} are assumed, the designation of a ground term in a world may be chosen 
+If \emph{local terms} are assumed, the designation of a ground term in a world may be chosen 
 from only the domain in that world. 
-If {\em global terms} are assumed, the designation of a ground term in a world may be chosen 
+If \emph{global terms} are assumed, the designation of a ground term in a world may be chosen 
 from the domain in any world.
-Quantification is over the domains in the world of evaluation ({\em actualist quantification}), 
-but the domains in the worlds can be chosen to coincide to simplify matters ({\em possibilist 
+Quantification is over the domains in the world of evaluation (\emph{actualist quantification}), 
+but the domains in the worlds can be chosen to coincide to simplify matters (\emph{possibilist 
 quantification}).
 Formulae can be evaluated wrt Kripke interpretations with finite worlds and local terms~\ldots
 \begin{packed_itemize}
@@ -294,7 +294,7 @@ Herbrand interpretations, etc., are captured in the SZS ontologies \cite{Sut08-K
 updated at 
 \href{https://www.tptp.org/cgi-bin/SeeTPTP?Category=Documents\&File=SZSOntology}{\tt www.tptp.org}
 \href{https://www.tptp.org/cgi-bin/SeeTPTP?Category=Documents\&File=SZSOntology}{\tt /cgi-bin/SeeTPTP?Category=Documents\&File=SZSOntology}.
-For this work the ontology was extended with a new value {\em Model Preserving} (MPR), defined
+For this work the ontology was extended with a new value \emph{Model Preserving} (MPR), defined
 as ``Some interpretations are models of Ax, and
   some interpretations are models  of C, and
   all models of C are conservative extensions of models of Ax
@@ -309,7 +309,7 @@ into the set.
 \subsection{Do we Have what we Need?}
 \label{HaveNeed}
 
-The new TPTP format represents interpretations in {\em interpretation-formulae} -- the details 
+The new TPTP format represents interpretations in \emph{interpretation-formulae} -- the details 
 are provided in Sections~\ref{NewTarskian}, \ref{NewHerbrand} and~\ref{NewKripke}.
 Interpretation-formulae are written in an extension of the language of the formulae being 
 interpreted, extending the vocabulary but still using TPTP syntax.
@@ -363,7 +363,7 @@ To evaluate a formula wrt interpretation-formulae~\ldots
       \item In practice, a formula might be neither proved nor disproved within reasonable 
             resource limits, so that nothing is known.
       \end{packed_itemize}
-      {\em I believe that this verification technique works, and so do Stephan Schulz and 
+      \emph{I believe that this verification technique works, and so do Stephan Schulz and 
       Uwe Waldmann, but Andrei Voronkov and Christoph Weidenbach say they do not.
       I'm looking for help on this.}
 \end{packed_itemize}
@@ -378,7 +378,7 @@ This has (at least) the following aspects:
 \begin{packed_enumerate}
 \item Validate that the interpretation-formulae correctly represent the model found 
       by the ATP system.
-\item Verify that the type declarations and interpretation formula syntactically well-formed 
+\item Verify that the type declarations and interpretation-formulae are syntactically well-formed 
       and well-typed. 
 \item Verify that the interpretation-formulae are satisfiable.
 \item Verify that the interpretation represented by the interpretation-formulae is a model for 
@@ -400,7 +400,7 @@ These steps can be (in)completed as follows~\ldots
       The soundness of this approach is proved by showing that if $\Phi$ can be proved from 
       $\varphi$ then the interpretation $I$ represented by $\varphi$ is a model of $\Phi$.
       This is done for finite Tarskian interpretations for untyped first-order logic in 
-      \cite{SS+23-LPAR}
+      \cite{SS+23-LPAR}.
 %      by proving that if a formulae $\Phi$ can be 
 %      proved from the interpretation-formulae $\varphi$ then the interpretation $I$ 
 %      represented by $\varphi$ is a model of $\Phi$.
@@ -427,12 +427,12 @@ examples in Appendices~\ref{FOF_Finite.s} and~\ref{TFF_Finite.s})~\ldots
 \item Interpretation of non-boolean symbols, as equalities whose left-hand sides are formed from 
       symbols applied to domain elements, and whose right-hand sides are domain elements.
 \item Interpretation of boolean symbols, as literals formed from symbols applied to domain 
-      elements; positive literals are {\em true} and negative literals are {\em false}.
+      elements; positive literals are \emph{true} and negative literals are \emph{false}.
 \end{packed_itemize}
 
 Note how function and predicate symbols are interpreted by applying them directly to domain
-elements (ala \cite[\S5.3.4]{Gal15}), rather than using the presentation of interpretations
-that introduces a new interpretation function for each function/predicate symbol 
+elements (\emph{{\`a} la} \cite[\S5.3.4]{Gal15}), rather than using the presentation of 
+interpretations that introduces a new interpretation function for each function/predicate symbol 
 \cite[\S5.3.2]{Gal15}.
 This approach simplifies the representation of interpretations, and makes interpretation of 
 formulae using theorem proving more tractable.
@@ -489,7 +489,7 @@ such as {\tt \$int}.
 If the domain type is different from the problem type then symbols from the problem cannot be 
 applied directly to domain elements in the interpretation-formulae, because the domain elements 
 are of the wrong type wrt the type declarations of the symbols.
-To keep interpretation-formulae well-typed, {\em type-promotion} bijections are used to ``convert'' 
+To keep interpretation-formulae well-typed, \emph{type-promotion} bijections are used to ``convert'' 
 domain elements to terms of the corresponding problem type.
 
 Each domain specification is a conjunction of (following along in Appendices~\ref{TFF_Finite.s}, 
@@ -645,10 +645,10 @@ problems.
 The new TPTP format for Kripke interpretations also uses interpretation-formulae.
 As was noted in Section~\ref{Have}, Kripke interpretations can have either a finite or an
 infinite number of worlds, and the interpretations in a world can be Tarskian or Herbrand.
-{\em I don't really have a firm handle on the cases with an infinite number of worlds, but I 
+\emph{I don't really have a firm handle on the cases with an infinite number of worlds, but I 
 have some tentative examples that show they can be represented in the new format.\footnote{%
 \href{https://www.tptp.org/TPTP/Proposals/InterpretationsModels.shtml\#KripkeInfiniteFinite}{{\tt www.tptp.org/TPTP/Proposals/InterpretationsModels.shtml}}}
-For now the format is explained a with examples that have a finite number of worlds and finite
+For now the format is explained with examples that have a finite number of worlds and finite
 Tarskian interpretations in the worlds.}
 
 Four new defined symbols are used in Kripke interpretation-formulae:
@@ -694,7 +694,8 @@ to the TPTP format by hand.
 There are two worlds~\ldots \\
 \hspace*{0.5cm}\smalltt{! [W: \$world] : ( W = w1 | W = w2 )} \\
 \hspace*{0.5cm}\smalltt{\$distinct(w1,w2)} \\
-with a complete accessibility relation (meeting the requirements of model logic {\bf M})~\ldots \\
+with a complete accessibility relation (meeting the requirements of modal logic 
+\textbf{M})~\ldots \\
 \hspace*{0.5cm}\smalltt{\$accessible\_world(w1,w1)} \\
 \hspace*{0.5cm}\smalltt{\$accessible\_world(w2,w2)} \\
 \hspace*{0.5cm}\smalltt{\$accessible\_world(w1,w2)} \\
@@ -703,8 +704,8 @@ The conjecture is disproved in a local world~\ldots \\
 \hspace*{0.5cm}\smalltt{\$local\_world = w2} \\
 The finite Tarskian interpretations for the worlds are provided in the format described in 
 Section~\ref{NewTarskian}~\ldots \\
-\hspace*{0.5cm}\smalltt{\$in\_world(w1,}{\em the Tarskian interpretation}{\tt )} \\
-\hspace*{0.5cm}\smalltt{\$in\_world(w2,}{\em the Tarskian interpretation}{\tt )} \\
+\hspace*{0.5cm}\smalltt{\$in\_world(w1,}\emph{the Tarskian interpretation}{\tt )} \\
+\hspace*{0.5cm}\smalltt{\$in\_world(w2,}\emph{the Tarskian interpretation}{\tt )} \\
 Appendix~\ref{NXF_Finite-Finite-Global.s.p} shows the verification problem for the model.
 
 Appendix~\ref{NXF_Finite-Finite-Local.p} shows a NXF problem that has a countermodel with
@@ -724,7 +725,7 @@ interpretation.
 The {\tt interpretation} role can be extended with the subroles {\tt world} and {\tt in\_world}.
 Appendix~\ref{NXF_Finite-Finite-Global_Medium.s} shows a medium grained split of 
 Appendix~\ref{NXF_Finite-Finite-Global.s}.
-An annotated formulae with the role {\tt interpretation-world} contains information about the
+An annotated formula with the role {\tt interpretation-world} contains information about the
 worlds of the interpretation, e.g., in Appendix~\ref{NXF_Finite-Finite-Global_Medium.s} the
 annotated formula~\ldots \\
 \hspace*{0.5cm}\smalltt{tff(leo\_workers\_worlds,interpretation-world,} \\
