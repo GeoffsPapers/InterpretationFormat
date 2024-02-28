@@ -83,48 +83,48 @@ The properties of interpretations represented in the new format are discussed.
 
 Historically, Automated Theorem Proving (ATP) has, as the name suggests, focused largely on the
 task of proving theorems from axioms -- the derivation of conclusions that follow inevitably 
-from known facts \cite{RV01-HAR}.
+from known facts~\cite{RV01-HAR}.
 The axioms and the conjecture to be proved (and hence become a theorem) are written in an 
-appropriately expressive logic, and the proofs are often similarly written in logic \cite{SS+06}.
+appropriately expressive logic, and the proofs are often similarly written in logic~\cite{SS+06}.
 In the last two decades the converse task of disproving conjectures, proving that a conjecture is 
 not a theorem of the axioms, has become increasingly important.
 This process depends on finding a \emph{countermodel} for the conjecture, i.e., finding an 
 \emph{interpretation} (a structure that maps formulae to truth values) that is a \emph{model}
-of the axioms (maps the axioms to $true$) but not a model for the conjecture (maps the conjecture
-to $false$).
-A salient application area that uses this form of ATP is verification \cite{DKW08}, where a 
+of the axioms (maps the axioms to \textit{true}) but not a model for the conjecture (maps the 
+conjecture to \textit{false}).
+A salient application area that uses this form of ATP is verification~\cite{DKW08}, where a 
 countermodel is used to pinpoint the reason why a proof obligation fails, and correspondingly 
 points to the location of the fault in the system being verified.
 Other applications of model finding include checking the consistency of an axiomatization 
-\cite{SS+17}, operations research \cite{Hoo93}, commonsense reasoning \cite{KR94}, and solving 
-model finding problems \cite{Win82}.
+\cite{SS+17}, operations research~\cite{Hoo93}, commonsense reasoning~\cite{KR94}, and solving 
+model finding problems~\cite{Win82}.
 
-The TPTP World \cite{Sut17} (\href{https://www.tptp.org}{\tt www.tptp.org}) is a well established 
+The TPTP World~\cite{Sut17} (\href{https://www.tptp.org}{\tt www.tptp.org}) is a well established 
 infrastructure that supports research, development, and deployment of 
 % Automated Theorem Proving 
 ATP systems.
 Various parts of the TPTP World have been deployed in a range of applications, in both academia 
 and industry.
-The TPTP World includes the TPTP problem library \cite{Sut09}, 
-the TSTP solution library \cite{Sut10}, 
-tools and services for processing ATP problems and solutions \cite{Sut10}, 
-and it supports the CADE ATP System Competition (CASC) \cite{Sut16}.
-The TPTP language \cite{Sut23-IGPL} is one of the keys to the success of the TPTP World.
-Originally the TPTP language supported only first-order clause normal form (CNF) \cite{SS98-JAR}.
-Over the years full first-order form (FOF) \cite{Sut09}, 
-typed first-order form (TFF) \cite{SS+12,BP13-TFF1}, 
-typed extended first-order form (TXF) \cite{SK18}, 
-typed higher-order form (THF) \cite{SB10,KSR16}, 
-and non-classical forms (NXF, NHF) \cite{SF+22}.
+The TPTP World includes the TPTP problem library~\cite{Sut09}, 
+the TSTP solution library~\cite{Sut10}, 
+tools and services for processing ATP problems and solutions~\cite{Sut10}, 
+and it supports the CADE ATP System Competition (CASC)~\cite{Sut16}.
+The TPTP language~\cite{Sut23-IGPL} is one of the keys to the success of the TPTP World.
+Originally the TPTP language supported only first-order clause normal form (CNF)~\cite{SS98-JAR}.
+Over the years full first-order form (FOF)~\cite{Sut09}, 
+typed first-order form (TFF)~\cite{SS+12,BP13-TFF1}, 
+typed extended first-order form (TXF)~\cite{SK18}, 
+typed higher-order form (THF)~\cite{SB10,KSR16}, 
+and non-classical forms (NXF, NHF)~\cite{SF+22}.
 Most relevant to this work, the TPTP languages are used for writing ATP problems, derivations, 
-and \emph{interpretations} \cite{SS+06,Sut08-KEAPPA}.
+and \emph{interpretations}~\cite{SS+06,Sut08-KEAPPA}.
 
-A TPTP format for interpretations with finite domains has previously been defined \cite{SS+06},
+A TPTP format for interpretations with finite domains has previously been defined~\cite{SS+06},
 and has served the ATP community adequately for almost 20 years. 
-The old format is output by several ATP systems, e.g., Paradox \cite{CS03}, FM-Darwin \cite{BF+06}, 
-Vampire \cite{KV13}.
+The old format is output by several ATP systems, e.g., Paradox~\cite{CS03}, FM-Darwin~\cite{BF+06}, 
+Vampire~\cite{KV13}.
 Recently the need for a format for interpretations with infinite domains, and for a format for 
-Kripke interpretations \cite{Kri63}, has led to the development of the new TPTP format for 
+Kripke interpretations~\cite{Kri63}, has led to the development of the new TPTP format for 
 interpretations.
 This work describes the new format.
 The underlying principle is unchanged: interpretations are represented in formulae written in
@@ -132,12 +132,12 @@ the TPTP language.
 
 \paragraph{Related work:}
 There are other concrete representations of interpretations in use:
-The SMT-LIB standard \cite{BFT17} defines a format for model output, and commands to inspect 
+The SMT-LIB standard~\cite{BFT17} defines a format for model output, and commands to inspect 
 models.  
-SAT solvers generally output models as specified by the SAT competitions \cite{JL+12}, in a 
-simple format similar to the DIMACS input format \cite{Bab93}.
+SAT solvers generally output models as specified by the SAT competitions~\cite{JL+12}, in a 
+simple format similar to the DIMACS input format~\cite{Bab93}.
 Some individual model finding systems have defined their own formats for models, e.g., the 
-output formats of Nitpick \cite{BN10-ITP} and Z3 \cite{dMB08}.
+output formats of Nitpick~\cite{BN10-ITP} and Z3~\cite{dMB08}.
 % +++
 % Nikolaj says ...
 % Z3 It produces models that define functions by expressions. For example a model of succ is 
@@ -164,9 +164,9 @@ Section~\ref{Conclusion} concludes and discusses plans for future work.
 
 The needs of applications that use model finding vary according to their use of the model.
 In the simplest case applications need to know only that a model exists.
-Examples of such applications include checking the consistency of an axiomatization \cite{CI15},
+Examples of such applications include checking the consistency of an axiomatization~\cite{CI15},
 use as a subroutine in more complex reasoning, e.g., for
-axiom selection \cite{SP07,Pud07-ESARLT}, and establishing the existence of a bug in a
+axiom selection~\cite{SP07,Pud07-ESARLT}, and establishing the existence of a bug in a
 verification process\footnote{%
 Bill McCune claimed that establishing the existence of a bug without having an explicit model
 to help pinpoint the bug would be ``frustrating''. And he should have known.}.
@@ -176,10 +176,10 @@ explicit model is that it is necessary to trust the model finder.
 In many applications it is necessary to have an explicit model, in some representation format that
 allows for analysis of the model.
 Applications that productively use an explicit model include finding inconsistencies in 
-axiomatizations \cite{SS+17}, identification of bugs in verification \cite{CE82,QS82},
-solution of problems encoded as a model finding problems \cite{Win82}, and evaluation of formulae
-wrt the model \cite{SS+23-LPAR}.
-Manual inspection of explicit models can also be useful, e.g., \cite{EK+10}.
+axiomatizations~\cite{SS+17}, identification of bugs in verification~\cite{CE82,QS82},
+solution of problems encoded as a model finding problems~\cite{Win82}, and evaluation of formulae
+wrt the model~\cite{SS+23-LPAR}.
+Manual inspection of explicit models can also be useful, e.g.,~\cite{EK+10}.
 % Explicit models can be used for machine learning and improving model finders internally.
 A key advantage of having an explicit model output is that the model can be verified, i.e., the
 model finder does not need to be trusted,
@@ -187,13 +187,13 @@ model finder does not need to be trusted,
 Given the innate desirability of obtaining explicit models of satisfiable formulae, desirable
 properties of interpretation representation can be considered.
 \begin{packed_itemize}
-\item Evaluation of formulae wrt an interpretation should be possible, because many uses of
-      interpretations can be reduced to evaluation \cite[\S3.2]{CLP04}.
-\item Evaluation of formulae wrt an interpretation should be tractable.
+\item Evaluation of any formulae wrt the interpretation should be possible, because many uses of
+      interpretations can be reduced to evaluation~\cite[\S3.2]{CLP04}.
+\item Evaluation of any formulae wrt an interpretation should be tractable.
       This corresponds to the \emph{atom test} and \emph{formula evaluation} postulates suggested
-      by \cite{FL96,CLP04}.
-\item Verification of models (checking that the problem formulae evaluate to $true$ wrt the model), 
-      should be possible.
+      by~\cite{FL96,CLP04}.
+\item Verification of models should be possible (and hopefully tractable) by checking that the 
+      problem formulae evaluate to \textit{true} wrt the model.
 \item Interpretations should be sufficiently comprehensible for manual inspection.
 \end{packed_itemize}
 
@@ -201,32 +201,32 @@ properties of interpretation representation can be considered.
 \subsection{What do we Have?}
 \label{Have}
 
-A \emph{Tarskian interpretation} \cite{TV56} of formulae logic consists of a non-empty domain of 
+A \emph{Tarskian interpretation}~\cite{TV56} of formulae logic consists of a non-empty domain of 
 distinct elements for each type used in the formulae (just one domain for untyped logic), mappings 
 for function symbols from tuples of domain elements to the domain, and mappings for predicate 
-symbols from tuples of domain elements to $\{true,false\}$ \cite{Hun96,Gal15}.
+symbols from tuples of domain elements to $\{true,false\}$~\cite{Hun96,Gal15}.
 An overview of some ways of building and representing Tarskian interpretations is provided 
-by \cite{CLP04}, and \cite{Pel03-EQMC} provides a comprehensive list of approaches.
+by~\cite{CLP04}, and~\cite{Pel03-EQMC} provides a comprehensive list of approaches.
 A \emph{complete} interpretation can be used to evaluate all formulae that can be written in the 
 language of the problem formulae, but a \emph{partial} interpretation can be used to evaluate the
-problem formulae but not necessarily all possible formulae, \cite{BSW23}.
+problem formulae but not necessarily all possible formulae~\cite{BSW23}.
 Two types of Tarskian interpretations are clear (and more might exist)~\ldots
 \begin{packed_itemize}
 \item \emph{Finite} Tarskian interpretations have only finite domains.
       The domain and symbol mappings can be be explicitly enumerated.
       Finite models are typically produced by starting with domains of size one, and incrementing 
       the sizes until a model is found.
-      At each iteration the formulae are reduced to a decidable logic, e.g., propositional 
-      \cite{CS03,McC03-MACE4-TR} or function free \cite{BF+09} logic, and an ATP system for that
-      logics is used to decide if there is a model.
+      At each iteration the formulae are reduced to a decidable logic, e.g., 
+      propositional~\cite{CS03,McC03-MACE4-TR} or function free~\cite{BF+09} logic, and an ATP 
+      system for that logics is used to decide if there is a model.
       There are several ATP systems that produce finite Tarskian models, e.g., Paradox, FM-Darwin, 
       and Vampire.
 \item \emph{Infinite} Tarskian interpretations have one or more infinite domains.
       Infinite domains can be explicitly generated, e.g., terms representing Peano numbers, or 
-      implicitly specified, e.g., some set of algebraic numbers such as the integers \cite{BB13}.
+      implicitly specified, e.g., some set of algebraic numbers such as the integers~\cite{BB13}.
       % HOW IS THIS DONE?
-      There are some ATP systems that produce infinite Tarskian models, e.g., cvc5 
-      \cite{BB+22-cvc5} and Z3.
+      There are some ATP systems that produce infinite Tarskian models, e.g., 
+      cvc5~\cite{BB+22-cvc5} and Z3.
 \end{packed_itemize}
 \vspace*{-0.5em}
 Formulae can be evaluated wrt (finite) Tarskian interpretations~\ldots
@@ -239,7 +239,7 @@ Formulae can be evaluated wrt (finite) Tarskian interpretations~\ldots
 This approach is taken internally in Vampire.
 
 \vspace*{0.8em}
-A \emph{Herbrand interpretation} \cite{Her30} has the Herbrand universe as the domain, the mapping 
+A \emph{Herbrand interpretation}~\cite{Her30} has the Herbrand universe as the domain, the mapping 
 for function symbols is the ``identity'', and the mapping for predicate symbols is from the 
 Herbrand base to $\{true,false\}$.
 Every set of formulae induces its set of Herbrand models.
@@ -250,26 +250,26 @@ by an ATP system with the explicit intention of representing Herbrand models:
 \item \emph{Formulae} that are intended to represent Herbrand interpretations are written 
       \emph{Herbrand-formulae} to avoid confusion.
       Examples include saturations (discussed separately in the next bullet point), a disjunction 
-      of implicit generalisations (DIGs) \cite{LM87}, sets of constrained unit clauses 
-      \cite{CZ92,CP95,CP95-TAB}, SGGS clause sequences \cite{BP16}, tableaux \cite{Hah01}
+      of implicit generalisations (DIGs)~\cite{LM87}, sets of constrained unit 
+      clauses~\cite{CZ92,CP95,CP95-TAB}, SGGS clause sequences~\cite{BP16}, tableaux~\cite{Hah01}
       % (as long as you use a proof confluent calculus, it is normally possible to construct 
       % a model from a saturated branch) 
-      and hyper-tableaux \cite{BFN96}, eq-interpretations \cite{Pel03-EQMC}, and 
-      predicate definitions over the term algebra \cite{SK12}.
-      E-KRHyper \cite{PW07} was an ATP systems that produced hyper-tableaux, and
-      iProver \cite{Kor08,SK12} is an ATP system that outputs predicate definitions 
+      and hyper-tableaux~\cite{BFN96}, eq-interpretations~\cite{Pel03-EQMC}, and 
+      predicate definitions over the term algebra~\cite{SK12}.
+      E-KRHyper~\cite{PW07} was an ATP systems that produced hyper-tableaux, and
+      iProver~\cite{Kor08,SK12} is an ATP system that outputs predicate definitions 
       over the term algebra.
-\item \emph{Saturations} \cite{BG+01,Pel03-JSC} are a special case of Herbrand-formulae.
+\item \emph{Saturations}~\cite{BG+01,Pel03-JSC} are a special case of Herbrand-formulae.
       A saturation is a fixed point for a set of clauses at which further application of a
       complete inference system does not generate any new clauses (wrt some notion of redundancy).
-      This approach is adopted in saturation-based ATP systems such as E \cite{SCV19},
-      Prover9 \cite{McC-Prover9-URL}, Vampire, and Zipperposition \cite{VB+21}.
+      This approach is adopted in saturation-based ATP systems such as E~\cite{SCV19},
+      Prover9~\cite{McC-Prover9-URL}, Vampire, and Zipperposition~\cite{VB+21}.
 \end{packed_itemize}
 While the domain of a Herbrand interpretation induced by Herbrand formulae is known to be the 
 Herbrand universe, there might not be an explicit symbol interpretation that can be used 
 constructively by users.
 
-A \emph{Kripke interpretation} \cite{Kri63} adds a layer of \emph{possible worlds} over Tarskian 
+A \emph{Kripke interpretation}~\cite{Kri63} adds a layer of \emph{possible worlds} over Tarskian 
 interpretations.
 There can be a finite or infinite number of worlds.
 There is an \emph{accessibility relation} between the worlds, which can be subject to the
@@ -290,7 +290,7 @@ Formulae can be evaluated wrt Kripke interpretations with finite worlds and loca
 \end{packed_itemize}
 
 The notions of interpretations, models, partial interpretations, finite interpretations,
-Herbrand interpretations, etc., are captured in the SZS ontologies \cite{Sut08-KEAPPA}, as
+Herbrand interpretations, etc., are captured in the SZS ontologies~\cite{Sut08-KEAPPA}, as
 updated at 
 \href{https://www.tptp.org/cgi-bin/SeeTPTP?Category=Documents\&File=SZSOntology}{\tt www.tptp.org}
 \href{https://www.tptp.org/cgi-bin/SeeTPTP?Category=Documents\&File=SZSOntology}{\tt /cgi-bin/SeeTPTP?Category=Documents\&File=SZSOntology}.
@@ -315,8 +315,7 @@ Interpretation-formulae are written in an extension of the language of the formu
 interpreted, extending the vocabulary but still using TPTP syntax.
 
 Figure~\ref{ModelLandscape} provides an overview of the situation.
-The starting point is the set of {\sf Satisfiable formulae in $\Sigma$} written in the language
-$\Sigma$. 
+The starting point is the set of {\sf Satisfiable formulae} written in the language $\Sigma$. 
 The satisfiable formulae might have been formed from 
 {\sf Ax $\cup$ \{{\raisebox{0.4ex}{\texttildelow}}C\}}. 
 Going down leads to the {\sf Models} of the satisfiable formulae.
@@ -341,25 +340,25 @@ The satisfiable formulae can be proved from the sets that result from applying M
 
 To evaluate a formula wrt interpretation-formulae~\ldots
 % $\varphi$ wrt a given interpretation $I$ ($I\,\vdash\,\Phi$ means that 
-% $\Phi$ is $true$ in $I$, i.e., $I$ is a model of formula $\Phi$)~\ldots
+% $\Phi$ is \textit{true} in $I$, i.e., $I$ is a model of formula $\Phi$)~\ldots
 \begin{packed_itemize}
 \item For Kripke interpretation-formulae, theorem proving can be used.
       This is described in Section~\ref{KripkeVerification}.
 \item For Tarskian interpretation-formulae, theorem proving can be used.
       \begin{packed_itemize}
-      \item If a formula can be proved from the interpretation-formulae then it is $true$ in the 
-            interpretation represented by the interpretation-formulae.
-      \item If a formula can be disproved from the interpretation-formulae then it is $false$ in 
-            the interpretation represented by the interpretation-formulae.
+      \item If a formula can be proved from the interpretation-formulae then it is \textit{true} 
+            in the interpretation represented by the interpretation-formulae.
+      \item If a formula can be disproved from the interpretation-formulae then it is 
+            \textit{false} in the interpretation represented by the interpretation-formulae.
       \item In practice, a formula might be neither proved nor disproved within reasonable 
             resource limits, so that nothing is known.
       \end{packed_itemize}
 \item For Herbrand interpretations induced by Herbrand-formulae, theorem proving can be used~\ldots
       \begin{packed_itemize}
-      \item If a formula can be proved from the Herbrand-formulae then it is $true$ in all the 
-            Herbrand interpretations induced by the Herbrand-formulae.
-      \item If a formula can be disproved from the Herbrand-formulae then it is $false$ in all 
+      \item If a formula can be proved from the Herbrand-formulae then it is \textit{true} in all 
             the Herbrand interpretations induced by the Herbrand-formulae.
+      \item If a formula can be disproved from the Herbrand-formulae then it is \textit{false} in 
+            all the Herbrand interpretations induced by the Herbrand-formulae.
       \item In practice, a formula might be neither proved nor disproved within reasonable 
             resource limits, so that nothing is known.
       \end{packed_itemize}
@@ -388,8 +387,8 @@ This has (at least) the following aspects:
 These steps can be (in)completed as follows~\ldots
 \begin{enumerate}
 \item This cannot be confirmed without insight into the ATP system that found the model.
-\item This can be confirmed using standard parsing and type checking tools, e.g., 
-      \cite{VS06,HR15,Ste23}.
+\item This can be confirmed using standard parsing and type checking tools, 
+      e.g.,~\cite{VS06,HR15,Ste23}.
 \item This can be confirmed using a trusted model finder.
       Hopefully, confirming that the interpretation-formulae are satisfiable is much easier than 
       finding the model itself, so the ATP system used to check the satisfiability can be weaker 
@@ -399,12 +398,12 @@ These steps can be (in)completed as follows~\ldots
       theorem prover.
       The soundness of this approach is proved by showing that if $\Phi$ can be proved from 
       $\varphi$ then the interpretation $I$ represented by $\varphi$ is a model of $\Phi$.
-      This is done for finite Tarskian interpretations for untyped first-order logic in 
-      \cite{SS+23-LPAR}.
+      This is done for finite Tarskian interpretations for untyped first-order logic 
+      in~\cite{SS+23-LPAR}.
 %      by proving that if a formulae $\Phi$ can be 
 %      proved from the interpretation-formulae $\varphi$ then the interpretation $I$ 
 %      represented by $\varphi$ is a model of $\Phi$.
-      We believe the proof in \cite{SS+23-LPAR} lifts naturally to TFF and THF, but is technically 
+      We believe the proof in~\cite{SS+23-LPAR} lifts naturally to TFF and THF, but is technically 
       more complicated due to the introduction of types.
       % and type promotion functions.
       The extension to infinite domains is quite simple after that.
@@ -412,8 +411,8 @@ These steps can be (in)completed as follows~\ldots
       verification problem to TXF/THF (see Section~\ref{KripkeVerification}).
 \end{enumerate}
 
-Steps~2 to 4 are implemented in the AGMV model verifier \cite{SS+23-LPAR}, available in the
-SystemOnTSTP \cite{Sut07-CSR} web interface
+Steps~2 to 4 are implemented in the AGMV model verifier~\cite{SS+23-LPAR}, available in the
+SystemOnTSTP~\cite{Sut07-CSR} web interface
 \href{https://www.tptp.org/cgi-bin/SystemOnTSTP}{{\tt www.tptp.org/cgi-bin/SystemOnTSTP}}.
       
 %--------------------------------------------------------------------------------------------------
@@ -431,7 +430,7 @@ examples in Appendices~\ref{FOF_Finite.s} and~\ref{TFF_Finite.s})~\ldots
 \end{packed_itemize}
 
 Note how function and predicate symbols are interpreted by applying them directly to domain
-elements (\emph{{\`a} la} \cite[\S5.3.4]{Gal15}), rather than using the presentation of 
+elements (\emph{{\`a} la}~\cite[\S5.3.4]{Gal15}), rather than using the presentation of 
 interpretations that introduces a new interpretation function for each function/predicate symbol 
 \cite[\S5.3.2]{Gal15}.
 This approach simplifies the representation of interpretations, and makes interpretation of 
@@ -667,7 +666,8 @@ Four new defined symbols are used in Kripke interpretation-formulae:
 A single Kripke interpretation-formula is a conjunction of~\ldots
 \begin{packed_itemize}
 \item Specification of the worlds.
-\item Until ATP systems and tools build it in, the distinctness of the worlds.
+\item Some expression of distinctness of the worlds (by definition different world are known to
+      be distinct, but no ATP systems know that yet).
 \item The accessibility relation.
 \item The local world if any.
 \item For each world, its Tarskian interpretation.
@@ -780,7 +780,7 @@ formulae, it is not necessary to provide a full logic specification (as in the p
 Appendices~\ref{NXF_Finite-Finite-Global.p} and~\ref{NXF_Finite-Finite-Local.p}) because the
 logical setting is captured in the interpretation-formulae.
 The verification problem is thus not in the same logic as the problem formulae, but rather
-some kind of hybrid logic \cite{Bra11}, which is indicated by the special logic specification
+some kind of hybrid logic~\cite{Bra11}, which is indicated by the special logic specification
 value {\tt \$\$fomlModel}.
 Appendix~\ref{NXF_Finite-Finite-Global.s.p} shows the NXF verification problem for the problem
 in Appendix~\ref{NXF_Finite-Finite-Global.p} and its countermodel in
@@ -838,11 +838,11 @@ The resultant TH0 problem is discharged using a trusted TH0 ATP system.
 % \hspace*{0.5cm}\smalltt{tff(dollar\_possible\_decl,type, '\$possible': ( '\$world' * \$o ) > \$o ).} \\
 % The meanings of the connectives are then axiomatized wrt a current world~\ldots
 % \begin{packed_itemize}
-% \item A formula is necessarily $true$ wrt the current world if it is $true$ wrt the interpretations
+% \item A formula is necessarily \textit{true} wrt the current world if it is \textit{true} wrt the interpretations
 %       in all worlds that are accessible from the current world.
 %       See the {\tt necessary\_defn} axiom in Appendices~\ref{NXF_Finite-Finite-Global.s.p}
 %       and~\ref{NXF_Finite-Finite-Local.s.p}.
-% \item A formula is possibly $true$ wrt the current world if it is $true$ wrt the interpretation
+% \item A formula is possibly \textit{true} wrt the current world if it is \textit{true} wrt the interpretation
 %       in some world that is accessible from the current world.
 %       See the {\tt possible\_defn} axiom in Appendices~\ref{NXF_Finite-Finite-Global.s.p}
 %       and~\ref{NXF_Finite-Finite-Local.s.p}.
@@ -895,7 +895,7 @@ Section~\ref{Need} listed four needs for interpretations:
 \item Tractability - the ability to evaluate a formula using some limited/reasonable amount of
       resources.
 \item Verifiability - the ability to verify a model by evaluating all the formulae it claims
-      to model as $true$.
+      to model as \textit{true}.
 \item Comprehensibility - be understandable, typically by a human but possibly by a machine.
 \end{packed_itemize}
 
