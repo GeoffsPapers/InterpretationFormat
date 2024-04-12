@@ -1,4 +1,11 @@
 %------------------------------------------------------------------------------
+tff(semantics,logic,
+    $alethic_modal ==
+      [ $domains == $constant,
+        $designation == $rigid,
+        $terms == $local,
+        $modalities == $modal_system_M ] ).
+
 %----Declarations to fool Vampire when processing this file directly
 % tff('$world_type',type,$world: $tType).
 % tff('$local_world_decl',type,$local_world: $world).

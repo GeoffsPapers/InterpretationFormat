@@ -1,9 +1,10 @@
 %------------------------------------------------------------------------------
-tff(simple_spec,logic,
-    $alethic_modal == [
-      $constants == $rigid,
-      $quantification == $constant,
-      $modalities == $modal_system_M ] ).
+tff(semantics,logic,
+    $alethic_modal == 
+      [ $domains == $constant,
+        $designation == $rigid,
+        $terms == $local,
+        $modalities == $modal_system_M ] ).
 
 tff(fruit_type,type,   fruit: $tType).
 tff(apple_decl,type,   apple: fruit).

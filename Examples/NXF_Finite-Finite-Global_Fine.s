@@ -1,4 +1,11 @@
 %------------------------------------------------------------------------------
+tff(semantics,logic,
+    $alethic_modal ==
+      [ $domains == $constant,
+        $designation == $rigid,
+        $terms == $local,
+        $modalities == $modal_system_M ] ).
+
 tff(person_decl,type,    person: $tType).
 tff(product_decl,type,   product: $tType).
 tff(alex_decl,type,      alex: person).

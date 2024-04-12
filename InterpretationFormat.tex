@@ -1,13 +1,19 @@
-\documentclass{easychair}
+\documentclass{ceurart}
+% \documentclass{easychair}
 
+%----CEUR style
+%% One can fix some overfulls
+\sloppy
+
+%----My style
 % \usepackage{doc}
 \usepackage{setspace}
 \usepackage{verbatim}
 \usepackage{amssymb}
-\usepackage[straightquotes]{newtxtt}
-
-%----Suppress extra space in texttt mode
-\AddToHook{cmd/ttfamily/after}{\frenchspacing}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{upquote}
+\renewcommand\UrlFont{\color{blue}\rmfamily}
 
 %----Making things more compact
 \newcommand{\smalltt}[1]{\small \texttt{#1}}
@@ -27,46 +33,45 @@
 \setlength{\parskip}{0pt}
 \setlength{\parsep}{0pt}
 }{\end{enumerate}}
+%----Suppress extra space in texttt mode
+\AddToHook{cmd/ttfamily/after}{\frenchspacing}
+% \renewcommand{\arraystretch}{0.8}
+\renewcommand{\floatpagefraction}{0.9}
+\renewcommand{\textfloatsep}{2.0ex}
+% \setlength{\floatsep}{2.0pt plus 2.0pt minus 2.0pt}
+% \setlength{\textfloatsep}{5.0pt plus 2.0pt minus 0.0pt}
+\renewcommand{\dbltextfloatsep}{2.0ex}
 % \renewcommand{\textfraction}{0.07}
 % \renewcommand{\topfraction}{0.9}
 % \renewcommand{\bottomfraction}{0.9}
-% \renewcommand{\floatpagefraction}{0.66}
-% \setlength{\floatsep}{2.0pt plus 2.0pt minus 2.0pt}
-% \setlength{\textfloatsep}{5.0pt plus 2.0pt minus 0.0pt}
+\setlength{\tabcolsep}{3pt}
 
 \newcommand{\alex}[1]{{\color{red}{{#1}}}}
 
+%----CEUR style
+\begin{document}
+\copyrightyear{2024}
+\copyrightclause{Copyright for this paper by its authors.
+  Use permitted under Creative Commons License Attribution 4.0 International (CC BY 4.0).}
+\conference{The 9th Workshop on Practical Aspects of Automated Reasoning,
+  July 2, 2024, Nancy, France}
 \title{The New TPTP Format for Interpretations}
 
-\author{
-  Geoff Sutcliffe\inst{1}
-\and
-  Alexander Steen\inst{2}
-\and
-  Pascal Fontaine\inst{3}
-}
-
-\institute{
-  University of Miami,
-  Miami, USA\\
-  \email{geoff@cs.miami.edu,jam771@miami.edu}
-\and
-  University of Greifswald,
-  Greifswald, Germany\\
-  \email{alexander.steen@uni-greifswald.de}
-\and
-  University of Li{\`e}ge,
-  Li{\`e}ge, Belgium\\
-  \email{Pascal.Fontaine@uliege.be}
-}
-
-\authorrunning{Sutcliffe, Steen, Fontaine}
-\titlerunning{TPTP World Interpretations}
-
-\begin{document}
-\maketitle
-
-%--------------------------------------------------------------------------------------------------
+\author[1]{Geoff Sutcliffe}[%
+orcid=0000-0001-7116-9338,
+email=geoff@cs.miami.edu,
+]
+\address[1]{University of Miami, USA}
+\author[2]{Alexander Steen}[%
+orcid=0000-0001-8781-9462,
+email=alexander.steen@uni-greifswald.de,
+]
+\address[2]{University of Greifswald, Germany}
+\author[3]{Pascal Fontaine}[%
+orcid=0000-0003-4700-6031,
+email=Pascal.Fontaine@uliege.be
+]
+\address[3]{Université de Liège, Belgium}
 \begin{abstract}
 This paper describes the new TPTP format for representing interpretations.
 It provides a background survey that helped us ensure that the representation format is adequate
@@ -77,6 +82,53 @@ Verification of models is discussed.
 Some tools that support processing the new format are noted.
 The properties of interpretations represented in the new format are discussed.
 \end{abstract}
+\begin{keywords}
+  TPTP World \sep
+  Interpretations
+\end{keywords}
+
+%----EasyChair style
+% \title{The New TPTP Format for Interpretations}
+% 
+% \author{
+%   Geoff Sutcliffe\inst{1}
+% \and
+%   Alexander Steen\inst{2}
+% \and
+%   Pascal Fontaine\inst{3}
+% }
+% 
+% \institute{
+%   University of Miami,
+%   Miami, USA\\
+%   \email{geoff@cs.miami.edu,jam771@miami.edu}
+% \and
+%   University of Greifswald,
+%   Greifswald, Germany\\
+%   \email{alexander.steen@uni-greifswald.de}
+% \and
+%   University of Li{\`e}ge,
+%   Li{\`e}ge, Belgium\\
+%   \email{Pascal.Fontaine@uliege.be}
+% }
+% 
+% \authorrunning{Sutcliffe, Steen, Fontaine}
+% \titlerunning{TPTP World Interpretations}
+% 
+% \begin{document}
+
+\maketitle
+%--------------------------------------------------------------------------------------------------
+% \begin{abstract}
+% This paper describes the new TPTP format for representing interpretations.
+% It provides a background survey that helped us ensure that the representation format is adequate
+% for different types of interpretations: Tarskian, Herbrand, and Kripke interpretations.
+% The needs of applications that use models are considered.
+% The syntax and semantics of the new format is expounded in detail, with multiple examples.
+% Verification of models is discussed.
+% Some tools that support processing the new format are noted.
+% The properties of interpretations represented in the new format are discussed.
+% \end{abstract}
 %--------------------------------------------------------------------------------------------------
 \section{Introduction}
 \label{Introduction}
@@ -615,13 +667,13 @@ Appendices~\ref{TFF_Finite_Compact.s} and~\ref{THF_Finite_Compact.s} show exampl
 interpretation-formulae in Appendices~\ref{FOF_Finite.s} and~\ref{TFF_Finite.s} respectively.
 In Appendix~\ref{TFF_Finite_Compact.s} note how universal quantification is used to map
 {\tt loves} to {\tt d\_garfield} for all {\tt d\_cats}~\ldots \\
-\hspace*{0.5cm}\smalltt{! [DC: d\_cat] : ( loves(d2cat(DC)) = d2cat(d\_garfield) )} \\
+\hspace*{0.5cm}\smalltt{!\,[DC:\,d\_cat]\,:\,(\,loves(d2cat(DC))\,=\,d2cat(d\_garfield)\,)} \\
 and in Appendix~\ref{THF_Finite_Compact.s} universal quantification is used to say that for all
 functions of type {\tt beverage > syrup} and all {\tt syrups}, applying the function to
 {\tt d\_coffee} and the syrup results in {\tt d\_coffee}~\ldots \\
-\hspace*{0.5cm}\smalltt{! [F: beverage > syrup > beverage,S: syrup] :} \\
-\hspace*{0.8cm}\smalltt{( ( F @ ( d2beverage @ d\_coffee ) @ ( d2syrup @ S ) )} \\
-\hspace*{0.8cm}\smalltt{= ( d2beverage @ d\_coffee ) )}
+\hspace*{0.5cm}\smalltt{!\,[F:\,beverage\,>\,syrup\,>\,beverage,S:\,syrup]\,:} \\
+\hspace*{0.8cm}\smalltt{(\,(\,F\,@\,(\,d2beverage\,@\,d\_coffee\,)\,@\,(\,d2syrup\,@\,S\,)\,)} \\
+\hspace*{0.8cm}\smalltt{=\,(\,d2beverage\,@\,d\_coffee\,)\,)}
 
 %--------------------------------------------------------------------------------------------------
 \section{Herbrand-formulae and Saturations}
@@ -651,36 +703,49 @@ have some tentative examples that show they can be represented in the new format
 \href{https://www.tptp.org/TPTP/Proposals/InterpretationsModels.shtml\#KripkeInfiniteFinite}{{\tt www.tptp.org/TPTP/Proposals/InterpretationsModels.shtml}}}
 For now the format is explained with examples that have a finite number of worlds and finite
 Tarskian interpretations in the worlds.}
-
-Four new defined symbols are used in Kripke interpretation-formulae:
+For interpretations of classical logic formulae the semantics is the standard classical semantics 
+of TXF.
+In contrast, for Kripke interpretations the semantics is that of modal logic enriched with four 
+new hybrid defined symbols:
 \begin{packed_itemize}
-\item A new defined type {\tt \$world} is used for the worlds of the interpretation.
-      Different constants of type {\tt \$world} are known to be unequal. 
-\item A new defined predicate {\tt \$accessible\_world} of type {\tt (\$world * \$world) > \$o}
+\item A defined type {\tt \$world} is used for the worlds of the interpretation.
+      Different constants of type {\tt \$world} are known to be unequal (but as yet no ATP 
+      systems implement that, so it's necessary to encode that explicitly using inequalities or 
+      the {\tt \$distinct} predicate).
+\item A defined predicate {\tt \$accessible\_world} of type {\tt (\$world\,*\,\$world)\,>\,\$o}
       is used to specify the accessibility relation between worlds.
-\item A new defined constant {\tt \$local\_world} of type {\tt \$world > \$o} is used to specify 
+\item A defined constant {\tt \$local\_world} of type {\tt \$world\,>\,\$o} is used to specify 
       the world in which a local (the default) conjecture is to be proved. 
-\item A new defined predicate {\tt \$in\_world} of type {\tt (\$world * \$o) > \$o} is used to 
+\item A defined predicate {\tt \$in\_world} of type {\tt (\$world\,*\,\$o)\,>\,\$o} is used to 
       specify the interpretations in the worlds.
-      The boolean argument means the interpretation-formulae are necessarily written in TXF or THF.
 \end{packed_itemize}
 
 A single Kripke interpretation-formula is a conjunction of~\ldots
 \begin{packed_itemize}
-\item Specification of the worlds.
-\item Some expression of distinctness of the worlds (by definition different world are known to
+\item A specification of the worlds.
+\item Explication of the distinctness of the worlds (by definition different world are known to
       be distinct, but no ATP systems know that yet).
 \item The accessibility relation.
-\item The local world if any.
-\item For each world, its Tarskian interpretation.
+\item Specification of the local world if any.
+\item For each world, its Tarskian interpretation (also in the new TPTP format for interpretations),
+      augmented by existential subfomulae that require the existence of the world's domain 
+      elements -- these are necessary because the semantics is that of modal logic (see
+      Sections~\ref{NewKripkeFiniteFinite} and~\ref{NewKripkeSplitCompact} for examples).
 \end{packed_itemize}
-
-\vspace*{0.5em}
 The interpretation-formulae are preceded by the necessary type declarations:
 \begin{packed_itemize}
 \item The types for the interpretations in the worlds.
 \item The worlds declared of type {\tt \$world}, e.g., {\tt w1: \$world}.
 \end{packed_itemize}
+
+The {\tt logic} specification of the problem is included to specify that the interpretation is
+for formulae in that logic.
+This information is needed when processing an interpretation, e.g., in verification (see 
+Section~\ref{Verification}). 
+The interpretation-formula does not provide this information because it underspecifies the 
+logic in use, e.g., it's usually not possible to see whether the interpretation exemplifies modal 
+system K or modal system S5 -- in both cases the interpretation could interpret the accessibility 
+relation as an equivalence relation (this is required for S5 but it is also OK for K).
 
 %--------------------------------------------------------------------------------------------------
 \subsection{Finite-Finite Kripke Interpretations}
@@ -694,7 +759,7 @@ The countermodel was found by embedding the problem into THF using the NTFLET to
 \cite{Ste22,Ste22-LE}, running Nitpick on the THF problem, and converting Nitpick's output
 to the TPTP format by hand.
 There are two worlds~\ldots \\
-\hspace*{0.5cm}\smalltt{! [W: \$world] : ( W = w1 | W = w2 )} \\
+\hspace*{0.5cm}\smalltt{!\,[W:\,\$world]\,:\,(\,W\,=\,w1\,|\,W\,=\,w2\,)} \\
 \hspace*{0.5cm}\smalltt{\$distinct(w1,w2)} \\
 with a complete accessibility relation (meeting the requirements of modal logic 
 \textbf{M})~\ldots \\
@@ -708,6 +773,11 @@ The finite Tarskian interpretations for the worlds are provided in the format de
 Section~\ref{NewTarskian}~\ldots \\
 \hspace*{0.5cm}\smalltt{\$in\_world(w1,}\emph{the Tarskian interpretation}{\tt )} \\
 \hspace*{0.5cm}\smalltt{\$in\_world(w2,}\emph{the Tarskian interpretation}{\tt )} \\
+Note the augmentation of the Tarskian interpretations with subformulae such as 
+{\tt ?\,[DP:\,d\_person]\,:\,(\,DP\,=\,d\_alex\,)}.
+The quantification semantics is not classical, but instead that of modal logic, i.e., the 
+quantification is over the domain elements that exist in {\tt w1}, i.e., that subformulae requires 
+that the domain element {\tt d\_lex} exists in {\tt w1}.
 Appendix~\ref{NXF_Finite-Finite-Global.s.p} shows the verification problem for the model.
 
 Appendix~\ref{NXF_Finite-Finite-Local.p} shows a NXF problem that has a countermodel with
@@ -796,17 +866,17 @@ and each of the problem axioms and the negated problem conjecture are given the 
 role with a subrole of {\tt local} or {\tt global} according to their role in the problem, e.g., 
 in Appendix~\ref{NXF_Finite-Finite-Global.p} the axiom of the problem~\ldots \\
 \hspace*{0.5cm}\smalltt{tff(not\_all\_get\_rich,axiom,} \\
-\hspace*{0.8cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}} ? [P: person] : ( \{\$necessary\} @ (gets\_rich(P)) ) ).}\\
+\hspace*{0.8cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}}\,?\,[P:\,person]\,:\,(\,\{\$necessary\}\,@\,(gets\_rich(P))\,)\,).}\\
 is global (the default), so the NXF verification conjecture in 
 Appendix~\ref{NXF_Finite-Finite-Global.s.p} has the {\tt global} subrole~\ldots \\
 \hspace*{0.5cm}\smalltt{tff(not\_all\_get\_rich,conjecture-global,} \\
-\hspace*{0.8cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}} ? [P: person] : ( \{\$necessary\} @ (gets\_rich(P)) ) ).} \\
+\hspace*{0.8cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}}\,?\,[P:\,person]\,:\,(\,\{\$necessary\}\,@\,(gets\_rich(P))\,)\,).} \\
 The conjecture of the problem is local (the default)~\ldots \\
 \hspace*{0.5cm}\smalltt{tff(only\_alex\_gets\_rich,conjecture,} \\
-\hspace*{0.8cm}\smalltt{\{\$possible\} @ (gets\_rich(alex) \& {\raisebox{0.4ex}{\texttildelow}} gets\_rich(chris) ) ).} \\
+\hspace*{0.8cm}\smalltt{\{\$possible\}\,@\,(gets\_rich(alex)\,\&\,{\raisebox{0.4ex}{\texttildelow}}\,gets\_rich(chris)\,)\,).} \\
 so the NXF verification (negated) conjecture has the {\tt local} subrole~\ldots \\
 \hspace*{0.5cm}\smalltt{tff(only\_alex\_gets\_rich,conjecture-local,} \\
-\hspace*{0.8cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}} ( \{\$possible\} @ ( gets\_rich(alex) \& {\raisebox{0.4ex}{\texttildelow}} gets\_rich(chris) ) ) ).} \\
+\hspace*{0.8cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}}\,(\,\{\$possible\}\,@\,(\,gets\_rich(alex)\,\&\,{\raisebox{0.4ex}{\texttildelow}}\,gets\_rich(chris)\,)\,)\,).} \\
 
 The NXF verification problem is embedded into TH0 using the NTFLET tool.
 NTFLET recognizes the special logic specification and the new type and predicates, and combines
@@ -922,7 +992,7 @@ But for now we are pausing to allow ATP system developers to react to the format
 lead to improvements, and hopefully will lead to them implementing the format in the ATP systems.
 
 %--------------------------------------------------------------------------------------------------
-\bibliographystyle{plain}
+% Not needed for CEUR \bibliographystyle{plain}
 \bibliography{Bibliography.bib}
 %--------------------------------------------------------------------------------------------------
 \appendix

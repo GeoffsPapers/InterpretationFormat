@@ -7,7 +7,7 @@ tff(is_descendant_decl,type,  is_descendant: ( person * person ) > $o ).
 tff(peano_type,type,          peano: $tType).
 tff(zero_decl,type,           zero: peano ).
 tff(s_decl,type,              s: peano > peano ).
-tff(peano2person_decl,type,peano2person: peano > person ).
+tff(peano2person_decl,type,   peano2person: peano > person ).
 tff(peano_less_decl,type,     peano_less: ( peano * peano ) > $o ).
 
 tff(people,interpretation,
@@ -20,13 +20,11 @@ tff(people,interpretation,
 %----Relationships between Peano numbers
       & ! [I1: peano,I2: peano,I3: peano] :
           ( peano_less(I1,s(I1))
-          & ( ( peano_less(I1,I2)
-              & peano_less(I2,I3) )
+          & ( ( peano_less(I1,I2) & peano_less(I2,I3) )
            => peano_less(I1,I3) )
           & ( peano_less(I1,I2)
            => I1 != I2 ) ) )
-%----Mapping people to integers. Note that Bob's ancestors will be interpreted
-%----as negative integers.
+%----Mapping people to Peano numbers
     & ( bob = peano2person(zero)
       & ! [I: peano] :
           child_of(peano2person(I)) = peano2person(s(I)) )
