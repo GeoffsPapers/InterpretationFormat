@@ -1,5 +1,5 @@
-\documentclass{ceurart}
-% \documentclass{easychair}
+% \documentclass{ceurart}
+\documentclass{easychair}
 
 %----CEUR style
 %% One can fix some overfulls
@@ -49,76 +49,29 @@
 \newcommand{\alex}[1]{{\color{red}{{#1}}}}
 
 %----CEUR style
-\begin{document}
-\copyrightyear{2024}
-\copyrightclause{Copyright for this paper by its authors.
-  Use permitted under Creative Commons License Attribution 4.0 International (CC BY 4.0).}
-\conference{The 9th Workshop on Practical Aspects of Automated Reasoning,
-  July 2, 2024, Nancy, France}
-\title{The New TPTP Format for Interpretations}
-
-\author[1]{Geoff Sutcliffe}[%
-orcid=0000-0001-7116-9338,
-email=geoff@cs.miami.edu,
-]
-\address[1]{University of Miami, USA}
-\author[2]{Alexander Steen}[%
-orcid=0000-0001-8781-9462,
-email=alexander.steen@uni-greifswald.de,
-]
-\address[2]{University of Greifswald, Germany}
-\author[3]{Pascal Fontaine}[%
-orcid=0000-0003-4700-6031,
-email=Pascal.Fontaine@uliege.be
-]
-\address[3]{Université de Liège, Belgium}
-\begin{abstract}
-This paper describes the new TPTP format for representing interpretations.
-It provides a background survey that helped us ensure that the representation format is adequate
-for different types of interpretations: Tarskian, Herbrand, and Kripke interpretations.
-The needs of applications that use models are considered.
-The syntax and semantics of the new format is expounded in detail, with multiple examples.
-Verification of models is discussed.
-Some tools that support processing the new format are noted.
-The properties of interpretations represented in the new format are discussed.
-\end{abstract}
-\begin{keywords}
-  TPTP World \sep
-  Interpretations
-\end{keywords}
-
-%----EasyChair style
+% \begin{document}
+% \copyrightyear{2024}
+% \copyrightclause{Copyright for this paper by its authors.
+%   Use permitted under Creative Commons License Attribution 4.0 International (CC BY 4.0).}
+% \conference{The 9th Workshop on Practical Aspects of Automated Reasoning,
+%   July 2, 2024, Nancy, France}
 % \title{The New TPTP Format for Interpretations}
 % 
-% \author{
-%   Geoff Sutcliffe\inst{1}
-% \and
-%   Alexander Steen\inst{2}
-% \and
-%   Pascal Fontaine\inst{3}
-% }
-% 
-% \institute{
-%   University of Miami,
-%   Miami, USA\\
-%   \email{geoff@cs.miami.edu,jam771@miami.edu}
-% \and
-%   University of Greifswald,
-%   Greifswald, Germany\\
-%   \email{alexander.steen@uni-greifswald.de}
-% \and
-%   University of Li{\`e}ge,
-%   Li{\`e}ge, Belgium\\
-%   \email{Pascal.Fontaine@uliege.be}
-% }
-% 
-% \authorrunning{Sutcliffe, Steen, Fontaine}
-% \titlerunning{TPTP World Interpretations}
-% 
-% \begin{document}
-
-\maketitle
-%--------------------------------------------------------------------------------------------------
+% \author[1]{Geoff Sutcliffe}[%
+% orcid=0000-0001-7116-9338,
+% email=geoff@cs.miami.edu,
+% ]
+% \address[1]{University of Miami, USA}
+% \author[2]{Alexander Steen}[%
+% orcid=0000-0001-8781-9462,
+% email=alexander.steen@uni-greifswald.de,
+% ]
+% \address[2]{University of Greifswald, Germany}
+% \author[3]{Pascal Fontaine}[%
+% orcid=0000-0003-4700-6031,
+% email=Pascal.Fontaine@uliege.be
+% ]
+% \address[3]{Université de Liège, Belgium}
 % \begin{abstract}
 % This paper describes the new TPTP format for representing interpretations.
 % It provides a background survey that helped us ensure that the representation format is adequate
@@ -129,6 +82,54 @@ The properties of interpretations represented in the new format are discussed.
 % Some tools that support processing the new format are noted.
 % The properties of interpretations represented in the new format are discussed.
 % \end{abstract}
+% \begin{keywords}
+%   TPTP World \sep
+%   Interpretations
+% \end{keywords}
+
+%----EasyChair style
+\title{The New TPTP Format for Interpretations}
+
+\author{
+  Geoff Sutcliffe\inst{1}
+\and
+  Alexander Steen\inst{2}
+\and
+  Pascal Fontaine\inst{3}
+}
+
+\institute{
+  University of Miami,
+  Miami, USA\\
+  \email{geoff@cs.miami.edu}
+\and
+  University of Greifswald,
+  Greifswald, Germany\\
+  \email{alexander.steen@uni-greifswald.de}
+\and
+  University of Li{\`e}ge,
+  Li{\`e}ge, Belgium\\
+  \email{Pascal.Fontaine@uliege.be}
+}
+
+\authorrunning{Sutcliffe, Steen, Fontaine}
+\titlerunning{TPTP World Interpretations}
+
+\begin{document}
+
+\maketitle
+%--------------------------------------------------------------------------------------------------
+%----EasyChair style
+\begin{abstract}
+This paper describes the new TPTP format for representing interpretations.
+It provides a background survey that helped us ensure that the representation format is adequate
+for different types of interpretations: Tarskian, Herbrand, and Kripke interpretations.
+The needs of applications that use models are considered.
+The syntax and semantics of the new format is expounded in detail, with multiple examples.
+Verification of models is discussed.
+Some tools that support processing the new format are noted.
+The properties of interpretations represented in the new format are discussed.
+\end{abstract}
 %--------------------------------------------------------------------------------------------------
 \section{Introduction}
 \label{Introduction}
@@ -992,7 +993,8 @@ But for now we are pausing to allow ATP system developers to react to the format
 lead to improvements, and hopefully will lead to them implementing the format in the ATP systems.
 
 %--------------------------------------------------------------------------------------------------
-% Not needed for CEUR \bibliographystyle{plain}
+% Not needed for CEUR 
+\bibliographystyle{plain}
 \bibliography{Bibliography.bib}
 %--------------------------------------------------------------------------------------------------
 \appendix
