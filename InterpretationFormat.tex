@@ -142,9 +142,10 @@ appropriately expressive logic, and the proofs are often similarly written in lo
 In the last two decades the converse task of disproving conjectures, proving that a conjecture is 
 not a theorem of the axioms, has become increasingly important.
 This process depends on finding a \emph{countermodel} for the conjecture, i.e., finding an 
-\emph{interpretation} (a structure that maps formulae to truth values) that is a \emph{model}
-of the axioms (maps the axioms to \textit{true}) but not a model for the conjecture (maps the 
-conjecture to \textit{false}).
+\emph{interpretation} (a structure that assigns meaning to the symbols of the language of the
+formulae, and consequently maps formulae to truth values) that is a \emph{model} of the axioms 
+(maps the axioms to \textit{true}) but not a model for the conjecture (maps the conjecture to 
+\textit{false}).
 A salient application area that uses this form of ATP is verification~\cite{DKW08}, where a 
 countermodel is used to pinpoint the reason why a proof obligation fails, and correspondingly 
 points to the location of the fault in the system being verified.
@@ -230,8 +231,8 @@ In many applications it is necessary to have an explicit model, in some represen
 allows for analysis of the model.
 Applications that productively use an explicit model include finding inconsistencies in 
 axiomatizations~\cite{SS+17}, identification of bugs in verification~\cite{CE82,QS82},
-solution of problems encoded as a model finding problems~\cite{Win82}, and evaluation of formulae
-wrt the model~\cite{SS+23-LPAR}.
+studying modal and description logics~\cite{SH13}, solving problems encoded as a model finding 
+problems~\cite{Win82}, and evaluating formulae wrt the model~\cite{SS+23-LPAR}.
 Manual inspection of explicit models can also be useful, e.g.,~\cite{EK+10}.
 % Explicit models can be used for machine learning and improving model finders internally.
 A key advantage of having an explicit model output is that the model can be verified, i.e., the
@@ -240,24 +241,28 @@ model finder does not need to be trusted,
 Given the innate desirability of obtaining explicit models of satisfiable formulae, desirable
 properties of interpretation representation can be considered.
 \begin{packed_itemize}
+\item An interpretation should be for the symbols of the input formulae.
 \item Evaluation of any formulae wrt the interpretation should be possible, because many uses of
       interpretations can be reduced to evaluation~\cite[\S3.2]{CLP04}.
-\item Evaluation of any formulae wrt an interpretation should be tractable.
+      The evaluation should be tractable, or in a tractabe core.
       This corresponds to the \emph{atom test} and \emph{formula evaluation} postulates suggested
       by~\cite{FL96,CLP04}.
-\item Verification of models should be possible (and hopefully tractable) by checking that the 
-      problem formulae evaluate to \textit{true} wrt the model.
-\item Interpretations should be sufficiently comprehensible for manual inspection.
+\item Verification of models should be possible by checking that the problem formulae evaluate 
+      to \textit{true} wrt the model.
+      The verification should be tractable, or in a tractabe core.
+\item Interpretations should be sufficiently (human) comprehensible to be useful in (human)
+      applications.
 \end{packed_itemize}
 
 %--------------------------------------------------------------------------------------------------
 \subsection{What do we Have?}
 \label{Have}
 
-A \emph{Tarskian interpretation}~\cite{TV56} of formulae logic consists of a non-empty domain of 
-distinct elements for each type used in the formulae (just one domain for untyped logic), mappings 
-for function symbols from tuples of domain elements to the domain, and mappings for predicate 
-symbols from tuples of domain elements to $\{true,false\}$~\cite{Hun96,Gal15}.
+A \emph{Tarskian interpretation}~\cite{TV56} consists of a non-empty domain of distinct elements 
+(not the Herbrand Universe -- see Herbrand interpretation below) for each type used in the 
+formulae (just one domain for untyped logic), mappings for function symbols from tuples of 
+domain elements to the domain, and mappings for predicate symbols from tuples of domain elements 
+to $\{true,false\}$~\cite{Hun96,Gal15}.
 An overview of some ways of building and representing Tarskian interpretations is provided 
 by~\cite{CLP04}, and~\cite{Pel03-EQMC} provides a comprehensive list of approaches.
 A \emph{complete} interpretation can be used to evaluate all formulae that can be written in the 
@@ -279,29 +284,25 @@ Two types of Tarskian interpretations are clear (and more might exist)~\ldots
       implicitly specified, e.g., some set of algebraic numbers such as the integers~\cite{BB13}.
       % HOW IS THIS DONE?
       There are some ATP systems that produce infinite Tarskian models, e.g., 
-      cvc5~\cite{BB+22-cvc5} and Z3.
+      cvc5~\cite{BB+22-cvc5}, FEST~\cite{EPS24}, and Z3.
 \end{packed_itemize}
-\vspace*{-0.5em}
-Formulae can be evaluated wrt (finite) Tarskian interpretations~\ldots
-\begin{packed_itemize}
-\item Interpret quantifiers using Tarskian semantics.
-\item Interpret ground (grounded with domain elements) terms and atoms using the mappings.
-\item Interpret boolean formulae using the truth tables for connectives.
-\end{packed_itemize}
-\vspace*{-0.5em}
-This approach is taken internally in Vampire.
 
-\vspace*{0.8em}
 A \emph{Herbrand interpretation}~\cite{Her30} has the Herbrand universe as the domain, the mapping 
 for function symbols is the ``identity'', and the mapping for predicate symbols is from the 
 Herbrand base to $\{true,false\}$.
-Every set of formulae induces its set of Herbrand models.
+Every set of formulae determines its set of Herbrand models.
+Formulae in Skolem normal form determine Herbrand models with a Herbrand universe that includes any 
+Skolem symbols. 
+An empty set of formulae determines all interpretations, i.e., all interpretations are models
+of the set.
 Such sets of formulae can be the result of applying model preserving transformations to the 
-problem formulae (even the input itself induces its set of Herbrand models), or be generated 
-by an ATP system with the explicit intention of representing Herbrand models:
+problem formulae (even the input itself determines its set of Herbrand models), or be generated 
+by an ATP system with the explicit intention of representing Herbrand models.
+They are important in the context of resolution and all similar modern calculi; saturations (see 
+below) are a common case.
 \begin{packed_itemize}
-\item \emph{Formulae} that are intended to represent Herbrand interpretations are written 
-      \emph{Herbrand-formulae} to avoid confusion.
+\item Formulae that are intended to represent Herbrand interpretations are written 
+      \emph{HI-formulae} in this paper, to avoid confusion.
       Examples include saturations (discussed separately in the next bullet point), a disjunction 
       of implicit generalisations (DIGs)~\cite{LM87}, sets of constrained unit 
       clauses~\cite{CZ92,CP95,CP95-TAB}, SGGS clause sequences~\cite{BP16}, tableaux~\cite{Hah01}
@@ -312,13 +313,15 @@ by an ATP system with the explicit intention of representing Herbrand models:
       E-KRHyper~\cite{PW07} was an ATP systems that produced hyper-tableaux, and
       iProver~\cite{Kor08,SK12} is an ATP system that outputs predicate definitions 
       over the term algebra.
-\item \emph{Saturations}~\cite{BG+01,Pel03-JSC} are a special case of Herbrand-formulae.
+\item \emph{Saturations}~\cite{BG+01,Pel03-JSC} are a special case of HI-formulae.
       A saturation is a fixed point for a set of clauses at which further application of a
-      complete inference system does not generate any new clauses (wrt some notion of redundancy).
-      This approach is adopted in saturation-based ATP systems such as E~\cite{SCV19},
-      Prover9~\cite{McC-Prover9-URL}, Vampire, and Zipperposition~\cite{VB+21}.
+      complete inference system does not generate any new clauses (up to redundancy).
+      A saturation of a set of clauses determines the same set of Herbrand models as 
+      the clauses themselves.
+      Saturation-based ATP systems include E~\cite{SCV19}, Prover9~\cite{McC-Prover9-URL}, 
+      Vampire, and Zipperposition~\cite{VB+21}.
 \end{packed_itemize}
-While the domain of a Herbrand interpretation induced by Herbrand formulae is known to be the 
+While the domain of a Herbrand interpretation determined by Herbrand formulae is known to be the 
 Herbrand universe, there might not be an explicit symbol interpretation that can be used 
 constructively by users.
 
@@ -355,7 +358,7 @@ as ``Some interpretations are models of Ax, and
 This is used for transformations on satisfiable sets of formulae in which the models of the set 
 are unchanged, or are changed only by adding new domain elements or mappings, so that the
 extended models are still models of the original formulae. 
-Examples of such transformations are Skolemization, and adding logical consequences of the set 
+Examples of such transformations are Skolemization, and adding logical consequences of a set 
 into the set.
 
 %--------------------------------------------------------------------------------------------------
@@ -374,14 +377,15 @@ The satisfiable formulae might have been formed from
 Going down leads to the {\sf Models} of the satisfiable formulae.
 Going left from the {\sf Satisfiable formulae in $\Sigma$} is the pathway taken by ATP systems 
 that find a Tarskian/Kripke model, and output interpretation-formulae representing the model.
+The interpretation-formulae can be for a conservative extension of the language of the input
+formula, e.g., by the addition of Skolem symbols, defined symbols, etc. (hence $\Sigma^+$).
 If the interpretation-formulae correctly represent a model of the satisfiable formulae, then
 the satisfiable formulae can be proved ($\vDash$) from the interpretation-formulae.
 The models of the interpretation-formulae are conservative extensions of a subset of the models 
 of the satisfiable formulae.
 Going right from the {\sf Satisfiable formulae in $\Sigma$} is the pathway taken by ATP systems
-(for classical logics at least) that apply model preserving transformations ({\sf MPR}s) on the 
-satisfiable set, possibly including conversion to CNF with Skolemization, to produce formulae 
-that induce Herbrand models of the satisfiable formulae.
+(for classical logics at least) that apply model preserving transformations ({\sf MPR}s) to the 
+satisfiable set, to produce formulae that determine Herbrand models of the satisfiable formulae.
 The satisfiable formulae can be proved from the sets that result from applying MPRs
 
 \begin{figure}[htbp]
@@ -397,6 +401,13 @@ To evaluate a formula wrt interpretation-formulae~\ldots
 \begin{packed_itemize}
 \item For Kripke interpretation-formulae, theorem proving can be used.
       This is described in Section~\ref{KripkeVerification}.
+\item For Tarskian interpretation-formulae with finite domains, direct evaluation can be used.
+      \begin{packed_itemize}
+      \item Interpret quantifiers using Tarskian semantics.
+      \item Interpret ground (grounded with domain elements) terms and atoms using the mappings.
+      \item Interpret boolean formulae using the truth tables for connectives.
+      \end{packed_itemize}
+      This approach is taken internally in Vampire.
 \item For Tarskian interpretation-formulae, theorem proving can be used.
       \begin{packed_itemize}
       \item If a formula can be proved from the interpretation-formulae then it is \textit{true} 
@@ -406,12 +417,12 @@ To evaluate a formula wrt interpretation-formulae~\ldots
       \item In practice, a formula might be neither proved nor disproved within reasonable 
             resource limits, so that nothing is known.
       \end{packed_itemize}
-\item For Herbrand interpretations induced by Herbrand-formulae, theorem proving can be used~\ldots
+\item For Herbrand interpretations determined by HI-formulae, theorem proving can be used~\ldots
       \begin{packed_itemize}
-      \item If a formula can be proved from the Herbrand-formulae then it is \textit{true} in all 
-            the Herbrand interpretations induced by the Herbrand-formulae.
-      \item If a formula can be disproved from the Herbrand-formulae then it is \textit{false} in 
-            all the Herbrand interpretations induced by the Herbrand-formulae.
+      \item If a formula can be proved from the HI-formulae then it is \textit{true} in all 
+            the Herbrand interpretations determined by the HI-formulae.
+      \item If a formula can be disproved from the HI-formulae then it is \textit{false} in 
+            all the Herbrand interpretations determined by the HI-formulae.
       \item In practice, a formula might be neither proved nor disproved within reasonable 
             resource limits, so that nothing is known.
       \end{packed_itemize}
@@ -475,7 +486,8 @@ SystemOnTSTP~\cite{Sut07-CSR} web interface
 \label{NewTarskian}
 
 A simple Tarskian interpretation-formula is a conjunction of components (see simple FOF and TFF
-examples in Appendices~\ref{FOF_Finite.s} and~\ref{TFF_Finite.s})~\ldots
+examples in Appendices~\ref{FOF_Finite.s}, \ref{TFF_Finite_SeparateDomains.s}, 
+and~\ref{TFF_Finite.s})~\ldots
 \begin{packed_itemize}
 \item A domain for each of the types in the problem formulae.
 \item Interpretation of non-boolean symbols, as equalities whose left-hand sides are formed from 
@@ -501,7 +513,7 @@ Appendices~\ref{FOF_Finite_Medium.s}, \ref{FOF_Finite_Fine.s}, \ref{TFF_Finite_M
 Section~\ref{NewTarskianSplit}.
 Tarskian interpretations that are compacted using quantification, as in \ref{TFF_Finite_Compact.s}
 and~\ref{THF_Finite_Compact.s}, are explained in Section~\ref{NewTarskianCompact}.
-Examples of interpretation-formulae that induce Herbrand interpretations, as in 
+Examples of interpretation-formulae that determine Herbrand interpretations, as in 
 Appendices~\ref{FOF_Saturation.s}, and~\ref{FOF_Formulae.s}, are explained in 
 Section~\ref{NewHerbrand}.
 
@@ -540,11 +552,15 @@ even if they make no sense in a typed sense, e.g., in Appendix~\ref{FOF_Finite.s
 TFF and THF interpretation-formulae have a domain for each type in the problem.
 The domain types can reuse problem types, can be new user types, or can be defined types
 such as {\tt \$int}.
-If the domain type is different from the problem type then symbols from the problem cannot be 
-applied directly to domain elements in the interpretation-formulae, because the domain elements 
-are of the wrong type wrt the type declarations of the symbols.
-To keep interpretation-formulae well-typed, \emph{type-promotion} bijections are used to ``convert'' 
-domain elements to terms of the corresponding problem type.
+If the domain types are different from the problem types then the function and predicate symbols 
+from the problem cannot be applied directly to domain elements in the interpretation-formulae, 
+because the domain elements are of the wrong type wrt the type declarations of the symbols.
+Thus to keep interpretation-formulae well-typed, \emph{type-promotion} bijections are used to 
+``convert'' domain elements to terms of the corresponding problem type.
+If the problem types are reused as the domain types (see~\cite[\S5.3.4]{Gal15}) then type
+promotion functions are not used.
+However, problem types cannot be reused when the domain elements are complex, or of a defined 
+type like {\tt \$int}.
 
 Each domain specification is a conjunction of (following along in Appendices~\ref{TFF_Finite.s}, 
 \ref{TFF_Integer.s}, and~\ref{TFF_Peano.s} might help here)~\ldots
@@ -571,8 +587,8 @@ Each domain specification is a conjunction of (following along in Appendices~\re
       \hspace*{1.0cm}\smalltt{( d2cat(DC1) = d2cat(DC2) => DC1 = DC2 )}
 \end{packed_itemize}
 \vspace*{-0.5em}
-The interpretation of symbols applies the corresponding type-promotion function to each domain, 
-e.g., in Appendix~\ref{TFF_Finite.s}~\ldots\\
+The interpretation of symbols applies the corresponding type-promotion function to each domain
+element, e.g., in Appendix~\ref{TFF_Finite.s}~\ldots\\
 \hspace*{0.5cm}\smalltt{owns(d2human(d\_jon),d2cat(d\_garfield))}
 
 \vspace*{0.5em}
@@ -586,11 +602,14 @@ The TFF and THF interpretation-formulae are preceded by the necessary type decla
 
 \paragraph{Examples:}
 \begin{packed_itemize}
-\item Appendix~\ref{TFF_Finite.p} shows a TFF problem that has a countermodel with finite domains,
-      which is shown in Appendix~\ref{TFF_Finite.s}.
+\item Appendix~\ref{TFF_Finite.p} shows a TFF problem that has a countermodel with finite domains.
+      The countermodel using separate domain types and type promotion functions is shown in 
+      Appendix~\ref{TFF_Finite_SeparateDomains.s},
       The comments show which parts of the interpretation-formula specify which part of the 
       interpretation.
-      Appendix~\ref{TFF_Finite.s.p} shows the verification problem for the model.
+      Appendix~\ref{TFF_Finite.s.p} shows the verification problem for that model.
+      The countermodel that reuses the problem types as domain types is shown in in 
+      Appendix~\ref{TFF_Finite.s}.
 \item Appendix~\ref{TFF_Infinite.p} shows a TFF problem that has a model with an integer domain,
       which is shown in Appendix~\ref{TFF_Integer.s}.
       Note that $\bullet$~the defined type {\smalltt{\$int}} is the domain type for the formula 
@@ -677,15 +696,15 @@ functions of type {\tt beverage > syrup} and all {\tt syrups}, applying the func
 \hspace*{0.8cm}\smalltt{=\,(\,d2beverage\,@\,d\_coffee\,)\,)}
 
 %--------------------------------------------------------------------------------------------------
-\section{Herbrand-formulae and Saturations}
+\section{HI-formulae and Saturations}
 \label{NewHerbrand}
 
-Herbrand-formulae induce sets of Herbrand interpretations.
+HI-formulae determine sets of Herbrand interpretations.
 Interpretation-formulae can be used for these, although the actual Herbrand interpretations are
 not easy to extract.
-To indicate that the interpretation-formulae are intended to induce Herbrand interpretations they
-are given the subrole {\tt herbrand}.
-The problem in Appendix~\ref{FOF_Finite.p} has a Herbrand-formulae model formed from predicate 
+To indicate that the interpretation-formulae are intended to determine Herbrand interpretations 
+they are given the subrole {\tt herbrand}.
+The problem in Appendix~\ref{FOF_Finite.p} has a HI-formulae model formed from predicate 
 definitions over the term algebra, which is shown in Appendix~\ref{FOF_Formulae.s}.
 The problem in Appendix~\ref{FOF_Finite.p} also has a saturation, which is shown in
 Appendix~\ref{FOF_Saturation.s}.
@@ -756,8 +775,8 @@ Appendix~\ref{NXF_Finite-Finite-Global.p} shows a NXF problem that has a counter
 finite worlds each of which contains a finite Tarskian interpretation, which is shown in
 Appendix~\ref{NXF_Finite-Finite-Global.s}.
 The problem has global axioms and a local conjecture.
-The countermodel was found by embedding the problem into THF using the NTFLET tool 
-\cite{Ste22,Ste22-LE}, running Nitpick on the THF problem, and converting Nitpick's output
+The countermodel was found by embedding the problem into THF using the NTFLET 
+tool~\cite{Ste22,Ste23}, running Nitpick on the THF problem, and converting Nitpick's output
 to the TPTP format by hand.
 There are two worlds~\ldots \\
 \hspace*{0.5cm}\smalltt{!\,[W:\,\$world]\,:\,(\,W\,=\,w1\,|\,W\,=\,w2\,)} \\
@@ -978,7 +997,7 @@ In the light of the above (and hey, maybe there are more techniques than just th
       tractable, verifiable, and comprehensible.
 \item Infinite interpretations represented by interpretation-formulae are evaluable, often 
       intractable, verifiable, and might not be comprehensible.
-\item Herbrand-formulae (in interpretation-formulae) are evaluable, can be tractable, verifiable, 
+\item HI-formulae (in interpretation-formulae) are evaluable, can be tractable, verifiable, 
       and can be comprehensible.
 \item Saturations (in interpretation-formulae) are evaluable, often intractable, verifiable, 
       and almost always incomprehensible.
@@ -1087,19 +1106,27 @@ lead to improvements, and hopefully will lead to them implementing the format in
 \end{small}
 
 \newpage
-\subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Coarse Grained
-(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite.s}{Online})}
-\label{TFF_Finite.s}
+\subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Separate Domain Types
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_SeparateDomains.s}{Online})}
+\label{TFF_Finite_SeparateDomains.s}
 \begin{small}
-\verbatiminput{Examples/TFF_Finite.s}
+\verbatiminput{Examples/TFF_Finite_SeparateDomains.s}
 \end{small}
 
 \newpage
-\subsection{TF0 Verification Problem for \ref{TFF_Finite.p}
+\subsection{TF0 Verification Problem for \ref{TFF_Finite.p}, Separate Domain Types
 (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite.s.p}{Online})}
 \label{TFF_Finite.s.p}
 \begin{small}
 \verbatiminput{Examples/TFF_Finite.s.p}
+\end{small}
+
+\newpage
+\subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Reusing Problem Types
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite.s}{Online})}
+\label{TFF_Finite.s}
+\begin{small}
+\verbatiminput{Examples/TFF_Finite.s}
 \end{small}
 
 \newpage
