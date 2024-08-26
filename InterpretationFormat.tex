@@ -496,7 +496,7 @@ and~\ref{TFF_Finite.s})~\ldots
       elements; positive literals are \emph{true} and negative literals are \emph{false}.
 \end{packed_itemize}
 
-Note how function and predicate symbols are interpreted by applying them directly to domain
+Note that function and predicate symbols are interpreted by applying them directly to domain
 elements (\emph{{\`a} la}~\cite[\S5.3.4]{Gal15}), rather than using the presentation of 
 interpretations that introduces a new interpretation function for each function/predicate symbol 
 \cite[\S5.3.2]{Gal15}.
@@ -504,11 +504,11 @@ This approach obviates the need for introducing interpretation functions, and ma
 interpretation of formulae using theorem proving simpler.
 However, applying the problem's function and predicate symbols to domain elements that are 
 defined with different types to the problem's types requires using \emph{type-promotion} 
-bijections to keep interpretation-formulae well-typed (see Section~\ref{NewTarskianTFFTHF}).
+bijections to keep interpretation-formulae well-typed (see Section~\ref{TarskianNewFiniteTypes}).
 % The explanations and examples that follow will convince you of that!
 
 Examples of single Tarskian interpretation-formulae are in Appendices~\ref{FOF_Finite.s}, 
-\ref{TFF_Finite.s}, \ref{TFF_Integer.s}, \ref{TFF_Peano.s} and~\ref{THF_Finite.s}, illustrating 
+\ref{TFF_Finite.s}, \ref{TFF_Peano.s}, \ref{TFF_Integer.s}, and~\ref{THF_Finite.s}, illustrating 
 the components described below. 
 Tarskian interpretations split over multiple interpretation-formulae, as in 
 Appendices~\ref{FOF_Finite_Medium.s}, \ref{FOF_Finite_Fine.s}, \ref{TFF_Finite_Medium.s}, 
@@ -522,111 +522,207 @@ Section~\ref{NewHerbrand}.
 
 %--------------------------------------------------------------------------------------------------
 \subsection{FOF Tarskian Interpretations}
-\label{NewTarskianFOF}
+\label{FOFTarskian}
 
-FOF interpretation-formulae have a single untyped domain whose elements are new (not appearing 
-in the problem) ground terms. 
-The mappings apply the function and predicate symbols to the domain elements.
 Appendix~\ref{FOF_Finite.p} shows a FOF problem that has a countermodel with a finite domain, 
 which is shown in Appendix~\ref{FOF_Finite.s}.
-Appendix~\ref{FOF_Finite.s.p} shows the verification problem for the model.
 
-The distinctness of the domain elements must be made explicit, either with pairwise inequalities, 
-or with the {\tt \$distinct} predicate, or by using {\tt "double quoted"} terms as domain 
-elements (different {\tt "double quoted"} terms are known to be unequal (and often not used in 
-problems, which makes them easy to identify as domain elements)), e.g., in 
-Appendix~\ref{FOF_Finite.s}~\ldots \\
-\hspace*{0.5cm}\smalltt{! [X] : ( X = "a" | X = "f" | X = "john" | X = "gotA")} \\
-The function mappings are equalities between functions applied to domain elements, e.g., in 
-Appendix~\ref{FOF_Finite.s}~\ldots \\
+The domain specification is a conjunction of~\ldots
+\begin{packed_itemize}
+\item Specification of the domain elements as a universally quantified disjunction of equalities 
+      whose right-hand sides are the domain elements, 
+      e.g., in Appendix~\ref{FOF_Finite.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [X] : ( X = "a" | X = "f" | X = "john" | X = "gotA")}
+\item Specification of the distinctness of the domain elements.
+      Distinctness can be specified with pairwise inequalities, with the {\tt \$distinct} 
+      predicate, or by using {\tt "double quoted"} terms as domain elements (different 
+      {\tt "double quoted"} terms are known to be unequal (and often not used in problems, which 
+      makes them easy to identify as domain elements)),
+      e.g., in Appendix~\ref{FOF_Finite.s} the domain elements are {\tt "double quoted"}.
+\end{packed_itemize}
+
+The function mappings are equalities between domain elements and functions applied to domain 
+elements,
+e.g., in Appendix~\ref{FOF_Finite.s}~\ldots \\
 \hspace*{0.5cm}\smalltt{grade\_of("john") = "f"}\\
-and the predicate mappings are atoms, e.g., in Appendix~\ref{FOF_Finite.s}~\ldots \\
+The predicate mappings are atoms, 
+e.g., in Appendix~\ref{FOF_Finite.s}~\ldots \\
 \hspace*{0.5cm}\smalltt{created\_equal("john","gotA")}\\
 Note that for a complete interpretation all function and predicate mappings need to be provided,
 even if they make no sense in a typed sense, e.g., in Appendix~\ref{FOF_Finite.s}~\ldots \\
 \hspace*{0.5cm}\smalltt{grade\_of("f") = "a"}\\
 \hspace*{0.5cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}} created\_equal("a","john")}
 
+Appendix~\ref{FOF_Finite.s.p} shows the verification problem for the model.
+
 %--------------------------------------------------------------------------------------------------
-\subsection{TFF and THF Tarskian Interpretations}
-\label{NewTarskianTFFTHF}
+\subsection{Tarskian Interpretations, Reusing Problem Types}
+\label{TarskianReusingTypes}
 
-TFF and THF interpretation-formulae have a domain for each type in the problem.
-The domain types can reuse problem types, can be new user types, or can be defined types
-such as {\tt \$int}.
-If the domain types are different from the problem types then the function and predicate symbols 
-from the problem cannot be applied directly to domain elements in the interpretation-formulae, 
-because the domain elements are of the wrong type wrt the type declarations of the symbols.
-In this situation type-promotion bijections are used to ``convert'' domain elements to 
-terms of the corresponding problem type.
-If the problem types are reused as the domain types (see~\cite[\S5.3.4]{Gal15}) then
-type-promotion is not necessary.
+Appendix~\ref{TFF_Finite.p} shows a TFF problem that has a countermodel with finite domains,
+which is shown in Appendix~\ref{TFF_Finite.s}.
+Appendix~\ref{THF_Finite.p} shows a THF problem that has a countermodel with finite domains,
+which is shown in Appendix~\ref{THF_Finite.s}.
 
-Each domain specification is a conjunction of (following along in Appendices~\ref{TFF_Finite.s}, 
-\ref{TFF_Integer.s}, and~\ref{TFF_Peano.s} might help here)~\ldots
+Each domain specification is a conjunction of~\ldots
 \begin{packed_itemize}
-\item The domain for each problem type, as a formula that makes the type-promotion function a 
-      surjection (unless it is unnecessary because the problem type and the domain type are the
-      same defined type, e.g., both are {\tt \$int}), e.g., in Appendix~\ref{TFF_Finite.s}~\ldots\\
-      \hspace*{0.5cm}\smalltt{! [C: cat] : ? [DC: d\_cat] : C = d2cat(DC)}
-\item Definition of the elements of the domain (unless implicit from their defined type).
-      If the domain is finite this is a universally quantified disjunction of equalities whose 
-      right-hand sides are the terms, e.g., in Appendix~\ref{TFF_Finite.s}~\ldots\\
-      \hspace*{0.5cm}\smalltt{! [DC: d\_cat]: ( DC = d\_garfield | DC = d\_arlene | DC = d\_nermal )}\\
-      If the domain is infinite this is an existentially quantified formula that captures an 
-      infinite disjunction of equalities, e.g., in Appendix~\ref{TFF_Peano.s}~\ldots\\
-      \hspace*{0.5cm}\smalltt{! [I: peano] : ( I = zero | ? [P: peano] : I = s(P) )}
-\item Specification of the distinctness of the domain elements (unless implicit from their
-      defined type), e.g., in Appendix~\ref{TFF_Finite.s}~\ldots\\
+\item Specification of the domain elements as a universally quantified disjunction of equalities 
+      whose right-hand sides are the domain elements, 
+      e.g., in Appendix~\ref{TFF_Finite.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [DC: cat]: ( DC = d\_garfield | DC = d\_arlene | DC = d\_nermal )}\\
+      and in Appendix~\ref{THF_Finite.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{( ! [DB: beverage] : ( DB = d\_coffee )}\\
+      \hspace*{0.5cm}\smalltt{\& ! [DS: syrup] : ( DS = d\_date ) )}\\
+\item Specification of the distinctness of the domain elements, unless implicit from their type.
+      e.g., in Appendix~\ref{TFF_Finite.s}~\ldots\\
       \hspace*{0.5cm}\smalltt{\$distinct(d\_garfield,d\_arlene,d\_nermal)}
-\item If type-promotion functions are needed, a formula making the type-promotion functions 
-      injections,
-      % (unless the type of the domain is the same as the type in the formula), 
-      which together with the surjectivity makes them bijections, e.g., in 
-      Appendix~\ref{TFF_Finite.s}~\ldots\\
-      \hspace*{0.5cm}\smalltt{! [DC1: d\_cat,DC2: d\_cat] :}\\
-      \hspace*{1.0cm}\smalltt{( d2cat(DC1) = d2cat(DC2) => DC1 = DC2 )}
 \end{packed_itemize}
-\vspace*{-0.5em}
-The interpretation of symbols applies the corresponding type-promotion function to each domain
-element, e.g., in Appendix~\ref{TFF_Finite.s}~\ldots\\
-\hspace*{0.5cm}\smalltt{owns(d2human(d\_jon),d2cat(d\_garfield))}
 
-\vspace*{0.5em}
+The function mappings are equalities between domain elements and functions applied to domain 
+elements, 
+e.g., in Appendix~\ref{TFF_Finite.s}~\ldots \\
+\hspace*{0.5cm}\smalltt{loves(d\_garfield) = d\_garfield}\\
+and in Appendix~\ref{THF_Finite.s}~\ldots \\
+\hspace*{0.5cm}\smalltt{( mix @ d\_coffee @ d\_date ) = d\_coffee )}\\
+The predicate mappings are atoms, 
+e.g., in Appendix~\ref{TFF_Finite.s}~\ldots \\
+\hspace*{0.5cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}}\,owns(d\_jon,d\_nermal)}\\
+and in Appendix~\ref{THF_Finite.s}~\ldots \\
+\hspace*{0.5cm}\smalltt{( hot @ d\_coffee )}
+
 The TFF and THF interpretation-formulae are preceded by the necessary type declarations~\ldots
 \begin{packed_itemize}
-\item The types in the problem (except defined types).
-\item The types of the domains (except defined types).
-\item The types of the type-promotion functions.
+\item The types in the problem.
+\item The types of the domains.
 \item The types of the domain elements.
 \end{packed_itemize}
 
-\paragraph{Examples:}
+Appendices~\ref{TFF_Finite.s.p} and~\ref{THF_Finite.s.p} show the verification problems for the 
+models.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Tarskian Interpretations, New Finite Domain Types}
+\label{TarskianNewFiniteTypes}
+
+Reusing the problem types for domain elements can get murky, e.g., when quantification over only 
+the domain elements is intended. 
+It can be cleaner to use new types for domain elements, and it becomes necessary when the domain 
+elements are complex or of a defined type such as {\tt \$int} (see Section~\ref{TarskianInfinite}).
+As noted in the introduction to Section~\ref{NewTarskian}, applying the problem's function and 
+predicate symbols to domain elements that are defined with different types to the problem's types 
+requires using type-promotion bijections to ``convert'' domain elements to terms of the 
+corresponding problem type.
+
+Appendix~\ref{TFF_Finite.p} shows a TFF problem that has a countermodel with finite domains,
+which is shown in Appendix~\ref{TFF_Finite_SeparateDomains.s}.
+
+Each domain specification is a conjunction of~\ldots
 \begin{packed_itemize}
-\item Appendix~\ref{TFF_Finite.p} shows a TFF problem that has a countermodel with finite domains.
-      The countermodel using separate domain types and type-promotion functions is shown in 
-      Appendix~\ref{TFF_Finite_SeparateDomains.s},
-      The comments show which parts of the interpretation-formula specify which part of the 
-      interpretation.
-      Appendix~\ref{TFF_Finite.s.p} shows the verification problem for that model.
-      The countermodel that reuses the problem types as domain types is shown in in 
-      Appendix~\ref{TFF_Finite.s}.
-\item Appendix~\ref{TFF_Infinite.p} shows a TFF problem that has a model with an integer domain,
-      which is shown in Appendix~\ref{TFF_Integer.s}.
+\item Spcification of the domain for each problem type, as a formula that makes the 
+      type-promotion function a surjection, 
+      e.g., in Appendix~\ref{TFF_Finite_SeparateDomains.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [C: cat] : ? [DC: d\_cat] : C = d2cat(DC)}
+\item Specification of the domain elements as a universally quantified disjunction of equalities 
+      whose right-hand sides are the domain elements, 
+      e.g., in Appendix~\ref{TFF_Finite_SeparateDomains.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [DC: d\_cat]: ( DC = d\_garfield | DC = d\_arlene | DC = d\_nermal )}
+\item Specification of the distinctness of the domain elements, unless implicit from their type.
+      e.g., in Appendix~\ref{TFF_Finite.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{\$distinct(d\_garfield,d\_arlene,d\_nermal)}
+\item A formula making the type-promotion function an injection, which together with the 
+      surjectivity makes it a bijection, 
+      e.g., in Appendix~\ref{TFF_Finite_SeparateDomains.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [DC1: d\_cat,DC2: d\_cat] : ( d2cat(DC1) = d2cat(DC2) => DC1 = DC2 )}
+\end{packed_itemize}
+
+The function mappings are equalities between type-promoted domain elements and functions applied 
+to type-promoted domain elements, 
+e.g., in Appendix~\ref{TFF_Finite_SeparateDomains.s}~\ldots \\
+\hspace*{0.5cm}\smalltt{loves(d2cat(d\_garfield)) = d2cat(d\_garfield)}\\
+The predicate mappings are atoms, 
+e.g., in Appendix~\ref{TFF_Finite_SeparateDomains.s}~\ldots \\
+\hspace*{0.5cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}}\,owns(d2human(d\_jon),d2cat(d\_nermal))}
+
+The TFF and THF interpretation-formulae are preceded by the necessary type declarations~\ldots
+\begin{packed_itemize}
+\item The types in the problem.
+\item The types of the domains.
+\item The types of the domain elements.
+\item The types of the type-promotion functions.
+\end{packed_itemize}
+
+Appendix~\ref{TFF_Finite_SeparateDomains.s.p} shows the verification problems for the model.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Tarskian Interpretations, Infinite Domains}
+\label{TarskianInfinite}
+
+Interpretations can have infinite domains formed from terms or defined types such as {\tt \$int}.
+Appendix~\ref{TFF_Infinite.p} shows a TFF problem that has a model with an infinite domain.
+Appendix~\ref{TFF_Peano.s} shows the model with an infinite term domain, and
+Appendix~\ref{TFF_Integer.s} shows the model with a {\tt \$int} domain.
+
       Note that $\bullet$~the defined type {\smalltt{\$int}} is the domain type for the formula 
       type {\smalltt{person}}, so that there is no specification of the domain elements and their 
       distinctness; $\bullet$~universal quantification is used for the interpretation of function 
       and predicate symbols to cover an infinite number of argument tuples; $\bullet$~the 
       interpretation of function and predicate symbols is not given for argument tuples with 
       negative integers, i.e., this is an example of a partial interpretation.
-      Appendix~\ref{TFF_Integer.s.p} shows the verification problem for the model.
-\item The problem in Appendix~\ref{TFF_Infinite.p} also has a model with an infinite term domain,
-      which is shown in Appendix~\ref{TFF_Peano.s}.
-      Appendix~\ref{TFF_Peano.s.p} shows the verification problem for the model.
-\item Appendix~\ref{THF_Finite.p} shows a THF problem that has a countermodel with finite domains,
-      which shown in Appendix~\ref{THF_Finite.s}.
-      Appendix~\ref{THF_Finite.s.p} shows the verification problem for the model.
+
+Each domain specification is a conjunction of~\ldots
+\begin{packed_itemize}
+\item The domain for each problem type, as a formula that makes the type-promotion function a 
+      surjection, 
+      e.g., in Appendix~\ref{TFF_Peano.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [P: person] : ? [I: peano] : ( P = peano2person(I) )}\\
+      and in Appendix~\ref{TFF_Integer.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [P: person] : ? [I: \$int] : P = int2person(I)}\\
+      If the problem type and the domain type are the same defined type, e.g., both are 
+      {\tt \$int}) this is unecessary.
+\item Specification of the domain elements as an existentially quantified formula that captures an
+      infinite disjunction of equalities,
+      e.g., in Appendix~\ref{TFF_Peano.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [I: peano] : ( I = zero | ? [P: peano] : I = s(P) )} \\
+      If the domain is a defined type such as {\tt \$int} this is unecessary,
+      e.g., in Appendix~\ref{TFF_Integer.s}.
+\item Specification of the distinctness of the domain elements, unless implicit from their type.
+      e.g., in Appendix~\ref{TFF_Peano.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{( peano\_less(I1,I2) => I1 != I2 )}
+      If the domain is a defined type such as {\tt \$int} this is unecessary,
+      e.g., in Appendix~\ref{TFF_Integer.s}.
+\item A formula making the type-promotion function an injection, which together with the 
+      surjectivity makes it a bijection, 
+      e.g., in Appendix~\ref{TFF_Peano.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [I1: peano,I2: peano] : ( peano2person(I1) = peano2person(I2) => I1 = I2 )}\\
+      and in Appendix~\ref{TFF_Integer.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [I1: \$int,I2: \$int] : ( int2person(I1) = int2person(I2) => I1 = I2 ) )}
 \end{packed_itemize}
+
+The function mappings are universally quantified equalities between type-promoted domain 
+elements and functions applied to type-promoted domain elements, 
+e.g., in Appendix~\ref{TFF_Peano.s}~\ldots \\
+\hspace*{0.5cm}\smalltt{! [I: peano] : child\_of(peano2person(I)) = peano2person(s(I))}\\
+and in Appendix~\ref{TFF_Integer.s}~\ldots\\
+\hspace*{0.5cm}\smalltt{! [I: \$int] : child\_of(int2person(I)) = int2person(\$sum(I,1))}\\
+The predicate mappings are universally quantified formulae, 
+e.g., in Appendix~\ref{TFF_Peano.s}~\ldots \\
+\hspace*{0.5cm}\smalltt{! [A: peano,D: peano] :}\\
+\hspace*{1.0cm}\smalltt{( is\_descendant(peano2person(A),peano2person(D)) <=> peano\_less(A,D) )}\\
+and in Appendix~\ref{TFF_Integer.s}~\ldots\\
+\hspace*{0.5cm}\smalltt{! [A: \$int,D: \$int] :}\\
+\hspace*{1.0cm}\smalltt{( is\_descendant(int2person(A),int2person(D)) <=> \$less(A,D) )}\\
+\hspace*{0.75cm}\smalltt{<=> peano\_less(A,D) )}\\
+
+The TFF and THF interpretation-formulae are preceded by the necessary type declarations~\ldots
+\begin{packed_itemize}
+\item The types in the problem.
+\item The types of the domains.
+\item The types of the domain elements.
+\item The types of the type-promotion functions.
+\end{packed_itemize}
+
+Appendices~\ref{TFF_Peano.s.p} and~\ref{TFF_Integer.s.p} show the verification problems for the 
+models.
 
 %--------------------------------------------------------------------------------------------------
 \subsection{Tarskian Interpretations Split over Multiple Formulae}
@@ -1107,6 +1203,22 @@ lead to improvements, and hopefully will lead to them implementing the format in
 \end{small}
 
 \newpage
+\subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Reusing Problem Types
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite.s}{Online})}
+\label{TFF_Finite.s}
+\begin{small}
+\verbatiminput{Examples/TFF_Finite.s}
+\end{small}
+
+\newpage
+\subsection{TF0 Verification Problem for \ref{TFF_Finite.p} and \ref{TFF_Finite.s}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite.s.p}{Online})}
+\label{TFF_Finite.s.p}
+\begin{small}
+\verbatiminput{Examples/TFF_Finite.s.p}
+\end{small}
+
+\newpage
 \subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Separate Domain Types
 (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_SeparateDomains.s}{Online})}
 \label{TFF_Finite_SeparateDomains.s}
@@ -1115,19 +1227,11 @@ lead to improvements, and hopefully will lead to them implementing the format in
 \end{small}
 
 \newpage
-\subsection{TF0 Verification Problem for \ref{TFF_Finite.p}, Separate Domain Types
-(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite.s.p}{Online})}
-\label{TFF_Finite.s.p}
+\subsection{TF0 Verification Problem for \ref{TFF_Finite.p} and \ref{TFF_Finite_SeparateDomains.s}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_SeparateDomains.s.p}{Online})}
+\label{TFF_Finite_SeparateDomains.s.p}
 \begin{small}
-\verbatiminput{Examples/TFF_Finite.s.p}
-\end{small}
-
-\newpage
-\subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Reusing Problem Types
-(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite.s}{Online})}
-\label{TFF_Finite.s}
-\begin{small}
-\verbatiminput{Examples/TFF_Finite.s}
+\verbatiminput{Examples/TFF_Finite_SeparateDomains.s.p}
 \end{small}
 
 \newpage
@@ -1167,14 +1271,6 @@ lead to improvements, and hopefully will lead to them implementing the format in
 \end{small}
 
 \newpage
-\subsection{TF0 Infinite Model for \ref{TFF_Infinite.p}, Integer Domain
-(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Integer.s}{Online})}
-\label{TFF_Integer.s}
-\begin{small}
-\verbatiminput{Examples/TFF_Integer.s}
-\end{small}
-
-\newpage
 \subsection{TF0 Infinite Model for \ref{TFF_Infinite.p}, Term Domain
 (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Peano.s}{Online})}
 \label{TFF_Peano.s}
@@ -1183,11 +1279,11 @@ lead to improvements, and hopefully will lead to them implementing the format in
 \end{small}
 
 \newpage
-\subsection{TF0 Verification Problem for \ref{TFF_Infinite.p} and \ref{TFF_Integer.s}
-(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Integer.s.p}{Online})}
-\label{TFF_Integer.s.p}
+\subsection{TF0 Infinite Model for \ref{TFF_Infinite.p}, Integer Domain
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Integer.s}{Online})}
+\label{TFF_Integer.s}
 \begin{small}
-\verbatiminput{Examples/TFF_Integer.s.p}
+\verbatiminput{Examples/TFF_Integer.s}
 \end{small}
 
 \newpage
@@ -1196,6 +1292,14 @@ lead to improvements, and hopefully will lead to them implementing the format in
 \label{TFF_Peano.s.p}
 \begin{small}
 \verbatiminput{Examples/TFF_Peano.s.p}
+\end{small}
+
+\newpage
+\subsection{TF0 Verification Problem for \ref{TFF_Infinite.p} and \ref{TFF_Integer.s}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Integer.s.p}{Online})}
+\label{TFF_Integer.s.p}
+\begin{small}
+\verbatiminput{Examples/TFF_Integer.s.p}
 \end{small}
 
 %--------------------------------------------------------------------------------------------------
@@ -1219,7 +1323,7 @@ lead to improvements, and hopefully will lead to them implementing the format in
 \end{small}
 
 \newpage
-\subsection{TH0 Verification Problem for \ref{THF_Finite.p}
+\subsection{TH0 Verification Problem for \ref{THF_Finite.p} and \ref{THF_Finite.s}
 (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/THF_Finite.s.p}{Online})}
 \label{THF_Finite.s.p}
 \begin{small}

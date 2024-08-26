@@ -10,12 +10,13 @@ scp tptp@quokka:/exp/home/tptp/public_html/Proposals/ModelExamples/FOF_Formulae.
 scp tptp@quokka:/exp/home/tptp/public_html/Proposals/ModelExamples/FOF_Formulae.s.p .
 
 scp tptp@quokka:/exp/home/tptp/public_html/Proposals/ModelExamples/TFF_Finite.p .
-scp tptp@quokka:/exp/home/tptp/public_html/Proposals/ModelExamples/TFF_Finite_SeparateDomains.s .
 scp tptp@quokka:/exp/home/tptp/public_html/Proposals/ModelExamples/TFF_Finite.s .
+scp tptp@quokka:/exp/home/tptp/public_html/Proposals/ModelExamples/TFF_Finite.s.p .
+scp tptp@quokka:/exp/home/tptp/public_html/Proposals/ModelExamples/TFF_Finite_SeparateDomains.s .
+scp tptp@quokka:/exp/home/tptp/public_html/Proposals/ModelExamples/TFF_Finite_SeparateDomains.s.p .
 scp tptp@quokka:/exp/home/tptp/public_html/Proposals/ModelExamples/TFF_Finite_Medium.s .
 scp tptp@quokka:/exp/home/tptp/public_html/Proposals/ModelExamples/TFF_Finite_Fine.s .
 scp tptp@quokka:/exp/home/tptp/public_html/Proposals/ModelExamples/TFF_Finite_Compact.s .
-scp tptp@quokka:/exp/home/tptp/public_html/Proposals/ModelExamples/TFF_Finite.s.p .
 # scp tptp@quokka:/exp/home/tptp/public_html/Proposals/ModelExamples/TFF_Finite.sp.AGMV.p .
 
 scp tptp@quokka:/exp/home/tptp/public_html/Proposals/ModelExamples/TFF_Infinite.p .
