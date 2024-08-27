@@ -241,8 +241,8 @@ model finder does not need to be trusted,
 Given the innate desirability of obtaining explicit models of satisfiable formulae, desirable
 properties of interpretation representation can be considered.
 \begin{packed_itemize}
-\item An interpretation should be for the symbols of the input formulae.
-\item Evaluation of any formulae wrt the interpretation should be possible, because many uses of
+\item Interpretations should be for the symbols of the input formulae.
+\item Evaluation of any formulae wrt an interpretation should be possible, because many uses of
       interpretations can be reduced to evaluation~\cite[\S3.2]{CLP04}.
       The evaluation should be tractable, or in a tractabe core.
       This corresponds to the \emph{atom test} and \emph{formula evaluation} postulates suggested
@@ -399,8 +399,6 @@ To evaluate a formula wrt interpretation-formulae~\ldots
 % $\varphi$ wrt a given interpretation $I$ ($I\,\vdash\,\Phi$ means that 
 % $\Phi$ is \textit{true} in $I$, i.e., $I$ is a model of formula $\Phi$)~\ldots
 \begin{packed_itemize}
-\item For Kripke interpretation-formulae, theorem proving can be used.
-      This is described in Section~\ref{KripkeVerification}.
 \item For Tarskian interpretation-formulae with finite domains, direct evaluation can be used.
       \begin{packed_itemize}
       \item Interpret quantifiers using Tarskian semantics.
@@ -429,6 +427,8 @@ To evaluate a formula wrt interpretation-formulae~\ldots
       \emph{I believe that this verification technique works, and so do Stephan Schulz and 
       Uwe Waldmann, but Andrei Voronkov and Christoph Weidenbach say they do not.
       I'm looking for help on this.}
+\item For Kripke interpretation-formulae, theorem proving can be used.
+      This is described in Section~\ref{KripkeVerification}.
 \end{packed_itemize}
 
 %--------------------------------------------------------------------------------------------------
@@ -517,7 +517,7 @@ Section~\ref{NewTarskianSplit}.
 Tarskian interpretations that are compacted using quantification, as in \ref{TFF_Finite_Compact.s}
 and~\ref{THF_Finite_Compact.s}, are explained in Section~\ref{NewTarskianCompact}.
 Examples of interpretation-formulae that determine Herbrand interpretations, as in 
-Appendices~\ref{FOF_Saturation.s}, and~\ref{FOF_Formulae.s}, are explained in 
+Appendices~\ref{FOF_Formulae.s} and~\ref{FOF_Saturation.s}, are explained in 
 Section~\ref{NewHerbrand}.
 
 %--------------------------------------------------------------------------------------------------
