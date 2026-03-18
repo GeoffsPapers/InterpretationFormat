@@ -14,19 +14,19 @@ thf(d2syrup_type,type,    d2syrup: d_syrup > syrup ).
 thf(d_coffee_type,type,   d_coffee: d_beverage ).
 thf(d_date_type,type,     d_date: d_syrup ).
 
-thf(hot_coffee_beverage,interpretation-domain(beverage,d_beverage),
+thf(hot_coffee_beverage,interpretation-domains(beverage,d_beverage),
     ( ! [B: beverage] : ? [DB: d_beverage] : ( B = ( d2beverage @ DB ) )
     & ! [DB: d_beverage] : ( DB = d_coffee )
     & ! [DB1: d_beverage,DB2: d_beverage] :
         ( ( ( d2beverage @ DB1 ) = ( d2beverage @ DB2 ) ) => ( DB1 = DB2 ) ) ) ).
 
-thf(hot_coffee_syrup,interpretation-domain(beverage,d_beverage),
+thf(hot_coffee_syrup,interpretation-domains(beverage,d_beverage),
     ( ! [S: syrup] : ? [DS: d_syrup] : ( S = ( d2syrup @ DS ) )
     & ! [DS: d_syrup] : ( DS = d_date )
     & ! [DS1: d_syrup,DS2: d_syrup] :
         ( ( ( d2syrup @ DS1 ) = ( d2syrup @ DS2 ) ) => ( DS1 = DS2 ) ) ) ).
 
-thf(hot_coffee,interpretation-mapping,
+thf(hot_coffee,interpretation-mappings,
     ( ! [F: beverage > syrup > beverage,S: syrup] :
         ( ( F @ ( d2beverage @ d_coffee ) @ ( d2syrup @ S ) ) 
         = ( d2beverage @ d_coffee ) )

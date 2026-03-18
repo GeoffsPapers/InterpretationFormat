@@ -25,7 +25,7 @@ tff(d_leo_decl,type,     d_leo: d_product).
 tff(w1_decl,type,w1:     $world).
 tff(w2_decl,type,w2:     $world).
 
-tff(leo_workers_worlds,interpretation-world,
+tff(leo_workers_worlds,interpretation-worlds,
     ( ! [W: $world] : ( W = w1 | W = w2 )
     & $distinct(w1,w2)
     & $local_world = w2
@@ -34,8 +34,8 @@ tff(leo_workers_worlds,interpretation-world,
     & $accessible_world(w1,w2)
     & $accessible_world(w2,w1) ) ). 
 
-tff(leo_workers_w1_domain,
-    interpretation-in_world(w1,interpretation-domain),
+tff(leo_workers_w1_domains,
+    interpretation-in_world(w1,interpretation-domains),
     $in_world(w1,
       ( ( ! [P: person] : ? [DP: d_person] : P = d2person(DP)
         & ! [DP: d_person] : ( DP = d_alex | DP = d_chris )
@@ -50,8 +50,8 @@ tff(leo_workers_w1_domain,
         & ! [DP1: d_product,DP2: d_product] :
             ( d2product(DP1) = d2product(DP2) => DP1 = DP2 ) ) ) ) ).
 
-tff(leo_workers_w2_domain,
-    interpretation-in_world(w2,interpretation-domain),
+tff(leo_workers_w2_domains,
+    interpretation-in_world(w2,interpretation-domains),
     $in_world(w2,
       ( ( ! [P: person] : ? [DP: d_person] : P = d2person(DP)
         & ! [DP: d_person] : ( DP = d_alex | DP = d_chris )
@@ -67,7 +67,7 @@ tff(leo_workers_w2_domain,
             ( d2product(DP1) = d2product(DP2) => DP1 = DP2 ) ) ) ) ).
 
 tff(leo_workers_w1_mappings,
-    interpretation-in_world(w1,interpretation-mapping),
+    interpretation-in_world(w1,interpretation-mappings),
     $in_world(w1,
       ( ( alex = d2person(d_alex)
         & chris = d2person(d_chris)
@@ -78,7 +78,7 @@ tff(leo_workers_w1_mappings,
         & gets_rich(d2person(d_chris)) ) ) ) ). 
 
 tff(leo_workers_w2_mappings,
-    interpretation-in_world(w2,interpretation-mapping),
+    interpretation-in_world(w2,interpretation-mappings),
     $in_world(w2,
       ( ( alex = d2person(d_alex)
         & chris = d2person(d_chris)

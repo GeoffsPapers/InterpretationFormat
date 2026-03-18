@@ -1,29 +1,29 @@
 %------------------------------------------------------------------------------
-fof(equality_lost_domain,interpretation-domain($i,$i),
+fof(equality_lost_domain,interpretation-domains($i,$i),
     ! [X] : ( X = "a" | X = "f" | X = "john" | X = "gotA") ).
 
-fof(equality_lost_a,interpretation-mapping(a,$i),
+fof(equality_lost_a,interpretation-mappings(a,$i),
     a = "a" ).
 
-fof(equality_lost_f,interpretation-mapping(f,$i),
+fof(equality_lost_f,interpretation-mappings(f,$i),
     f = "f" ).
 
-fof(equality_lost_john,interpretation-mapping(john,$i),
+fof(equality_lost_john,interpretation-mappings(john,$i),
     john = "john" ).
 
-fof(equality_lost_grade_of,interpretation-mapping(grade_of,$i),
+fof(equality_lost_grade_of,interpretation-mappings(grade_of,$i),
     ( grade_of("a") = "a"
     & grade_of("f") = "a"
     & grade_of("john") = "f"
     & grade_of("gotA") = "a" ) ).
 
-fof(equality_lost_human,interpretation-mapping(human,$o),
+fof(equality_lost_human,interpretation-mappings(human,$o),
     ( ~ human("a")
     & ~ human("f")
     & human("john")
     & human("gotA") ).
 
-fof(equality_lost_created_equal,interpretation-mapping(created_equal,$o),
+fof(equality_lost_created_equal,interpretation-mappings(created_equal,$o),
     ( ~ created_equal("a","john")
     & ~ created_equal("a","gotA")
     & ~ created_equal("f","john")

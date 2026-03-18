@@ -17,7 +17,7 @@ tff(d_garfield_decl,type, d_garfield: d_cat ).
 tff(d_arlene_decl,type,   d_arlene: d_cat ).
 tff(d_nermal_decl,type,   d_nermal: d_cat ).
 
-tff(garfield_domains,interpretation-domain,
+tff(garfield_domains,interpretation-domains,
     ( ! [H: human] : ? [DH: d_human] : H = d2human(DH)
     & ! [DH: d_human] : ( DH = d_jon )
     & ! [DH1: d_human,DH2: d_human] :
@@ -29,7 +29,7 @@ tff(garfield_domains,interpretation-domain,
     & ! [DC1: d_cat,DC2: d_cat] : 
         ( d2cat(DC1) = d2cat(DC2) => DC1 = DC2 ) ) ).
 
-tff(garfield_mappings,interpretation-mapping,
+tff(garfield_mappings,interpretation-mappings,
     ( ( jon = d2human(d_jon)
       & garfield = d2cat(d_garfield)
       & arlene = d2cat(d_arlene)

@@ -1,8 +1,8 @@
 %------------------------------------------------------------------------------
-fof(equality_lost_domain,interpretation-domain,
+fof(equality_lost_domain,interpretation-domains,
     ! [X] : ( X = "a" | X = "f" | X = "john" | X = "gotA") ).
 
-fof(equality_lost_term_mappings,interpretation-mapping,
+fof(equality_lost_term_mappings,interpretation-mappings,
     ( a = "a"
     & f = "f"
     & john = "john"
@@ -11,7 +11,7 @@ fof(equality_lost_term_mappings,interpretation-mapping,
     & grade_of("john") = "f"
     & grade_of("gotA") = "a" ) ).
 
-fof(equality_lost_predicate_mappings,interpretation-mapping,
+fof(equality_lost_predicate_mappings,interpretation-mappings,
     ( ~ human("a")
     & ~ human("f")
     & human("john")
