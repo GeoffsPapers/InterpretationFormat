@@ -1,5 +1,5 @@
-% \documentclass{ceurart}
-\documentclass{easychair}
+\documentclass{ceurart}
+% \documentclass{easychair}
 
 %----CEUR style
 %% One can fix some overfulls
@@ -46,83 +46,95 @@
 % \renewcommand{\bottomfraction}{0.9}
 \setlength{\tabcolsep}{3pt}
 
-\newcommand{\alex}[1]{{\color{red}{{#1}}}}
+\newcommand{\todo}[1]{{\color{red}{{#1}}}}
 
 %----CEUR style
-% \begin{document}
-% \copyrightyear{2024}
-% \copyrightclause{Copyright for this paper by its authors.
-%   Use permitted under Creative Commons License Attribution 4.0 International (CC BY 4.0).}
-% \conference{The 9th Workshop on Practical Aspects of Automated Reasoning,
-%   July 2, 2024, Nancy, France}
-% \title{The TPTP Format for Interpretations}
-% 
-% \author[1]{Geoff Sutcliffe}[%
-% orcid=0000-0001-7116-9338,
-% email=geoff@cs.miami.edu,
-% ]
-% \address[1]{University of Miami, USA}
-% \author[2]{Alexander Steen}[%
-% orcid=0000-0001-8781-9462,
-% email=alexander.steen@uni-greifswald.de,
-% ]
-% \address[2]{University of Greifswald, Germany}
-% \author[3]{Pascal Fontaine}[%
-% orcid=0000-0003-4700-6031,
-% email=Pascal.Fontaine@uliege.be
-% ]
-% \address[3]{Université de Liège, Belgium}
-% \begin{abstract}
-% This paper describes the new TPTP format for representing interpretations.
-% It provides a background survey that helped us ensure that the representation format is adequate
-% for different types of interpretations: Tarskian, Herbrand, and Kripke interpretations.
-% The needs of applications that use models are considered.
-% The syntax and semantics of the new format is expounded in detail, with multiple examples.
-% Verification of models is discussed.
-% Some tools that support processing the new format are noted.
-% The properties of interpretations represented in the new format are discussed.
-% \end{abstract}
-% \begin{keywords}
-%   TPTP World \sep
-%   Interpretations
-% \end{keywords}
-
-%----EasyChair style
+\begin{document}
+\copyrightyear{2026}
+\copyrightclause{Copyright for this paper by its authors.
+  Use permitted under Creative Commons License Attribution 4.0 International (CC BY 4.0).}
+\conference{The 10th Workshop on Practical Aspects of Automated Reasoning,
+  July 25, 2026, Lisbon, Protugal}
 \title{The TPTP Format for Interpretations}
 
-\author{
-  Geoff Sutcliffe\inst{1}
-\and
-  Alexander Steen\inst{2}
-\and
-  Pascal Fontaine\inst{3}
-}
+\author[1]{Geoff Sutcliffe}[%
+orcid=0000-0001-7116-9338,
+email=geoff@cs.miami.edu,
+]
+\address[1]{University of Miami, USA}
+\author[2]{Alexander Steen}[%
+orcid=0000-0001-8781-9462,
+email=alexander.steen@uni-greifswald.de,
+]
+\address[2]{University of Greifswald, Germany}
+\author[3]{Pascal Fontaine}[%
+orcid=0000-0003-4700-6031,
+email=Pascal.Fontaine@uliege.be
+]
+\address[3]{Université de Liège, Belgium}
+\author[4]{Lydia Kondylidou}[%
+orcid=0009-0001-9875-2627,
+email=Lydia.Kondylidou@tcs.ifi.lmu.de
+]
+\address[4]{Ludwig-Maximilians-Universität, Germany}
 
-\institute{
-  University of Miami,
-  Miami, USA\\
-  \email{geoff@cs.miami.edu}
-\and
-  University of Greifswald,
-  Greifswald, Germany\\
-  \email{alexander.steen@uni-greifswald.de}
-\and
-  University of Li{\`e}ge,
-  Li{\`e}ge, Belgium\\
-  \email{Pascal.Fontaine@uliege.be}
-}
+\begin{abstract}
+This paper describes the TPTP format for representing interpretations.
+It provides a background survey that helped ensure that the representation format is adequate
+for different types of interpretations: Tarskian, Herbrand, and Kripke interpretations.
+The needs of applications that use models are considered.
+The syntax and semantics of the format is expounded in detail, with multiple examples.
+Verification of models is discussed.
+Some tools that support processing the format are noted.
+The properties of interpretations represented in the format are discussed.
+\end{abstract}
+\begin{keywords}
+  TPTP World \sep
+  Interpretations
+\end{keywords}
 
-\authorrunning{Sutcliffe, Steen, Fontaine}
-\titlerunning{TPTP World Interpretations}
-
-\begin{document}
+%----EasyChair style
+%EasyChair \title{The TPTP Format for Interpretations}
+%EasyChair 
+%EasyChair \author{
+%EasyChair   Geoff Sutcliffe\inst{1}
+%EasyChair \and
+%EasyChair   Alexander Steen\inst{2}
+%EasyChair \and
+%EasyChair   Pascal Fontaine\inst{3}
+%EasyChair \and
+%EasyChair   Lydia Kondylidou\inst{4}
+%EasyChair }
+%EasyChair 
+%EasyChair \institute{
+%EasyChair   University of Miami,
+%EasyChair   Miami, USA\\
+%EasyChair   \email{geoff@cs.miami.edu}
+%EasyChair \and
+%EasyChair   University of Greifswald,
+%EasyChair   Greifswald, Germany\\
+%EasyChair   \email{alexander.steen@uni-greifswald.de}
+%EasyChair \and
+%EasyChair   University of Li{\`e}ge,
+%EasyChair   Li{\`e}ge, Belgium\\
+%EasyChair   \email{Pascal.Fontaine@uliege.be}
+%EasyChair \and
+%EasyChair   Ludwig-Maximilians-Universit{\"a}t München
+%EasyChair   Munich, Germany\\
+%EasyChair   \email{Lydia.Kondylidou@tcs.ifi.lmu.de}
+%EasyChair }
+%EasyChair 
+%EasyChair \authorrunning{Sutcliffe, Steen, Fontaine, Kondylidou}
+%EasyChair \titlerunning{TPTP World Interpretations}
+%EasyChair 
+%EasyChair \begin{document}
 
 \maketitle
 %--------------------------------------------------------------------------------------------------
 %----EasyChair style
 \begin{abstract}
 This paper describes the TPTP format for representing interpretations.
-It provides a background survey that helped us ensure that the representation format is adequate
+It provides a background survey that helped ensure that the representation format is adequate
 for different types of interpretations: Tarskian, Herbrand, and Kripke interpretations.
 The needs of applications that use models are considered.
 The syntax and semantics of the format is expounded in detail, with multiple examples.
@@ -617,40 +629,51 @@ Each domain specification is a conjunction of~\ldots
 \item Specification of the domain for each problem type, as a formula that makes the 
       type-promotion function a surjection, 
       e.g., in Appendix~\ref{TFF_Finite_SeparateDomains.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [H: human] : ? [DH: d\_human] : H = d2human(DH)}\\
       \hspace*{0.5cm}\smalltt{! [C: cat] : ? [DC: d\_cat] : C = d2cat(DC)}\\
       and in Appendix~\ref{THF_Finite.s}~\ldots\\
-      ADD HERE AND ONLINE
+      \hspace*{0.5cm}\smalltt{! [B: beverage] : ? [DB: d\_beverage] : ( B = ( d2beverage @ DB ) )}\\
+      \hspace*{0.5cm}\smalltt{! [S: syrup] : ? [DS: d\_syrup] : ( S = ( d2syrup @ DS ) )}
 \item Specification of the domain elements as a universally quantified disjunction of equalities 
       whose right-hand sides are the domain elements, 
       e.g., in Appendix~\ref{TFF_Finite_SeparateDomains.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [DH: d\_human] : ( DH = d\_jon )}\\
       \hspace*{0.5cm}\smalltt{! [DC: d\_cat]: ( DC = d\_garfield | DC = d\_arlene | DC = d\_nermal )}\\
       and in Appendix~\ref{THF_Finite.s}~\ldots\\
-      \hspace*{0.5cm}\smalltt{( ! [DB: beverage] : ( DB = d\_coffee )}
+      \hspace*{0.5cm}\smalltt{! [DB: beverage] : ( DB = d\_coffee )}\\
+      \hspace*{0.5cm}\smalltt{! [DS: d\_syrup] : ( DS = d\_vanilla )}
 \item Specification of the distinctness of the domain elements, 
       e.g.,~in Appendix~\ref{TFF_Finite.s}~\ldots\\
       \hspace*{0.5cm}\smalltt{\$distinct(d\_garfield,d\_arlene,d\_nermal)}\\
-      and in Appendix~\ref{THF_Finite.s}~\ldots\\
+      and in Appendix~\ref{THF_Finite.s}
       there is no need because each domain has only one element.
 \item A formula making the type-promotion function an injection, which together with the 
       surjectivity makes it a bijection, 
       e.g., in Appendix~\ref{TFF_Finite_SeparateDomains.s}~\ldots\\
+      \hspace*{0.5cm}\smalltt{! [DH1: d\_human,DH2: d\_human] : ( d2human(DH1) = d2human(DH2) => DH1 = DH2 )}\\
       \hspace*{0.5cm}\smalltt{! [DC1: d\_cat,DC2: d\_cat] : ( d2cat(DC1) = d2cat(DC2) => DC1 = DC2 )}\\
       and in Appendix~\ref{THF_Finite.s}~\ldots\\
       \hspace*{0.5cm}\smalltt{! [DB1: d\_beverage,DB2: d\_beverage] :}\\
-      \hspace*{0.75cm}\smalltt{ ( ( ( d2beverage @ DB1 ) = ( d2beverage @ DB2 ) ) => ( DB1 = DB2 ) )}
+      \hspace*{0.8cm}\smalltt{( ( ( d2beverage @ DB1 ) = ( d2beverage @ DB2 ) ) => ( DB1 = DB2 ) )}\\
+      \hspace*{0.5cm}\smalltt{! [DS1: d\_syrup,DS2: d\_syrup] :}\\
+      \hspace*{0.8cm}\smalltt{( ( ( d2syrup @ DS1 ) = ( d2syrup @ DS2 ) ) => ( DS1 = DS2 ) )}
 \end{packed_itemize}
 
 The function mappings are equalities between type-promoted domain elements and functions applied 
 to type-promoted domain elements, 
 e.g., in Appendix~\ref{TFF_Finite_SeparateDomains.s}~\ldots \\
+\hspace*{0.5cm}\smalltt{jon = d2human(d\_jon)}\\
 \hspace*{0.5cm}\smalltt{loves(d2cat(d\_garfield)) = d2cat(d\_garfield)}\\
 and in Appendix~\ref{THF_Finite.s}~\ldots\\
-\hspace*{0.5cm}\smalltt{( mix @ d\_coffee @ d\_date ) = d\_coffee )}\\
+\hspace*{0.5cm}\smalltt{coffee = ( d2beverage @ d\_coffee )}\\
+\hspace*{0.5cm}\smalltt{( heat @ ( d2beverage @ d\_coffee ) ) = ( d2beverage @ d\_coffee )}\\
 The predicate mappings are atoms, 
 e.g., in Appendix~\ref{TFF_Finite_SeparateDomains.s}~\ldots \\
 \hspace*{0.5cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}}\,owns(d2human(d\_jon),d2cat(d\_nermal))}\\
 and in Appendix~\ref{THF_Finite.s}~\ldots\\
-\hspace*{0.5cm}\smalltt{( hot @ d\_coffee )}
+\hspace*{0.5cm}\smalltt{hot @ ( d2beverage @ d\_coffee )}
+
+\todo{LYDIA - CAN YOU MAKE SOME COMMENTS ON THE USE OF LAMBDA FUNCTIONS IN THE MODEL?}
 
 The TFF and THF interpretation-formulae are preceded by the necessary type declarations~\ldots
 \begin{packed_itemize}
@@ -661,7 +684,7 @@ The TFF and THF interpretation-formulae are preceded by the necessary type decla
 \end{packed_itemize}
 
 Appendices~\ref{TFF_Finite_SeparateDomains.s.p} and~\ref{THF_Finite.s.p} show the verification
-problems for the models. UPDATE
+problems for the models.
 
 %--------------------------------------------------------------------------------------------------
 \subsection{Infinite Interpretations}
@@ -714,7 +737,7 @@ e.g., in Appendix~\ref{TFF_Peano.s}~\ldots \\
 and in Appendix~\ref{TFF_Integer.s}~\ldots\\
 \hspace*{0.5cm}\smalltt{! [A: \$int,D: \$int] :}\\
 \hspace*{1.0cm}\smalltt{( is\_descendant(int2person(A),int2person(D)) <=> \$less(A,D) )}\\
-\hspace*{0.75cm}\smalltt{<=> peano\_less(A,D) )}\\
+\hspace*{0.8cm}\smalltt{<=> peano\_less(A,D) )}\\
 The interpretation of function and predicate symbols is not given for argument tuples
 with negative integers, i.e.,~this is an example of a partial interpretation.
 
@@ -785,19 +808,11 @@ while all the symbol mappings are in~\ldots \\
 \label{NewTarskianCompact}
 
 The full logical language can be used in interpretation-formulae to provide compaction.
-Appendices~\ref{TFF_Finite_Compact.s} and~\ref{THF_Finite_Compact.s} show examples compacting the
-interpretation-formulae in Appendices~\ref{FOF_Finite.s} and~\ref{TFF_Finite.s} respectively.
+Appendix~\ref{TFF_Finite_Compact.s} shows an example compacting the
+interpretation-formula \smalltt{garfield\_mapping\_loves} in Appendix~\ref{TFF_Finite.s}
 In Appendix~\ref{TFF_Finite_Compact.s} universal quantification is used to map {\tt loves} to 
 {\tt d\_garfield} for all {\tt d\_cats}~\ldots \\
-\hspace*{0.5cm}\smalltt{!\,[DC:\,d\_cat]\,:\,(\,loves(d2cat(DC))\,=\,d2cat(d\_garfield)\,)} \\
-and in Appendix~\ref{THF_Finite_Compact.s} universal quantification is used for all functions of
-type {\tt beverage > syrup} and all {\tt syrups}, applying the function to {\tt d\_coffee} and
-the syrup results in {\tt d\_coffee}~\ldots \\
-\hspace*{0.5cm}\smalltt{!\,[F:\,beverage\,>\,syrup\,>\,beverage,S:\,syrup]\,:} \\
-\hspace*{0.8cm}\smalltt{(\,(\,F\,@\,(\,d2beverage\,@\,d\_coffee\,)\,@\,(\,d2syrup\,@\,S\,)\,)} \\
-\hspace*{0.8cm}\smalltt{=\,(\,d2beverage\,@\,d\_coffee\,)\,)}
-
-UPDATE
+\hspace*{0.5cm}\smalltt{!\,[DC:\,d\_cat]\,:\,(\,loves(d2cat(DC))\,=\,d2cat(d\_garfield)\,)}
 
 %--------------------------------------------------------------------------------------------------
 \section{HI-formulae and Saturations}
@@ -1073,7 +1088,7 @@ The resultant TH0 problem is discharged using a trusted TH0 ATP system.
 \label{Conclusion}
 
 This paper describes the TPTP format for representing interpretations.
-It provides a background survey that helped us ensure that the representation format is adequate
+It provides a background survey that helped ensure that the representation format is adequate
 for different types of interpretations, including Tarskian, Herbrand, and Kripke interpretations.
 Some tools that support processing the format have been noted.
 
@@ -1344,14 +1359,6 @@ ATP systems.
 \label{THF_Finite_Medium.s}
 \begin{small}
 \verbatiminput{Examples/THF_Finite_Medium.s}
-\end{small}
-
-\newpage
-\subsection{TH0 Finite Model for \ref{THF_Finite.p}, Compacted
-(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/THF_Finite_Compact.s}{Online})}
-\label{THF_Finite_Compact.s}
-\begin{small}
-\verbatiminput{Examples/THF_Finite_Compact.s}
 \end{small}
 
 %--------------------------------------------------------------------------------------------------
