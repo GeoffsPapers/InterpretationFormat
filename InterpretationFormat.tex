@@ -671,9 +671,13 @@ The predicate mappings are atoms,
 e.g., in Appendix~\ref{TFF_Finite_SeparateDomains.s}~\ldots \\
 \hspace*{0.5cm}\smalltt{{\raisebox{0.4ex}{\texttildelow}}\,owns(d2human(d\_jon),d2cat(d\_nermal))}\\
 and in Appendix~\ref{THF_Finite.s}~\ldots\\
-\hspace*{0.5cm}\smalltt{hot @ ( d2beverage @ d\_coffee )}
-
-\todo{LYDIA - CAN YOU MAKE SOME COMMENTS ON THE USE OF LAMBDA FUNCTIONS IN THE MODEL?}
+\hspace*{0.5cm}\smalltt{hot @ ( d2beverage @ d\_coffee )}\\
+The mappings of higher-order function symbols are lambda abstractions, e.g.,~in 
+Appendix~\ref{THF_Finite.s}~\ldots\\
+\hspace*{0.5cm}\smalltt{mix = ( \^ [F: beverage > syrup] : ( d2beverage @ d\_coffee ) )}\\
+\hspace*{0.5cm}\smalltt{heated\_mix = ( \^ [F: beverage > syrup] : ( d2beverage @ d\_coffee ) )}\\
+The lambda abstractions are needed because these symbols take a function as an argument, and the 
+model must specify their behaviour for every such function.
 
 The TFF and THF interpretation-formulae are preceded by the necessary type declarations~\ldots
 \begin{packed_itemize}
