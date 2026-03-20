@@ -4,118 +4,118 @@ tff(semantics,logic,
       [ $domains == $constant,
         $designation == $rigid,
         $terms == $local,
-        $modalities == $modal_system_M ] ).
+        $modalities == $modal_system_K ] ).
 
-tff(person_decl,type,    person: $tType).
-tff(product_decl,type,   product: $tType).
-tff(alex_decl,type,      alex: person).
-tff(chris_decl,type,     chris: person).
-tff(leo_decl,type,       leo: product).
-tff(work_hard_decl,type, work_hard: (person * product) > $o).
-tff(gets_rich_decl,type, gets_rich: person > $o).
+tff(child_type,type,    child: $tType ).
+tff(adult_type,type,    adult: $tType ).
+tff(agatha_decl,type,   agatha: adult ).
+tff(charly_decl,type,   charly: child ).
+tff(quiet_decl,type,    quiet: child > $o ).
+tff(sleepy_decl,type,   sleepy: adult > $o ).
+tff(peaceful_decl,type, peaceful: child > $o ).
+tff(serves_decl,type,   serves: adult > child ).
+tff(rains_decl,type,    rains: $o ).
 
-tff(d_person_type,type,  d_person: $tType).
-tff(d2person_decl,type,  d2person: d_person > person ).
-tff(d_alex_decl,type,    d_alex: d_person).
-tff(d_chris_decl,type,   d_chris: d_person).
-tff(d_product_type,type, d_product: $tType).
-tff(d2product_decl,type, d2product: d_product > product ).
-tff(d_leo_decl,type,     d_leo: d_product).
+tff(child_d_decl,type, child_d: $tType).
+tff(adult_d_decl,type, adult_d: $tType).
+tff(child_1_decl,type, child_1: child_d).
+tff(adult_1_decl,type, adult_1: adult_d).
+tff(d2child_decl,type, d2child: child_d > child).
+tff(d2adult_decl,type, d2adult: adult_d > adult).
 
-tff(w1_decl,type,w1:     $world).
-tff(w2_decl,type,w2:     $world).
+tff(w1_decl,type,       w1: $world ).
+tff(w2_decl,type,       w2: $world ).
+tff(w3_decl,type,       w3: $world ).
 
-tff(leo_workers_worlds,interpretation-world,
-    ( ! [W: $world] : ( W = w1 | W = w2 )
-    & $distinct(w1,w2)
-    & $local_world = w2
+tff(people_worlds,interpretation-worlds,
+    ( ! [W: $world] :
+        ( W = w1 | W = w2 | W = w3 )
+    & $distinct(w1,w2,w3)
+    & $local_world = w1
     & $accessible_world(w1,w1) & $accessible_world(w2,w2)
-    & $accessible_world(w1,w2) & $accessible_world(w2,w1) ) ). 
+    & $accessible_world(w1,w2) & $accessible_world(w2,w3)
+    & $accessible_world(w3,w1)
+    & ~ $accessible_world(w1,w3) & ~ $accessible_world(w2,w1)
+    & ~ $accessible_world(w3,w2) & ~ $accessible_world(w3,w3) ) ).
 
-tff(leo_workers_w1_person,
-    interpretation-in_world(w1,interpretation-domain(person,d_person)),
-    $in_world(w1,
-      ( ! [P: person] : ? [DP: d_person] : P = d2person(DP)
-      & ! [DP: d_person] : ( DP = d_alex | DP = d_chris )
-      & $distinct(d_alex,d_chris)
-      & ? [DP: d_person] : ( DP = d_alex )
-      & ? [DP: d_person] : ( DP = d_chris )
-      & ! [DP1: d_person,DP2: d_person] : 
-          ( d2person(DP1) = d2person(DP2) => DP1 = DP2 ) ) ) ).
+tff(child_domains,interpretation-domains(child,child_d),
+    ( $in_world(w1,
+        ( ! [C: child] : ? [CD: child_d] : C = d2child(CD)
+        & ! [CD: child_d] : CD = child_1
+        & ? [CD: child_d] : CD = child_1
+        & ! [CD1: child_d,CD2: child_d] :
+            ( d2child(CD1) = d2child(CD2) => CD1 = CD2 ) ))
+    & $in_world(w2,
+        ( ! [C: child] : ? [CD: child_d] : C = d2child(CD)
+        & ! [CD: child_d] : CD = child_1
+        & ? [CD: child_d] : CD = child_1
+        & ! [CD1: child_d,CD2: child_d] :
+            ( d2child(CD1) = d2child(CD2) => CD1 = CD2 ) ))
+    & $in_world(w3,
+        ( ! [C: child] : ? [CD: child_d] : C = d2child(CD)
+        & ! [CD: child_d] : CD = child_1
+        & ? [CD: child_d] : CD = child_1
+        & ! [CD1: child_d,CD2: child_d] :
+            ( d2child(CD1) = d2child(CD2) => CD1 = CD2 ) )) ) ).
 
-tff(leo_workers_w1_product,
-    interpretation-in_world(w1,interpretation-domain(product,d_product)),
-    $in_world(w1,
-      ( ! [P: product] : ? [DP: d_product] : P = d2product(DP)
-      & ! [DP: d_product] : DP = d_leo
-      & ? [DP: d_product] : DP = d_leo
-      & ! [DP1: d_product,DP2: d_product] :
-          ( d2product(DP1) = d2product(DP2) => DP1 = DP2 ) ) ) ).
+tff(adult_domains,interpretation-domains(adult,adult_d),
+    ( $in_world(w1,
+        ( ! [A: adult] : ? [AD: adult_d] : A = d2adult(AD)
+        & ! [AD: adult_d] : AD = adult_1
+        & ? [AD: adult_d] : AD = adult_1
+        & ! [AD1: adult_d,AD2: adult_d] :
+            ( d2adult(AD1) = d2adult(AD2) => AD1 = AD2 ) ))
+    & $in_world(w2,
+        ( ! [A: adult] : ? [AD: adult_d] : A = d2adult(AD)
+        & ! [AD: adult_d] : AD = adult_1
+        & ? [AD: adult_d] : AD = adult_1
+        & ! [AD1: adult_d,AD2: adult_d] :
+            ( d2adult(AD1) = d2adult(AD2) => AD1 = AD2 ) ))
+    & $in_world(w3,
+        ( ! [A: adult] : ? [AD: adult_d] : A = d2adult(AD)
+        & ! [AD: adult_d] : AD = adult_1
+        & ? [AD: adult_d] : AD = adult_1
+        & ! [AD1: adult_d,AD2: adult_d] :
+            ( d2adult(AD1) = d2adult(AD2) => AD1 = AD2 ) )) ) ).
 
-tff(leo_workers_w2_person,
-    interpretation-in_world(w2,interpretation-domain(person,d_person)),
-    $in_world(w2,
-      ( ! [P: person] : ? [DP: d_person] : P = d2person(DP)
-      & ! [DP: d_person] : ( DP = d_alex | DP = d_chris )
-      & $distinct(d_alex,d_chris)
-      & ? [DP: d_person] : ( DP = d_alex )
-      & ? [DP: d_person] : ( DP = d_chris )
-      & ! [DP1: d_person,DP2: d_person] : 
-          ( d2person(DP1) = d2person(DP2) => DP1 = DP2 ) ) ) ).
+tff(charly_mappings,interpretation-mappings(charly,child_d),
+    ( $in_world(w1,
+        ( charly = d2child(child_1) ))
+    & $in_world(w2,
+        ( charly = d2child(child_1) ))
+    & $in_world(w3,
+        ( charly = d2child(child_1) )) ) ).
 
-tff(leo_workers_w2_product,
-    interpretation-in_world(w2,interpretation-domain(product,d_product)),
-    $in_world(w2,
-      ( ! [P: product] : ? [DP: d_product] : P = d2product(DP)
-      & ! [DP: d_product] : DP = d_leo
-      & ? [DP: d_product] : DP = d_leo
-      & ! [DP1: d_product,DP2: d_product] :
-          ( d2product(DP1) = d2product(DP2) => DP1 = DP2 ) ) ) ).
+tff(agatha_mappings,interpretation-mappings(agatha,adult_d),
+    ( $in_world(w1,
+        ( agatha = d2adult(adult_1) ))
+    & $in_world(w2,
+        ( agatha = d2adult(adult_1) ))
+    & $in_world(w3,
+        ( agatha = d2adult(adult_1) )) ) ).
 
-tff(leo_workers_w1_alex,
-    interpretation-in_world(w1,interpretation-mapping(alex,d_person)),
-    $in_world(w1, ( alex = d2person(d_alex) )) ).
+tff(rains_mappings,interpretation-mappings(rains,$o),
+    ( $in_world(w1,
+        rains)
+    & $in_world(w2,
+        rains)
+    & $in_world(w3,
+        rains) ) ).
 
-tff(leo_workers_w2_alex,
-    interpretation-in_world(w2,interpretation-mapping(alex,d_person)),
-    $in_world(w2, ( alex = d2person(d_alex) )) ).
-
-tff(leo_workers_w1_chris,
-    interpretation-in_world(w1,interpretation-mapping(chris,d_person)),
-    $in_world(w1, ( chris = d2person(d_chris) )) ).
-
-tff(leo_workers_w2_chris,
-    interpretation-in_world(w2,interpretation-mapping(chris,d_person)),
-    $in_world(w2, ( chris = d2person(d_chris) )) ).
-
-tff(leo_workers_w1_leo,
-    interpretation-in_world(w1,interpretation-mapping(leo,d_product)),
-    $in_world(w1, ( leo = d2product(d_leo) )) ).
-
-tff(leo_workers_w2_leo,
-    interpretation-in_world(w2,interpretation-mapping(leo,d_product)),
-    $in_world(w2, ( leo = d2product(d_leo) )) ).
-
-tff(leo_workers_w1_work_hard,
-    interpretation-in_world(w1,interpretation-mapping(work_hard,$o)),
-    $in_world(w1,
-      ( work_hard(d2person(d_alex),d2product(d_leo))
-      & work_hard(d2person(d_chris),d2product(d_leo)) )) ).
-
-tff(leo_workers_w2_work_hard,
-    interpretation-in_world(w2,interpretation-mapping(work_hard,$o)),
-    $in_world(w2,
-      ( work_hard(d2person(d_alex),d2product(d_leo))
-      & work_hard(d2person(d_chris),d2product(d_leo)) )) ).
-
-tff(leo_workers_w1_gets_rich,
-    interpretation-in_world(w1,interpretation-mapping(gets_rich,$o)),
-    $in_world(w1,
-      ( gets_rich(d2person(d_alex)) & gets_rich(d2person(d_chris)) ) ) ). 
-
-tff(leo_workers_w2_gets_rich,
-    interpretation-in_world(w2,interpretation-mapping(gets_rich,$o)),
-    $in_world(w2,
-      ( ~ gets_rich(d2person(d_alex)) & ~ gets_rich(d2person(d_chris)) ) ) ). 
+tff(people_mappings,interpretation-mappings,
+    ( $in_world(w1,
+        ( serves(d2adult(adult_1)) = d2child(child_1)
+        & ~ quiet(d2child(child_1))
+        & ~ sleepy(d2adult(adult_1))
+        & peaceful(d2child(child_1)) ))
+    & $in_world(w2,
+        ( serves(d2adult(adult_1)) = d2child(child_1)
+        & ~ quiet(d2child(child_1))
+        & ~ sleepy(d2adult(adult_1))
+        & peaceful(d2child(child_1)) ))
+    & $in_world(w3,
+        ( serves(d2adult(adult_1)) = d2child(child_1)
+        & ~ quiet(d2child(child_1))
+        & ~ sleepy(d2adult(adult_1))
+        & peaceful(d2child(child_1)) )) ) ).
 %------------------------------------------------------------------------------
-

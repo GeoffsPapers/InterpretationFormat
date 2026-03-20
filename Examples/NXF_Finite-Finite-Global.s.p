@@ -1,101 +1,116 @@
 %------------------------------------------------------------------------------
 tff(the_logic,logic,$$fomlModel).
 
-tff(person_decl,type,    person: $tType ).
-tff(product_decl,type,   product: $tType ).
-tff(alex_decl,type,      alex: person ).
-tff(chris_decl,type,     chris: person ).
-tff(leo_decl,type,       leo: product ).
-tff(work_hard_decl,type, work_hard: ( person * product ) > $o ).
-tff(gets_rich_decl,type, gets_rich: person > $o ).
+tff(child_type,type,    child: $tType ).
+tff(adult_type,type,    adult: $tType ).
+tff(agatha_decl,type,   agatha: adult ).
+tff(charly_decl,type,   charly: child ).
+tff(quiet_decl,type,    quiet: child > $o ).
+tff(sleepy_decl,type,   sleepy: adult > $o ).
+tff(peaceful_decl,type, peaceful: child > $o ).
+tff(serves_decl,type,   serves: adult > child ).
+tff(rains_decl,type,    rains: $o ).
 
-tff(d_person_type,type,  d_person: $tType ).
-tff(d2person_decl,type,  d2person: d_person > person ).
-tff(d_alex_decl,type,    d_alex: d_person ).
-tff(d_chris_decl,type,   d_chris: d_person ).
-tff(d_product_type,type, d_product: $tType ).
-tff(d2product_decl,type, d2product: d_product > product ).
-tff(d_leo_decl,type,     d_leo: d_product ).
+tff(child_d_decl,type, child_d: $tType).
+tff(adult_d_decl,type, adult_d: $tType).
+tff(child_1_decl,type, child_1: child_d).
+tff(adult_1_decl,type, adult_1: adult_d).
+tff(d2child_decl,type, d2child: child_d > child).
+tff(d2adult_decl,type, d2adult: adult_d > adult).
 
-tff(w1_decl,type,        w1: $world ).
-tff(w2_decl,type,        w2: $world ).
+tff(w1_decl,type,       w1: $world ).
+tff(w2_decl,type,       w2: $world ).
+tff(w3_decl,type,       w3: $world ).
 
-tff(leo_workers,interpretation,
-    ( ! [W: $world] :
-        ( ( W = w1 ) | ( W = w2 ) )
-    & $distinct(w1,w2)
-    & ( $local_world = w2 )
-    & $accessible_world(w1,w1)
-    & $accessible_world(w2,w2)
-    & $accessible_world(w1,w2)
-    & $accessible_world(w2,w1)
+tff(people_worlds,interpretation,
+    ( ( ! [W: $world] :
+          ( W = w1 | W = w2 | W = w3 )
+      & $distinct(w1,w2,w3)
+      & $local_world = w1
+      & $accessible_world(w1,w1) & $accessible_world(w2,w2)
+      & $accessible_world(w1,w2) & $accessible_world(w2,w3)
+      & $accessible_world(w3,w1)
+      & ~ $accessible_world(w1,w3) & ~ $accessible_world(w2,w1)
+      & ~ $accessible_world(w3,w2) & ~ $accessible_world(w3,w3) )
     & $in_world(w1,
-        ( ! [P: person] :
-          ? [DP: d_person] : ( P = d2person(DP) )
-        & ! [DP: d_person] :
-            ( ( DP = d_alex ) | ( DP = d_chris ) )
-        & $distinct(d_alex,d_chris)
-        & ? [DP: d_person] : ( DP = d_alex )
-        & ? [DP: d_person] : ( DP = d_chris )
-        & ! [DP1: d_person,DP2: d_person] :
-            ( ( d2person(DP1) = d2person(DP2) )
-           => ( DP1 = DP2 ) )
-        & ! [P: product] :
-          ? [DP: d_product] : ( P = d2product(DP) )
-        & ! [DP: d_product] : ( DP = d_leo )
-        & ? [DP: d_product] : ( DP = d_leo )
-        & ! [DP1: d_product,DP2: d_product] :
-            ( ( d2product(DP1) = d2product(DP2) )
-           => ( DP1 = DP2 ) )
-        & ( alex = d2person(d_alex) )
-        & ( chris = d2person(d_chris) )
-        & ( leo = d2product(d_leo) )
-        & work_hard(d2person(d_alex),d2product(d_leo))
-        & work_hard(d2person(d_chris),d2product(d_leo))
-        & gets_rich(d2person(d_alex))
-        & gets_rich(d2person(d_chris)) ))
+        ( ! [C: child] : ? [CD: child_d] : C = d2child(CD)
+        & ! [CD: child_d] : CD = child_1
+        & ? [CD: child_d] : CD = child_1
+        & ! [CD1: child_d,CD2: child_d] :
+            ( d2child(CD1) = d2child(CD2) => CD1 = CD2 )
+        & ! [A: adult] : ? [AD: adult_d] : A = d2adult(AD)
+        & ! [AD: adult_d] : AD = adult_1
+        & ? [AD: adult_d] : AD = adult_1
+        & ! [AD1: adult_d,AD2: adult_d] :
+            ( d2adult(AD1) = d2adult(AD2) => AD1 = AD2 )
+        & charly = d2child(child_1)
+        & agatha = d2adult(adult_1)
+        & serves(d2adult(adult_1)) = d2child(child_1)
+        & ~ quiet(d2child(child_1))
+        & ~ sleepy(d2adult(adult_1))
+        & peaceful(d2child(child_1))
+        & rains ))
     & $in_world(w2,
-        ( ! [P: person] :
-          ? [DP: d_person] : ( P = d2person(DP) )
-        & ! [DP: d_person] :
-            ( ( DP = d_alex ) | ( DP = d_chris ) )
-        & $distinct(d_alex,d_chris)
-        & ? [DP: d_person] : ( DP = d_alex )
-        & ? [DP: d_person] : ( DP = d_chris )
-        & ! [DP1: d_person,DP2: d_person] :
-            ( ( d2person(DP1) = d2person(DP2) )
-           => ( DP1 = DP2 ) )
-        & ! [P: product] :
-          ? [DP: d_product] : ( P = d2product(DP) )
-        & ! [DP: d_product] : ( DP = d_leo )
-        & ? [DP: d_product] : ( DP = d_leo )
-        & ! [DP1: d_product,DP2: d_product] :
-            ( ( d2product(DP1) = d2product(DP2) )
-           => ( DP1 = DP2 ) )
-        & ( alex = d2person(d_alex) )
-        & ( chris = d2person(d_chris) )
-        & ( leo = d2product(d_leo) )
-        & work_hard(d2person(d_alex),d2product(d_leo))
-        & work_hard(d2person(d_chris),d2product(d_leo))
-        & ~ gets_rich(d2person(d_alex))
-        & ~ gets_rich(d2person(d_chris)) )) ) ).
+        ( ! [C: child] : ? [CD: child_d] : C = d2child(CD)
+        & ! [CD: child_d] : CD = child_1
+        & ? [CD: child_d] : CD = child_1
+        & ! [CD1: child_d,CD2: child_d] :
+            ( d2child(CD1) = d2child(CD2) => CD1 = CD2 )
+        & ! [A: adult] : ? [AD: adult_d] : A = d2adult(AD)
+        & ! [AD: adult_d] : AD = adult_1
+        & ? [AD: adult_d] : AD = adult_1
+        & ! [AD1: adult_d,AD2: adult_d] :
+            ( d2adult(AD1) = d2adult(AD2) => AD1 = AD2 )
+        & charly = d2child(child_1)
+        & agatha = d2adult(adult_1)
+        & serves(d2adult(adult_1)) = d2child(child_1)
+        & ~ quiet(d2child(child_1))
+        & ~ sleepy(d2adult(adult_1))
+        & peaceful(d2child(child_1))
+        & rains ))
+    & $in_world(w3,
+        ( ! [C: child] : ? [CD: child_d] : C = d2child(CD)
+        & ! [CD: child_d] : CD = child_1
+        & ? [CD: child_d] : CD = child_1
+        & ! [CD1: child_d,CD2: child_d] :
+            ( d2child(CD1) = d2child(CD2) => CD1 = CD2 )
+        & ! [A: adult] : ? [AD: adult_d] : A = d2adult(AD)
+        & ! [AD: adult_d] : AD = adult_1
+        & ? [AD: adult_d] : AD = adult_1
+        & ! [AD1: adult_d,AD2: adult_d] :
+            ( d2adult(AD1) = d2adult(AD2) => AD1 = AD2 )
+        & charly = d2child(child_1)
+        & agatha = d2adult(adult_1)
+        & serves(d2adult(adult_1)) = d2child(child_1)
+        & ~ quiet(d2child(child_1))
+        & ~ sleepy(d2adult(adult_1))
+        & peaceful(d2child(child_1))
+        & rains )) ) ).
 
-tff(work_hard_to_get_rich,conjecture-global,
-    ! [P: person] :
-      ( ? [R: product] : work_hard(P,R)
-     => ( {$possible} @ (gets_rich(P)) ) ) ).
+tff(a1,conjecture-global,
+    ! [C: child] :
+      ~ ( ~ quiet(C)
+        & ? [A: adult] : sleepy(A) ) ).
 
-tff(not_all_get_rich,conjecture-global,
-    ~ ? [P: person] : ( {$necessary} @ (gets_rich(P)) ) ).
+tff(a2,conjecture-global,
+    ( ( rains
+      & ? [C: child] : quiet(C) )
+   => ! [C: child] : ~ peaceful(C) ) ).
 
-tff(alex_works_on_leo,conjecture-global,
-    work_hard(alex,leo) ).
+tff(a3,conjecture-global,
+    ( peaceful(charly)
+    | ( ~ quiet(charly)
+      & quiet(serves(agatha)) ) ) ).
 
-tff(chris_works_on_leo,conjecture-global,
-    work_hard(chris,leo) ).
+tff(a4,conjecture-global,
+    ( ~ quiet(charly)
+   => ! [C: child] : ~ quiet(C) ) ).
 
-tff(only_alex_gets_rich,conjecture-local,
-    ~ ( {$possible}
-      @ (( gets_rich(alex)
-         & ~ gets_rich(chris) )) ) ).
+tff(a5,conjecture-global,
+    ( {$necessary}
+    @ ( ( peaceful(charly)
+       => rains ) ) ) ).
+
+tff(c,conjecture-local,
+    ~ ( {$possible} @ (~ rains) ) ).
 %------------------------------------------------------------------------------

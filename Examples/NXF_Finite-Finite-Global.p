@@ -4,39 +4,36 @@ tff(semantics,logic,
       [ $domains == $constant,
         $designation == $rigid,
         $terms == $local,
-        $modalities == $modal_system_M ] ).
+        $modalities == $modal_system_K ] ).
 
-tff(person_decl,type,person: $tType).
-tff(product_decl,type,product: $tType).
-tff(alex_decl,type,alex: person).
-tff(chris_decl,type,chris: person).
-tff(leo_decl,type,leo: product).
-tff(work_hard_decl,type,work_hard: (person * product) > $o).
-tff(gets_rich_decl,type,gets_rich: person > $o).
+tff(child_type,type,    child: $tType ).
+tff(adult_type,type,    adult: $tType ).
+tff(agatha_decl,type,   agatha: adult ).
+tff(charly_decl,type,   charly: child ).
+tff(quiet_decl,type,    quiet: child > $o ).
+tff(sleepy_decl,type,   sleepy: adult > $o ).
+tff(peaceful_decl,type, peaceful: child > $o ).
+tff(serves_decl,type,   serves: adult > child ).
+tff(rains_decl,type,    rains: $o ).
 
-%----If there is a product that a person works hard on, then 
-%----it's possible that the person will get rich.
-tff(work_hard_to_get_rich,axiom,
-    ! [P: person] :
-      ( ? [R: product] : work_hard(P,R)
-     => ( {$possible} @ (gets_rich(P)) ) ) ).
+tff(a1,axiom,
+    ! [C: child] :
+      ~ ( ~quiet(C) & ? [A: adult] : sleepy(A) ) ).
 
-%----Nobody necessarily gets rich.
-tff(not_all_get_rich,axiom,
-    ~ ? [P: person] : ({$necessary} @ (gets_rich(P)) ) ).
+tff(a2,axiom,
+    ( ( rains & ? [C: child] : quiet(C) )
+   => ! [C: child] : ~peaceful(C) ) ).
 
-%----Alex and Chris work hard on Leo-III.
-tff(alex_works_on_leo,axiom,
-    work_hard(alex,leo) ).
+tff(a3,axiom,
+    ( peaceful(charly)
+    | ( ~quiet(charly) & quiet(serves(agatha)) ) ) ).
 
-tff(chris_works_on_leo,axiom,
-    work_hard(chris,leo) ).
+tff(a4,axiom,
+    ~quiet(charly) => ! [C: child] : ~quiet(C) ).
 
-%----Chris is not Alex
-tff(chris_not_alex,axiom,
-    chris != alex ).
+tff(a5,axiom,
+    {$necessary} @ ( peaceful(charly) => rains ) ).
 
-%----It's possible that Alex gets rich but Chris does not.
-tff(only_alex_gets_rich,conjecture,
-    ( {$possible} @ (gets_rich(alex) & ~ gets_rich(chris)) ) ).
+tff(c,conjecture,
+    {$possible} @ (~ rains) ).
 %------------------------------------------------------------------------------
