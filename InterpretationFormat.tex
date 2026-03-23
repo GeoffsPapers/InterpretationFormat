@@ -676,8 +676,8 @@ and in Appendix~\ref{THF_Finite.s}~\ldots\\
 \hspace*{0.5cm}\smalltt{hot @ ( d2beverage @ d\_coffee )}\\
 The mappings of higher-order function symbols are lambda abstractions, e.g.,~in 
 Appendix~\ref{THF_Finite.s}~\ldots\\
-\hspace*{0.5cm}\smalltt{mix = ( \^ [F: beverage > syrup] : ( d2beverage @ d\_coffee ) )}\\
-\hspace*{0.5cm}\smalltt{heated\_mix = ( \^ [F: beverage > syrup] : ( d2beverage @ d\_coffee ) )}\\
+\hspace*{0.5cm}\smalltt{mix = ( \^ [F: syrup > beverage] : ( d2beverage @ d\_coffee ) )}\\
+\hspace*{0.5cm}\smalltt{heated\_mix = ( \^ [F: syrup > beverage] : ( d2beverage @ d\_coffee ) )}\\
 The lambda abstractions are needed because these symbols take a function as an argument, and the 
 model must specify their behaviour for every such function.
 

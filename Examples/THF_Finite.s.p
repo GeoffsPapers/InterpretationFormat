@@ -3,9 +3,9 @@ thf(beverage_type,type,   beverage: $tType ).
 thf(syrup_type,type,      syrup: $tType ).
 thf(coffee_decl,type,     coffee: beverage ).
 thf(vanilla_decl,type,    vanilla: syrup ).
-thf(mix_decl,type,        mix: ( beverage > syrup ) > beverage ).
+thf(mix_decl,type,        mix: ( syrup > beverage ) > beverage ).
 thf(heat_decl,type,       heat: beverage > beverage ).
-thf(heated_mix_decl,type, heated_mix: ( beverage > syrup ) > beverage ).
+thf(heated_mix_decl,type, heated_mix: ( syrup > beverage ) > beverage ).
 thf(hot_decl,type,        hot: beverage > $o ).
 
 thf(d_beverage_type,type, d_beverage: $tType ).
@@ -29,16 +29,16 @@ thf(model,axiom,
     & ( coffee = ( d2beverage @ d_coffee ) )
     & ( vanilla = ( d2syrup @ d_vanilla ) )
     & ( ( heat @ ( d2beverage @ d_coffee ) ) = d_coffee )
-    & ( mix = ( ^ [F: beverage > syrup] : ( d2beverage @ d_coffee ) ) )
+    & ( mix = ( ^ [F: syrup > beverage] : ( d2beverage @ d_coffee ) ) )
     & ( heated_mix
-      = ( ^ [F: beverage > syrup] : ( d2beverage @ d_coffee ) ) )
+      = ( ^ [F: syrup > beverage] : ( d2beverage @ d_coffee ) ) )
     & ( hot @ ( d2beverage @ d_coffee ) ) ) ).
 
 thf(verify,conjecture,
     ( ( heated_mix
-      = ( ^ [F: beverage > syrup] : ( heat @ ( mix @ F ) ) ) )
-    & ! [F: beverage > syrup] : ( hot @ ( heated_mix @ F ) )
-    & ! [F: beverage > syrup] : ( ( heated_mix @ F ) = coffee )
+      = ( ^ [F: syrup > beverage] : ( heat @ ( mix @ F ) ) ) )
+    & ! [F: syrup > beverage] : ( hot @ ( heated_mix @ F ) )
+    & ! [F: syrup > beverage] : ( ( heated_mix @ F ) = coffee )
     &  ~ ? [Mixture: syrup > beverage] :
            ~ ? [S: syrup] :
                ( ( ( Mixture @ S ) = coffee )
