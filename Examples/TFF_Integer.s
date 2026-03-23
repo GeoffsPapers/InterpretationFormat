@@ -8,14 +8,14 @@ tff(int2person_decl,type,    int2person: $int > person ).
 
 tff(people,interpretation,
 %----Domain for type person is the integers
-    ( ( ! [P: person] : ? [I: $int] : int2person(I) = P
+    ( ! [P: person] : ? [I: $int] : int2person(I) = P
 %----The type promoter is a bijection (injective and surjective)
-      & ! [I1: $int,I2: $int] : 
-          ( int2person(I1) = int2person(I2) => I1 = I2 ) )
+    & ! [I1: $int,I2: $int] : 
+        ( int2person(I1) = int2person(I2) => I1 = I2 )
 %----Mapping people to integers. Note that Bob's ancestors will be interpreted 
 %----as negative integers.
-    & ( bob = int2person(0)
-      & ! [I: $int] : child_of(int2person(I)) = int2person($sum(I,1)) )
+    & bob = int2person(0)
+    & ! [I: $int] : child_of(int2person(I)) = int2person($sum(I,1))
 %----Interpretation of descendancy
     & ! [A: $int,D: $int] : 
         ( is_descendant(int2person(A),int2person(D)) <=> $less(A,D) ) ) ).
