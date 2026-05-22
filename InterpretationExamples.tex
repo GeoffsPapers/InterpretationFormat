@@ -1,0 +1,481 @@
+\documentclass{ceurart}
+% \documentclass{easychair}
+
+%----CEUR style
+%% One can fix some overfulls
+\sloppy
+
+%----My style
+% \usepackage{doc}
+\usepackage{setspace}
+\usepackage{verbatim}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{upquote}
+\usepackage{xr-hyper}
+\usepackage{hyperref}
+\renewcommand\UrlFont{\color{blue}\rmfamily}
+
+%----Making things more compact
+\newcommand{\smalltt}[1]{\small \texttt{#1}}
+\newcommand{\tildenot}{\raisebox{0.4ex}{\texttildelow}}
+\newenvironment{packed_itemize}{
+\vspace*{-0.3em}
+\begin{itemize}
+\setlength{\partopsep}{0pt}
+\setlength{\itemsep}{1pt}
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}
+}{\end{itemize}}
+\newenvironment{packed_enumerate}{
+\vspace*{-0.3em}
+\begin{enumerate}
+\setlength{\partopsep}{0pt}
+\setlength{\itemsep}{1pt}
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}
+}{\end{enumerate}}
+%----Suppress extra space in texttt mode
+\AddToHook{cmd/ttfamily/after}{\frenchspacing}
+% \renewcommand{\arraystretch}{0.8}
+\renewcommand{\floatpagefraction}{0.9}
+\renewcommand{\textfloatsep}{2.0ex}
+% \setlength{\floatsep}{2.0pt plus 2.0pt minus 2.0pt}
+% \setlength{\textfloatsep}{5.0pt plus 2.0pt minus 0.0pt}
+\renewcommand{\dbltextfloatsep}{2.0ex}
+% \renewcommand{\textfraction}{0.07}
+% \renewcommand{\topfraction}{0.9}
+% \renewcommand{\bottomfraction}{0.9}
+\setlength{\tabcolsep}{3pt}
+
+%----CEUR style
+\begin{document}
+\copyrightyear{2026}
+\copyrightclause{Copyright for this paper by its authors.
+  Use permitted under Creative Commons License Attribution 4.0 International (CC BY 4.0).}
+\conference{The 10th Workshop on Practical Aspects of Automated Reasoning,
+  July 25, 2026, Lisbon, Portugal}
+\title{Examples of the TPTP Format for Interpretations}
+
+\author[1]{Geoff Sutcliffe}[%
+orcid=0000-0001-7116-9338,
+email=geoff@cs.miami.edu,
+]
+\address[1]{University of Miami, USA}
+\author[2]{Alexander Steen}[%
+orcid=0000-0001-8781-9462,
+email=alexander.steen@uni-greifswald.de,
+]
+\address[2]{University of Greifswald, Germany}
+\author[3]{Pascal Fontaine}[%
+orcid=0000-0003-4700-6031,
+email=Pascal.Fontaine@uliege.be
+]
+\address[3]{Université de Liège, Belgium}
+\author[4]{Lydia Kondylidou}[%
+orcid=0009-0001-9875-2627,
+email=Lydia.Kondylidou@tcs.ifi.lmu.de
+]
+\address[4]{Ludwig-Maximilians-Universität, Germany}
+
+\begin{abstract}
+This document provides examples of the TPTP format for interpretations, as a companion document
+to the paper that describes the format~\cite{SHB26}.
+\end{abstract}
+\begin{keywords}
+  TPTP World \sep
+  Interpretations
+\end{keywords}
+
+\maketitle
+%--------------------------------------------------------------------------------------------------
+\section{Introduction}
+\label{examples:Introductio}
+
+Historically, Automated Theorem Proving (ATP) has, as the name suggests, focused largely on the
+task of proving theorems from axioms -- the derivation of conclusions that follow inevitably 
+from known facts~\cite{RV01-HAR}.
+The axioms and the conjecture to be proved (and hence become a theorem) are written in an 
+appropriately expressive logic, and the proofs are often similarly written in logic~\cite{SS+06}.
+The converse task of disproving conjectures, proving that a conjecture is not a theorem of the 
+axioms, is another facet of interest, e.g.,~\cite{Win82,LM87,McC98,Zha05,BN10-ITP,RKK17,EPS24}.
+This process depends on finding a \emph{countermodel} for the conjecture, i.e., finding an 
+\emph{interpretation} (a structure that assigns meaning to the symbols of the language of the
+formulae, and consequently maps formulae to truth values) that is a \emph{model} of the axioms 
+(maps the axioms to \textit{true}) but not a model for the conjecture (maps the conjecture to 
+\textit{false}).
+
+The TPTP World~\cite{Sut17,Sut24} is the well established infrastructure that supports research, 
+development, and deployment of ATP systems.\footnote{%
+\href{https://www.tptp.org}{\tt www.tptp.org}}
+Various parts of the TPTP World have been deployed in a range of applications, in both academia 
+and industry.
+The TPTP language~\cite{Sut23-IGPL} is one of the keys to the success of the TPTP World.
+work, \emph{interpretations}~\cite{SS+06,Sut08-KEAPPA}.
+This document provides examples of the TPTP format for interpretations, as a companion document
+to the paper that describes the format~\cite{SHB26}.
+
+%--------------------------------------------------------------------------------------------------
+% Not needed for CEUR 
+% \bibliographystyle{plain}
+\bibliography{Bibliography.bib}
+%--------------------------------------------------------------------------------------------------
+\appendix 
+\newpage
+\section{FOF}
+\label{FOF}
+
+\subsection{FOF Problem with a Finite Countermodel
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Finite.p}{Online})
+}
+\label{FOF_Finite.p}
+\begin{small}
+\verbatiminput{Examples/FOF_Finite.p}
+\end{small}
+
+\newpage
+\subsection{FOF Finite Model for \ref{FOF_Finite.p}, Coarse Grained
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Finite.s}{Online})
+}
+\label{FOF_Finite.s}
+\begin{small}
+\verbatiminput{Examples/FOF_Finite.s}
+\end{small}
+
+\newpage
+\subsection{FOF Verification Problem for \ref{FOF_Finite.p} and \ref{FOF_Finite.s}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Finite.s.p}{Online})
+}
+\label{FOF_Finite.s.p}
+\begin{small}
+\verbatiminput{Examples/FOF_Finite.s.p}
+\end{small}
+
+\newpage
+\subsection{FOF Finite Model for \ref{FOF_Finite.p}, Medium Grained
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Finite_Medium.s}{Online})
+}
+\label{FOF_Finite_Medium.s}
+\begin{small}
+\verbatiminput{Examples/FOF_Finite_Medium.s}
+\end{small}
+
+\newpage
+\subsection{FOF Finite Model for \ref{FOF_Finite.p}, Fine Grained
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Finite_Fine.s}{Online})
+}
+\label{FOF_Finite_Fine.s}
+\begin{small}
+\verbatiminput{Examples/FOF_Finite_Fine.s}
+\end{small}
+
+\newpage
+\subsection{FOF Formula Model for \ref{FOF_Finite.p}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Formulae.s}{Online})
+}
+\label{FOF_Formulae.s}
+\begin{small}
+\verbatiminput{Examples/FOF_Formulae.s}
+\end{small}
+
+\newpage
+\subsection{FOF Saturation for \ref{FOF_Finite.p}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Saturation.s}{Online})
+}
+\label{FOF_Saturation.s}
+\begin{small}
+\verbatiminput{Examples/FOF_Saturation.s}
+\end{small}
+
+\newpage
+\subsection{FOF Verification Problem for \ref{FOF_Finite.p} and \ref{FOF_Formulae.s}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Formulae.s.p}{Online})
+}
+\label{FOF_Formulae.s.p}
+\begin{small}
+\verbatiminput{Examples/FOF_Formulae.s.p}
+\end{small}
+
+\newpage
+\subsection{FOF Verification Problem for \ref{FOF_Finite.p} and \ref{FOF_Saturation.s}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Saturation.s.p}{Online})
+}
+\label{FOF_Saturation.s.p}
+\begin{small}
+\verbatiminput{Examples/FOF_Saturation.s.p}
+\end{small}
+
+%--------------------------------------------------------------------------------------------------
+\newpage
+\section{TF0, Finite Interpretations}
+\label{TF0Finite}
+
+\subsection{TF0 Problem with a Finite Countermodel
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite.p}{Online})
+}
+\label{TFF_Finite.p}
+\begin{small}
+\verbatiminput{Examples/TFF_Finite.p}
+\end{small}
+
+\newpage
+\subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Reusing Problem Types
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite.s}{Online})
+}
+\label{TFF_Finite.s}
+\begin{small}
+\verbatiminput{Examples/TFF_Finite.s}
+\end{small}
+
+\newpage
+\subsection{TF0 Verification Problem for \ref{TFF_Finite.p} and \ref{TFF_Finite.s}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite.s.p}{Online})
+}
+\label{TFF_Finite.s.p}
+\begin{small}
+\verbatiminput{Examples/TFF_Finite.s.p}
+\end{small}
+
+\newpage
+\subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Separate Domain Types
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_SeparateDomains.s}{Online})
+}
+\label{TFF_Finite_SeparateDomains.s}
+\begin{small}
+\verbatiminput{Examples/TFF_Finite_SeparateDomains.s}
+\end{small}
+
+\newpage
+\subsection{TF0 Verification Problem for \ref{TFF_Finite.p} and \ref{TFF_Finite_SeparateDomains.s}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_SeparateDomains.s.p}{Online})
+}
+\label{TFF_Finite_SeparateDomains.s.p}
+\begin{small}
+\verbatiminput{Examples/TFF_Finite_SeparateDomains.s.p}
+\end{small}
+
+\newpage
+\subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Medium Grained
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_Medium.s}{Online})
+}
+\label{TFF_Finite_Medium.s}
+\begin{small}
+\verbatiminput{Examples/TFF_Finite_Medium.s}
+\end{small}
+
+\newpage
+\subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Fine Grained
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_Fine.s}{Online})
+}
+\label{TFF_Finite_Fine.s}
+\begin{small}
+\verbatiminput{Examples/TFF_Finite_Fine.s}
+\end{small}
+
+\newpage
+\subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Compacted
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_Compact.s}{Online})
+}
+\label{TFF_Finite_Compact.s}
+\begin{small}
+\verbatiminput{Examples/TFF_Finite_Compact.s}
+\end{small}
+
+%--------------------------------------------------------------------------------------------------
+\newpage
+\section{TF0, Infinite Interpretations}
+\label{TF0Infinite}
+
+\subsection{TF0 Axioms with an Infinite Model
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Infinite.p}{Online})
+}
+\label{TFF_Infinite.p}
+\begin{small}
+\verbatiminput{Examples/TFF_Infinite.p}
+\end{small}
+
+\newpage
+\subsection{TF0 Infinite Model for \ref{TFF_Infinite.p}, Term Domain
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Peano.s}{Online})
+}
+\label{TFF_Peano.s}
+\begin{small}
+\verbatiminput{Examples/TFF_Peano.s}
+\end{small}
+
+\newpage
+\subsection{TF0 Infinite Model for \ref{TFF_Infinite.p}, Integer Domain
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Integer.s}{Online})
+}
+\label{TFF_Integer.s}
+\begin{small}
+\verbatiminput{Examples/TFF_Integer.s}
+\end{small}
+
+\newpage
+\subsection{TF0 Verification Problem for \ref{TFF_Infinite.p} and \ref{TFF_Peano.s}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Peano.s.p}{Online})
+}
+\label{TFF_Peano.s.p}
+\begin{small}
+\verbatiminput{Examples/TFF_Peano.s.p}
+\end{small}
+
+\newpage
+\subsection{TF0 Verification Problem for \ref{TFF_Infinite.p} and \ref{TFF_Integer.s}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Integer.s.p}{Online})
+}
+\label{TFF_Integer.s.p}
+\begin{small}
+\verbatiminput{Examples/TFF_Integer.s.p}
+\end{small}
+
+%--------------------------------------------------------------------------------------------------
+\newpage
+\section{TH0, Finite Interpretations}
+\label{TH0Finite}
+
+\subsection{TH0 Problem with a Finite Countermodel
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/THF_Finite.p}{Online})
+}
+\label{THF_Finite.p}
+\begin{small}
+\verbatiminput{Examples/THF_Finite.p}
+\end{small}
+
+\newpage
+\subsection{TH0 Finite Model for \ref{THF_Finite.p}, Coarse Grained
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/THF_Finite.s}{Online})
+}
+\label{THF_Finite.s}
+\begin{small}
+\verbatiminput{Examples/THF_Finite.s}
+\end{small}
+
+\newpage
+\subsection{TH0 Verification Problem for \ref{THF_Finite.p} and \ref{THF_Finite.s}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/THF_Finite.s.p}{Online})
+}
+\label{THF_Finite.s.p}
+\begin{small}
+\verbatiminput{Examples/THF_Finite.s.p}
+\end{small}
+
+\newpage
+\subsection{TH0 Finite Model for \ref{THF_Finite.p}, Mixed Grained
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/THF_Finite_Medium.s}{Online})
+}
+\label{THF_Finite_Medium.s}
+\begin{small}
+\verbatiminput{Examples/THF_Finite_Medium.s}
+\end{small}
+
+%--------------------------------------------------------------------------------------------------
+\newpage
+\section{NXF, Finite Worlds with Finite Interpretations}
+\label{NXF}
+
+\subsection{NXF Problem with Global Axioms, \\ with a Finite-Finite Countermodel
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global.p}{Online})
+}
+\label{NXF_Finite-Finite-Global.p}
+\begin{small}
+\verbatiminput{Examples/NXF_Finite-Finite-Global.p}
+\end{small}
+
+\newpage
+\subsection{TXF Finite-Finite Model for \ref{NXF_Finite-Finite-Global.p}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global.s}{Online})
+}
+\label{NXF_Finite-Finite-Global.s}
+\begin{small}
+\verbatiminput{Examples/NXF_Finite-Finite-Global.s}
+\end{small}
+
+\newpage
+\subsection{NXF Verification Problem for \ref{NXF_Finite-Finite-Global.p} and 
+\ref{NXF_Finite-Finite-Global.s}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global.s.p}{Online})
+}
+\label{NXF_Finite-Finite-Global.s.p}
+\begin{small}
+\verbatiminput{Examples/NXF_Finite-Finite-Global.s.p}
+\end{small}
+
+% \newpage
+% \subsection{TXF Verification Problem for \ref{NXF_Finite-Finite-Global.p} and 
+% \ref{NXF_Finite-Finite-Global.s}
+% % (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global.s.TXF.p}{Online})}
+% \label{NXF_Finite-Finite-Global.s.TXF.p}
+% \begin{small}
+% \verbatiminput{Examples/NXF_Finite-Finite-Global.s.TXF.p}
+% \end{small}
+
+\newpage
+\subsection{NXF Problem with Global and Local Axioms, \\
+            with a Finite-Finite Countermodel
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Local.p}{Online})
+}
+\label{NXF_Finite-Finite-Local.p}
+\begin{small}
+\verbatiminput{Examples/NXF_Finite-Finite-Local.p}
+\end{small}
+
+\newpage
+\subsection{TXF Finite-Finite Model for \ref{NXF_Finite-Finite-Local.p}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Local.s}{Online})
+}
+\label{NXF_Finite-Finite-Local.s}
+\begin{small}
+\verbatiminput{Examples/NXF_Finite-Finite-Local.s}
+\end{small}
+
+\newpage
+\subsection{NXF Verification Problem for \ref{NXF_Finite-Finite-Local.p} and
+\ref{NXF_Finite-Finite-Local.s}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Local.s.p}{Online})
+}
+\label{NXF_Finite-Finite-Local.s.p}
+\begin{small}
+\verbatiminput{Examples/NXF_Finite-Finite-Local.s.p}
+\end{small}
+
+% \newpage
+% \subsection{TXF Verification Problem for \ref{NXF_Finite-Finite-Local.p} and
+% \ref{NXF_Finite-Finite-Local.s}
+% % (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Local.s.TXF.p}{Online})}
+% \label{NXF_Finite-Finite-Local.s.TXF.p}
+% \begin{small}
+% \verbatiminput{Examples/NXF_Finite-Finite-Local.s.TXF.p}
+% \end{small}
+
+\newpage
+\subsection{TXF Finite-Finite Model for \ref{NXF_Finite-Finite-Global.p}, Medium Grained \\
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global_Medium.s}{Online})
+}
+\label{NXF_Finite-Finite-Global_Medium.s}
+\begin{small}
+\verbatiminput{Examples/NXF_Finite-Finite-Global_Medium.s}
+\end{small}
+
+\newpage
+\subsection{TXF Finite-Finite Model for \ref{NXF_Finite-Finite-Global.p}, Fine Grained
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global_Fine.s}{Online})
+}
+\label{NXF_Finite-Finite-Global_Fine.s}
+\begin{small}
+\verbatiminput{Examples/NXF_Finite-Finite-Global_Fine.s}
+\end{small}
+
+\newpage
+\subsection{TXF Finite-Finite Model for \ref{NXF_Finite-Finite-Global.p}, Compacted
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global_Compact.s}{Online})
+}
+\label{NXF_Finite-Finite-Global_Compact.s}
+\begin{small}
+\verbatiminput{Examples/NXF_Finite-Finite-Global_Compact.s}
+\end{small}
+
+%--------------------------------------------------------------------------------------------------
+\end{document}
+%--------------------------------------------------------------------------------------------------
