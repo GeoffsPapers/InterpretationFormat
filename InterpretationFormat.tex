@@ -11,10 +11,10 @@
 \usepackage{verbatim}
 \usepackage{amssymb}
 \usepackage{graphicx}
-\usepackage{upquote}
-\usepackage{fontawesome5}
-\usepackage{xr-hyper}
+\usepackage{upquote}  %----For plain quotes in verbatim
 \usepackage{hyperref}
+\usepackage{xr-hyper}
+\usepackage{fontawesome5}  %----For the nice file icon for examples
 \externaldocument{InterpretationExamples}
 \renewcommand\UrlFont{\color{blue}\rmfamily}
 
@@ -190,7 +190,7 @@ typed higher-order form (THF)~\cite{SB10,KSR16},
 dependently typed higher-order form (DHF)~\cite{RK+25},
 and non-classical forms (NXF, NHF)~\cite{SF+22}
 have been added.
-The TPTP languages are used for writing ATP problems, derivations, and, most relevant to this 
+The TPTP language is used for writing ATP problems, derivations, and, most relevant to this 
 work, \emph{interpretations}~\cite{SS+06,Sut08-KEAPPA}.
 
 A TPTP format for interpretations with finite domains has previously been defined~\cite{SS+06},

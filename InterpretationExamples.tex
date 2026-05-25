@@ -12,7 +12,6 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{upquote}
-\usepackage{xr-hyper}
 \usepackage{hyperref}
 \renewcommand\UrlFont{\color{blue}\rmfamily}
 
@@ -99,11 +98,6 @@ The axioms and the conjecture to be proved (and hence become a theorem) are writ
 appropriately expressive logic, and the proofs are often similarly written in logic~\cite{SS+06}.
 The converse task of disproving conjectures, proving that a conjecture is not a theorem of the 
 axioms, is another facet of interest, e.g.,~\cite{Win82,LM87,McC98,Zha05,BN10-ITP,RKK17,EPS24}.
-This process depends on finding a \emph{countermodel} for the conjecture, i.e., finding an 
-\emph{interpretation} (a structure that assigns meaning to the symbols of the language of the
-formulae, and consequently maps formulae to truth values) that is a \emph{model} of the axioms 
-(maps the axioms to \textit{true}) but not a model for the conjecture (maps the conjecture to 
-\textit{false}).
 
 The TPTP World~\cite{Sut17,Sut24} is the well established infrastructure that supports research, 
 development, and deployment of ATP systems.\footnote{%
@@ -111,6 +105,8 @@ development, and deployment of ATP systems.\footnote{%
 Various parts of the TPTP World have been deployed in a range of applications, in both academia 
 and industry.
 The TPTP language~\cite{Sut23-IGPL} is one of the keys to the success of the TPTP World.
+The TPTP language is used for writing ATP problems, derivations, and, most relevant to this 
+work, \emph{interpretations}~\cite{SS+06,Sut08-KEAPPA}.
 This document provides examples of interpretations written in the TPTP format for interpretations, 
 as a companion document to the paper that describes the format~\cite{SHB26}.
 
