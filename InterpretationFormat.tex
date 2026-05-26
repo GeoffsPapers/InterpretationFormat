@@ -573,6 +573,8 @@ A simple Tarskian interpretation-formula is a conjunction of components
 The TPTP format for Tarskian interpretation-formulae requires no changes to the TPTP
 language syntax (other than the addition of the \smalltt{interpretation} role that is used for
 interpretation-formulae).
+At this stage only monomorphic types are supported, but the syntax is flexible enough to extend
+the format to polymorphic types.
 
 Function and predicate symbols are interpreted by applying them directly to domain elements 
 (\emph{{\`a} la}~\cite[\S5.3.4]{Gal15}), rather than using the presentation of interpretations that 
@@ -738,8 +740,14 @@ The mappings of higher-order function symbols are lambda abstractions,
 e.g.,~[\example{}:~\ref{THF_Finite.s}]:\\
 \hspace*{0.5cm}\smalltt{mix = ( \textasciicircum~[F: syrup > beverage] : ( d2beverage @ d\_coffee ) )}\\
 \hspace*{0.5cm}\smalltt{heated\_mix = ( \textasciicircum~[F: syrup > beverage] : ( d2beverage @ d\_coffee ) )}\\
-The lambda abstractions are needed because these symbols take a function as an argument, and the 
-model must specify their behaviour for every such function.
+The lambda abstractions are necessary because the interpretation of symbols that take a function 
+argument must specify the interpretation for every such function. 
+This differs from ground domain elements that can simply be assigned a name. 
+A function is entirely characterised by its values on all inputs, so specifying a function-type 
+element necessarily involves defining its behaviour, which is expressed as a lambda term. 
+For infinite base types such as \smalltt{\$int}, the function space cannot be enumerated, 
+providing an additional reason for using lambda abstractions, but the use of lambda abstractions 
+is required regardless of cardinality.
 
 The TFF and THF interpretation-formulae are preceded by the necessary type declarations:
 \begin{packed_itemize}
