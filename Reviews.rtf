@@ -1,0 +1,193 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww16860\viewh16000\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs28 \cf0 * Title: The TPTP Format for Interpretations\
+\
+\
+Review #1A\
+===========================================================================\
+\
+Overall merit\
+-------------\
+4. Accept\
+\
+Reviewer expertise\
+------------------\
+3. Knowledgeable\
+\
+Paper summary\
+-------------\
+\strike \strikec0 The paper describes the TPTP format suitable for expressing interpretations, i.e. countermodels of theorems in the theorem proving context.\
+- Section 1 starts with some applications of such interpretations mentioning verification, consistency checking, etc. as prominent areas of use,and discusses its relation to the TPTP world.\
+- Section 2 gives a survey over the interpretation landscape, i.e. what they are needed for, what kinds are there, what is actually supported by ATP systems and TPTP, and what is expected of these interpretations. I\'92m not a model theoretician, so I cannot tell if anything is missing here, but from what I know it looks like a nice summary of the main directions. I also understand that this contains what TPTP aims to support.\
+- Section 3 and 4 gives a more thorough account on the (expected) features of Tarskian, resp. Kripke models in detail while also providing a case study with many examples (fully outlined in the appendices).\
+- Section 5 concludes with some remarks on adoption of the format and a somewhat ad-hoc account on the authors beliefs on the \'93usefulness\'94 of the presented interpretations.\
+\
+Overall, I think the paper is well-written and has enough practical aspects for ATPs to be considered for acceptance at PAAR.\
+However, there are a few questions/suggestions regarding the presentation that IMO could improve the paper, see comments.\strike0\striked0 \
+\
+Comments for authors\
+--------------------\
+\strike \strikec0 - One general weakness in the presentation is that the paper is full of bullet point lists, and the structure gets hard to follow in some places. Would it be possible to use numbers or maybe even unique identifiers for these? Especially, since some of them describe the rules of the format, and they shouldn\'92t be washed together for the reader.\strike0\striked0 \
+- Section 2.2, page 3: given the recent developments in higher-order logic in TPTP and ATPs, would it be possible to reference Henkin models?\
+\strike \strikec0 - Section 2.2, page 4: if C and Ax in the MEX definition are from Figure 1, can you refer to Figure 1 here?\strike0\striked0 \
+- Section 2.3:\
+    \strike \strikec0 - Page 4: It could be emphasized that this subsection already discusses the contributions of the paper.\strike0\striked0 \
+    \strike \strikec0 - Page 4: \'93The models of the interpretation-formulae are conservative extensions of a subset of the models of the satisfiable formulae.\'94 - why just subset? Is it by design?\strike0\striked0 \
+\strike \strikec0     - Page 5: \'93This approach is taken internally in Vampire.\'94 - while doing finite model building? This could be added to make it clearer.\strike0\striked0 \
+    \strike \strikec0 - Page 5, footnote 4: I think readers would be interested in exactly why these people believe one or the other in more detail.\strike0\striked0 \
+\strike \strikec0 - Section 2.4, page 5: In the first list, item 2 (well-formedness checking) should be first in my opinion.\
+- Section 3 and 4 in general: it is not clear whether these sections describe only possibilities, guidelines, or actual rules to be added to the TPTP syntax for the interpretation formats. I think this could be clarified at the beginning of these sections.\strike0\striked0 \
+- \strike \strikec0 Section 3.1, page 6:\
+    - Is there a problem with the model if the problem already contains double-quoted elements?\strike0\striked0 \
+    \strike \strikec0 - There seems to be a font size decrease in this subsection, causing all subsequent sections to have a decreased font size too, is this intentional?\strike0\striked0 \
+\strike \strikec0 - Section 3.3:\
+    - Page 7: Can you also handle polymorphic types with a finite domain of types?\
+    - Page 8: If I understand correctly, the lambda abstractions are needed (and do not follow the conventions so far) because there are always infinitely many functions. Is this correct?\strike0\striked0 \
+\strike \strikec0 - Section 3.4, page 9: in the predicate mapping example for Appendix C.3, it should be $less instead of peano_less\strike0\striked0 \
+\strike \strikec0 - Section 3.5, page 9:\strike0\striked0 \
+    \strike \strikec0 - I only realized in this section that the TPTP syntax was extended with a new \'93interpretation\'94 role. Although this is implicitly mentioned at the beginning of Section 2.3, it would be good to state it explicitly somewhere (beginning of Section 3?). Could you explain where this new role can be used, for example apparently not in model verification?\strike0\striked0 \
+    -\strike \strikec0  Please put \'93\'85).\'94 at the end of this section\'92s last example, otherwise it looks like something is missing there. Same for the examples in Section 4.2.\
+- Section 4, page 11: \'93A defined constant $local_world of type $world > $o\'94 - This sentence and later sections suggests that $local_world should be of type $world.\strike0\striked0 \
+\
+Minor comments:\
+- \strike \strikec0 In general, I don\'92t like the listings/examples preceded by \'93\'85\'94, a colon would be better in most places.\
+- Page 1: \'93and hence become a theorem\'94 sounds off, maybe \'93becoming\'94?\
+- Page 1: the sentence starting with \'93Over the years\'94 does not seem to have a verb, e.g. \'93has been added\'94 could work.\
+- Page 2: \'93as a model finding problems\'94 -> \'93as model finding problems\'94\strike0\striked0 \
+\strike \strikec0 - Page 3: \'93but a partial interpretation can be used [\'85] but\'94, I think \'93while a partial\'85\'94 would be better to avoid repeating \'93but\'94.\strike0\striked0 \
+\strike \strikec0 - Section 2.2, page 4: the sentence \'93Formulae can be evaluated [\'85] \'85\'94 does not connect semantically with the list after it, maybe some words are missing?\strike0\striked0 \
+\strike \strikec0 - Last sentence on page 4 lacks a full stop.\
+- Section 5: \'93very many\'94 -> \'93several\'94, \'93numerous\'94?\strike0\striked0 \
+\
+\
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+\
+\
+Review #1B\
+===========================================================================\
+\
+Overall merit\
+-------------\
+3. Weak accept\
+\
+Reviewer expertise\
+------------------\
+2. Some familiarity\
+\
+Paper summary\
+-------------\
+\strike \strikec0 The paper presents a format for expressing Interpretations in a wide range of different use cases. The paper motivates the need for such universal format, its requirements, and review its application with Tarskian, Herbrand and Kripke interpretations. The paper has a huge appendix (more than 40 pages!) heavily referred to in the paper, which makes it mandatory when reading the submission.\strike0\striked0 \
+\
+Comments for authors\
+--------------------\
+\strike \strikec0 The exercice of presenting a format for representing formulas or interpretations is not easy. The authors choose to provide the reader with a variety of examples using a huge appendix, and to refer to it when presenting examples in the paper.\
+\
+As a reader, I am not fan of that choice: while the reference is sometimes just a link to see the whole interpretation, there are other cases where looking at the reference is mandatory to understand the example: this makes the submission not self contained without the appendix.\strike0\striked0 \
+\
+\strike \strikec0 The CFP mentions that the submission should have up to 15 pages. It is not clear to the reviewer if the paper could be published with its appendix in the proceedings. If it is not the case, then the paper cannot be accepted in that form.\strike0\striked0 \
+\
+\strike \strikec0 Overall, the paper does a good job in explaining the rationale of the format in diverse contexts.\
+The main issue is that a prior knowledge of the TPTP format is expected. It could be quickly reminded between section 2 and section 3 to make the paper more self contained.\strike0\striked0 \
+\
+\strike \strikec0 Here are a few remarks to improve the submission:\
+\strike0\striked0 \
+\strike \strikec0 - Page 5: "If a formula can be disproved from the HI-formulae then it is false in all the Herbrand\
+interpretations determined by the HI-formulae."\
+\
+Unless I do not understand the meaning of proving/disproving in that particular context, I guess that a formula is disproved if it is false in at least one of the Herbrand interpretation?\strike0\striked0 \
+\
+\strike \strikec0 - Page 11: "A defined predicate $in_world of type ($world * $o) > $o to specify the interpretations in the worlds."\
+\
+$o is not defined in the paper, but looks like a Boolean type according to the examples, and confirmed by TPTP documentation.\
+\
+However, in the example later, we find "$in_world(w1,the Tarskian interpretation)". Is $o polymorphic to represent in general an interpretation, not just a Boolean value?\strike0\striked0 \
+\
+\strike \strikec0 - Page 11: typo\
+subfomulae -> subformulae\strike0\striked0 \
+\
+\strike \strikec0 - page 11, the local_world constant is defined like a predicate ($world > $o). It should probably be typed $world.\strike0\striked0 \
+\
+\
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+\
+\
+Review #1C\
+===========================================================================\
+\
+Overall merit\
+-------------\
+4. Accept\
+\
+Reviewer expertise\
+------------------\
+3. Knowledgeable\
+\
+Paper summary\
+-------------\
+\strike \strikec0 The paper describes the TPTP format for representing interpretations / models.\
+It provides a good motivation why interpretations are actually of interest,\
+what forms they might take, what tools already produce some form of model,\
+and what we can do with models. This is then followed by a presentation of\
+the TPTP format for various kinds of interpretations, finite domain, infinite\
+domain, typed, Kripke. A tool for the visualization of interpretations is also\
+briefly introduced.\strike0\striked0 \
+\strike \strikec0 \
+My main concern is the length of the paper. It's 17 pages plus 44 pages of\
+appendices. The first 17 pages also frequently referring to particular\
+sections in the appendices. So, it doesn't seem possible to just publish the\
+first 17 pages without the appendices.\strike0\striked0 \
+\
+Comments for authors\
+--------------------\
+* Page 3:\
+  > A Tarskian interpretation [47] consists of a non-empty domain of distinct\
+  > elements (not the Herbrand Universe \'96 see Herbrand interpretations below)\
+  > for each type used in the formulae (just one domain for untyped logic),\
+  > mappings for function symbols from tuples of domain elements to the domain,\
+  > and mappings for predicate symbols from tuples of domain elements to\
+  > \{true, false\} [48,49]. An overview of some ways of building and representing\
+  > Tarskian interpretations is provided by [45], and [50] provides a comprehensive\
+  > list of approaches. A complete interpretation can be used to evaluate\
+  > all formulae that can be written in the language of the problem formulae, but\
+  > a partial interpretation can be used to evaluate the problem formulae but not\
+  > necessarily all possible formulae [51].\
+  The notion of a "complete interpretation" does not occur in [47] nor in [50].\
+  The phrase "complete model" occurs in [51] but is not defined. A "partial model"\
+  is defined in [51] as a satisfiable set of ground literals (so probably not\
+  what is meant here). The phrase "partial interpretation" does not occur in\
+  [47,50,51]. I would suggest to formally define what you mean by these notions.\
+*\strike \strikec0  Page 5:\
+  "I believe that this verification technique works, ..."\
+  The paper has four authors. I would suggest it's either "We believe" or\
+  "\{Name\} believes".\strike0\striked0 \
+*\strike \strikec0  Page 6:\
+  > The predicate mappings are atoms, e.g., in Appendix A.2 ...\
+  >  created_equal("john","gotA")\
+  > Note that for a complete interpretation all function and predicate\
+  > mappings need to be provided\
+  Page 7:\
+  > The predicate mappings are atoms, e.g., in Appendix B.2 ...\
+  > ~ owns(d_jon,d_nermal)"\
+  ~owns(d_jon,d_nermal) is a literal. This seems to be a systematic mistake.\strike0\striked0 \
+\strike \strikec0 * Page 9:\
+  > Appendices A.4 and B.6 show examples of splitting the interpretation-formulae\
+  > in Appendices A.2 and B.2 respectively, which separate the domain\
+  > specifications from the symbol mappings, e.g., in Appendix B.2\
+  > the interpretation-formula ...\
+  >   tff(garfield_domains,interpretation-domains\
+  > contains the information about the two domains, and\
+  > the interpretation-formula ...\
+  >   tff(garfield_mappings,interpretation-mappings\
+  > contains the symbol mappings.\
+  tff(garfield_domains,interpretation-domains and\
+  tff(garfield_mappings,interpretation-mappings are incomplete formulae.\
+  I would suggest to write tff(garfield_mappings,interpretation-mappings, ...)\
+  or tff(garfield_mappings,interpretation-mappings, F).\
+  If the second alternative is chosen then it would be good to characterise\
+  what F is.\strike0\striked0 \
+}
