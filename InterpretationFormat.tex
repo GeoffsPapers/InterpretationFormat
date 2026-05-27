@@ -293,11 +293,14 @@ A \emph{Tarskian interpretation}~\cite{TV56} consists of a non-empty domain of d
 formulae (just one domain for untyped logic), mappings for function symbols from tuples of 
 domain elements to the domain, and mappings for predicate symbols from tuples of domain elements 
 to $\{true,false\}$~\cite{Hun96,Gal15}.
+For higher-order logic only Henkin interpretations~\cite{Hen50} are considered, with functions 
+interpreted as lambda terms.
 An overview of some ways of building and representing Tarskian interpretations is provided 
 by~\cite{CLP04}, and~\cite{Pel03-EQMC} provides a comprehensive list of approaches.
-A \emph{complete} interpretation can be used to evaluate all formulae that can be written in the 
-language of the problem formulae, while a \emph{partial} interpretation can be used to evaluate the
-problem formulae but not necessarily all possible formulae~\cite{BSW23}.
+% A \emph{complete} interpretation can be used to evaluate all formulae that can be written in the 
+% language of the problem formulae, while a \emph{partial} interpretation can be used to evaluate the
+% problem formulae but not necessarily all possible formulae~\cite{BSW23}.
+
 Two types of Tarskian interpretations are clear (and more might exist):
 \begin{packed_enumerate}
 \item \emph{Finite} Tarskian interpretations have only finite domains.
@@ -740,7 +743,7 @@ The mappings of higher-order function symbols are lambda abstractions,
 e.g.,~[\example{}:~\ref{THF_Finite.s}]:\\
 \hspace*{0.5cm}\smalltt{mix = ( \textasciicircum~[F: syrup > beverage] : ( d2beverage @ d\_coffee ) )}\\
 \hspace*{0.5cm}\smalltt{heated\_mix = ( \textasciicircum~[F: syrup > beverage] : ( d2beverage @ d\_coffee ) )}\\
-The lambda abstractions are necessary because the interpretation of symbols that take a function 
+The lambda abstractions are convenient because the interpretation of symbols that take a function 
 argument must specify the interpretation for every such function. 
 This differs from ground domain elements that can simply be assigned a name. 
 A function is entirely characterised by its values on all inputs, so specifying a function-type 
@@ -817,7 +820,8 @@ and [\example{}:~\ref{TFF_Integer.s}]:\\
 \hspace*{0.9cm}\smalltt{( is\_descendant(int2person(A),int2person(D))}\\
 \hspace*{0.5cm}\smalltt{<=> peano\_less(A,D) )}\\
 The interpretation of function and predicate symbols is not given for argument tuples
-with negative integers, i.e., this is an example of a partial interpretation.
+with negative integers.
+% , i.e., this is an example of a partial interpretation.
 
 The interpretation-formulae are preceded by the necessary type declarations:
 \begin{packed_itemize}
@@ -987,9 +991,9 @@ logic in use, e.g.,~it's usually not possible to see whether the interpretation 
 system K or modal system S5 -- in both cases the interpretation could interpret the accessibility 
 relation as an equivalence relation (this is required for S5 but it is also OK for K).
 
-[\example{}:~\ref{NXF_Finite-Finite-Global.s}, 
-\ref{NXF_Finite-Finite-Local.s}] illustrate the components of finite Kripke 
-interpretations in a single interpretation-formula, as explained in Sections~\ref{NewKripkeFiniteFinite}.
+[\example{}:~\ref{NXF_Finite-Finite-Global.s}, \ref{NXF_Finite-Finite-Local.s}] illustrate the 
+components of finite Kripke interpretations in a single interpretation-formula, as explained in 
+Sections~\ref{NewKripkeFiniteFinite}.
 [\example{}:~\ref{NXF_Finite-Finite-Global_Medium.s},
 \ref{NXF_Finite-Finite-Global_Fine.s}] illustrate Kripke interpretations split 
 over multiple interpretation-formulae, as explained in Section~\ref{NewKripkeSplitCompact}.
