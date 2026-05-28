@@ -1,21 +1,22 @@
 \documentclass{ceurart}
 % \documentclass{easychair}
 
-%----CEUR style
-%% One can fix some overfulls
-\sloppy
-
 %----My style
-% \usepackage{doc}
+\usepackage[T1]{fontenc}
 \usepackage{setspace}
 \usepackage{verbatim}
+\usepackage{upquote}  %----For plain quotes in verbatim
 \usepackage{amssymb}
 \usepackage{graphicx}
-\usepackage{upquote}  %----For plain quotes in verbatim
+\usepackage{color}
+\usepackage{setspace}
+\usepackage{multicol}
+\usepackage{array}
+\usepackage{enumitem}
 \usepackage{hyperref}
 \usepackage{xr}
-\usepackage{fontawesome5}  %----For the nice file icon for examples
 \externaldocument{InterpretationExamples}
+\usepackage{fontawesome5}  %----For the nice file icon for examples
 \renewcommand\UrlFont{\color{blue}\rmfamily}
 
 %----Making things more compact
@@ -50,6 +51,8 @@
 % \renewcommand{\topfraction}{0.9}
 % \renewcommand{\bottomfraction}{0.9}
 \setlength{\tabcolsep}{3pt}
+%% One can fix some overfulls
+\sloppy
 
 \newcommand{\todo}[1]{{\color{red}{{#1}}}}
 
@@ -64,12 +67,12 @@
 
 \author[1]{Geoff Sutcliffe}[%
 orcid=0000-0001-7116-9338,
-email=geoff@cs.miami.edu,
+email=geoff@cs.miami.edu
 ]
 \address[1]{University of Miami, USA}
 \author[2]{Alexander Steen}[%
 orcid=0000-0001-8781-9462,
-email=alexander.steen@uni-greifswald.de,
+email=alexander.steen@uni-greifswald.de
 ]
 \address[2]{University of Greifswald, Germany}
 \author[3]{Pascal Fontaine}[%
@@ -230,9 +233,9 @@ Section~\ref{Conclusion} concludes and discusses plans for future work.
 
 \paragraph{Note well:} 
 This paper is self-contained, but refers to examples of problems and their interpretations in 
-TPTP format that are in the companion paper~\cite{SS+26-Appendix}.
+TPTP format that are in the appendices of the extended version of this paper~\cite{SS+26-arXiv}.
 They are referenced with a \example{} icon.
-It is highly recommended that readers of this paper have~\cite{SS+26-Appendix} available.
+It is highly recommended that readers of this paper have~\cite{SS+26-arXiv} available.
 
 \paragraph{Declaration on Generative AI:}
 We didn't use any.
@@ -394,11 +397,11 @@ As a brief reminder of the TPTP syntax, problems and solutions are built from
 {\em role}{\tt ,}
 {\em formula}{\tt ,}
 {\em source}{\tt ,}
-{\em useful\_info}{\tt )}\\
-The {\em language}s supported are {\smalltt{cnf}} (clause normal form), {\smalltt{fof}}
-(first-order form), {\smalltt{tff}} (typed first-order form), and {\smalltt{thf}}
+{\em useful\_info}{\tt )} \\
+The {\em language}s supported are \smalltt{cnf} (clause normal form), \smalltt{fof}
+(first-order form), \smalltt{tff} (typed first-order form), and \smalltt{thf}
 (typed higher-order form).
-The {\em role}, e.g., \smalltt{axiom}, \smalltt{conjecture}, \smalltt{interpretation} defines the 
+The {\em role}, e.g., \smalltt{axiom}, \smalltt{lemma}, \smalltt{conjecture}, defines the 
 use of the formula.
 In a {\em formula}, terms and atoms follow Prolog conventions -- functions and predicates start 
 with a lowercase letter or are {\tt '}single quoted{\tt '}, and variables start with an uppercase 
@@ -408,9 +411,9 @@ truth constants \smalltt{\$true}, \smalltt{\$false}, the individual and boolean
 types \smalltt{\$i}, \smalltt{\$o}, or are composed of 
 non-alphabetic characters, e.g., integer/rational/real numbers such as 27, 43/92, -99.66.
 The logical connectives in the TPTP language are
-{\tt !}, {\tt ?}, {\tt {\raisebox{0.4ex}{\texttildelow}}}, {\tt |}, {\tt \&}, {\tt =>}, {\tt <=},
-{\tt <=>}, and {\tt <{\raisebox{0.4ex}{\texttildelow}}>},
-for the mathematical connectives
+{\tt !>}, {\tt ?*}, {\tt @+}, {\tt @-}, {\tt !}, {\tt ?}, {\tt {\tildenot}}, {\tt |}, {\tt \&}, 
+{\tt =>}, {\tt <=}, {\tt <=>}, and {\tt <{\tildenot}>}, for the mathematical connectives
+$\Pi$, $\Sigma$, choice (indefinite description), definite description,
 $\forall$, $\exists$, $\neg$, $\vee$, $\wedge$, $\Rightarrow$, $\Leftarrow$, $\Leftrightarrow$, 
 and $\oplus$ respectively.
 Equality and inequality are expressed as the infix operators {\tt =} and {\tt !=}.

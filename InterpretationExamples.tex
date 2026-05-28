@@ -1,21 +1,24 @@
-\documentclass{ceurart}
-% \documentclass{easychair}
-
-%----CEUR style
-%% One can fix some overfulls
-\sloppy
+\documentclass{easychair}
 
 %----My style
-% \usepackage{doc}
+\usepackage[T1]{fontenc}
 \usepackage{setspace}
 \usepackage{verbatim}
+\usepackage{upquote}  %----For plain quotes in verbatim
 \usepackage{amssymb}
-\usepackage{upquote}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{setspace}
+\usepackage{multicol}
+\usepackage{array}
+\usepackage{enumitem}
 \usepackage{hyperref}
+\usepackage{fontawesome5}  %----For the nice file icon for examples
 \renewcommand\UrlFont{\color{blue}\rmfamily}
 
 %----Making things more compact
 \newcommand{\smalltt}[1]{\small \texttt{#1}}
+\newcommand{\example}{{\scriptsize \faFile[regular]}}
 \newcommand{\tildenot}{\raisebox{0.4ex}{\texttildelow}}
 \newenvironment{packed_itemize}{
 \vspace*{-0.3em}
@@ -45,50 +48,63 @@
 % \renewcommand{\topfraction}{0.9}
 % \renewcommand{\bottomfraction}{0.9}
 \setlength{\tabcolsep}{3pt}
+%% One can fix some overfulls
+\sloppy
 
-%----CEUR style
+\newcommand{\todo}[1]{{\color{red}{{#1}}}}
+
+%----EasyChair style
+\title{The TPTP Format for Interpretations}
+
+\author{
+  Geoff Sutcliffe\inst{1}
+\and
+  Alexander Steen\inst{2}
+\and
+  Pascal Fontaine\inst{3}
+\and
+  Lydia Kondylidou\inst{4}
+}
+
+\institute{
+  University of Miami,
+  Miami, USA\\
+  \email{geoff@cs.miami.edu}
+\and
+  University of Greifswald,
+  Greifswald, Germany\\
+  \email{alexander.steen@uni-greifswald.de}
+\and
+  University of Li{\`e}ge,
+  Li{\`e}ge, Belgium\\
+  \email{Pascal.Fontaine@uliege.be}
+\and
+  Ludwig-Maximilians-Universit{\"a}t München
+  Munich, Germany\\
+  \email{Lydia.Kondylidou@tcs.ifi.lmu.de}
+}
+
+\authorrunning{Sutcliffe, Steen, Fontaine, Kondylidou}
+\titlerunning{TPTP World Interpretations}
+
 \begin{document}
-\copyrightyear{2026}
-\copyrightclause{Copyright for this paper by its authors.
-  Use permitted under Creative Commons License Attribution 4.0 International (CC BY 4.0).}
-\conference{The 10th Workshop on Practical Aspects of Automated Reasoning,
-  as part of the Federated Logic Conference (FLoC) 2026, Lisbon, Portugal, July 25, 2026}
-\title{Examples of the TPTP Format for Interpretations}
-
-\author[1]{Geoff Sutcliffe}[%
-orcid=0000-0001-7116-9338,
-email=geoff@cs.miami.edu,
-]
-\address[1]{University of Miami, USA}
-\author[2]{Alexander Steen}[%
-orcid=0000-0001-8781-9462,
-email=alexander.steen@uni-greifswald.de,
-]
-\address[2]{University of Greifswald, Germany}
-\author[3]{Pascal Fontaine}[%
-orcid=0000-0003-4700-6031,
-email=Pascal.Fontaine@uliege.be
-]
-\address[3]{Université de Liège, Belgium}
-\author[4]{Lydia Kondylidou}[%
-orcid=0009-0001-9875-2627,
-email=Lydia.Kondylidou@tcs.ifi.lmu.de
-]
-\address[4]{Ludwig-Maximilians-Universität, Germany}
-
-\begin{abstract}
-This document provides examples of the TPTP format for interpretations, as a companion document
-to the paper that describes the format.
-\end{abstract}
-\begin{keywords}
-  TPTP World \sep
-  Interpretations
-\end{keywords}
 
 \maketitle
 %--------------------------------------------------------------------------------------------------
+%----EasyChair style
+\begin{abstract}
+This paper describes the TPTP format for representing interpretations.
+It provides a background survey that helped ensure that the representation format is adequate
+for different types of interpretations: Tarskian, Herbrand, and Kripke interpretations.
+The needs of applications that use models are considered.
+The syntax and semantics of the format are expounded in detail, with multiple examples.
+Verification of models is discussed.
+Some tools that support processing the format are noted.
+The properties of interpretations represented in the format are discussed.
+\end{abstract}
+%--------------------------------------------------------------------------------------------------
 \section{Introduction}
-\label{examples:Introductio}
+\label{Introduction}
 
 Historically, Automated Theorem Proving (ATP) has, as the name suggests, focused largely on the
 task of proving theorems from axioms -- the derivation of conclusions that follow inevitably 
@@ -97,34 +113,1133 @@ The axioms and the conjecture to be proved (and hence become a theorem) are writ
 appropriately expressive logic, and the proofs are often similarly written in logic~\cite{SS+06}.
 The converse task of disproving conjectures, proving that a conjecture is not a theorem of the 
 axioms, is another facet of interest, e.g.,~\cite{Win82,LM87,McC98,Zha05,BN10-ITP,RKK17,EPS24}.
+This process depends on finding a \emph{countermodel} for the conjecture, i.e., finding an 
+\emph{interpretation} (a structure that assigns meaning to the symbols of the language of the
+formulae, and consequently maps formulae to truth values) that is a \emph{model} of the axioms 
+(maps the axioms to \textit{true}) but not a model for the conjecture (maps the conjecture to 
+\textit{false}).
+A salient application area that uses this form of ATP is verification~\cite{DKW08}, where a 
+countermodel is used to pinpoint the reason why a proof obligation fails, and correspondingly 
+points to the location of the fault in the system being verified.
+Other applications of model finding include checking the consistency of an axiomatization 
+\cite{SS+17}, operations research~\cite{Hoo93}, commonsense reasoning~\cite{KR94}, and solving 
+model finding problems~\cite{Win82}.
 
 The TPTP World~\cite{Sut17,Sut24} is the well established infrastructure that supports research, 
-development, and deployment of ATP systems.\footnote{%
+development, and deployment of 
+% Automated Theorem Proving 
+ATP systems.\footnote{%
 \href{https://www.tptp.org}{\tt www.tptp.org}}
 Various parts of the TPTP World have been deployed in a range of applications, in both academia 
 and industry.
+The TPTP World includes the TPTP problem library~\cite{Sut09}, 
+the TSTP solution library~\cite{Sut10}, 
+tools and services for processing ATP problems and solutions~\cite{Sut10}, 
+and it supports the CADE ATP System Competition (CASC)~\cite{Sut16}.
 The TPTP language~\cite{Sut23-IGPL} is one of the keys to the success of the TPTP World.
+Originally the TPTP language supported only first-order clause normal form (CNF)~\cite{SS98-JAR}.
+Over the years full first-order form (FOF)~\cite{Sut09}, 
+typed first-order form (TFF)~\cite{SS+12,BP13-TFF1}, 
+typed extended first-order form (TXF)~\cite{SK18}, 
+typed higher-order form (THF)~\cite{SB10,KSR16}, 
+dependently typed higher-order form (DHF)~\cite{RK+25},
+and non-classical forms (NXF, NHF)~\cite{SF+22}
+have been added.
 The TPTP language is used for writing ATP problems, derivations, and, most relevant to this 
 work, \emph{interpretations}~\cite{SS+06,Sut08-KEAPPA}.
-This document provides examples of interpretations written in the TPTP format for interpretations, 
-as a companion document to the paper that describes the format~\cite{SS+26}.
 
-\paragraph{Declaration on Generative AI:}
-We didn't use any.
+A TPTP format for interpretations with finite domains has previously been defined~\cite{SS+06},
+and has served the ATP community adequately for almost 20 years. 
+The old format is output by several \emph{model finder} ATP systems, e.g.,~Paradox~\cite{CS03}, 
+FM-Darwin~\cite{BF+06}, Vampire~\cite{KV13}.
+The need for a format for interpretations with infinite domains, and for a format for Kripke 
+interpretations~\cite{Kri63}, has led to the development of the (new current) TPTP format for 
+interpretations.
+This work describes the format.
+The underlying principle is unchanged: interpretations are represented in formulae written in
+the TPTP language.
+
+\paragraph{Related work:}
+There are other concrete representations of interpretations in use:
+The SMT-LIB standard~\cite{BFT17} defines a format for model output, and commands to inspect 
+models.  
+SAT solvers generally output models as specified by the SAT competitions~\cite{JL+12}, in a 
+simple format similar to the DIMACS input format~\cite{Bab93}.
+Some individual model finders have defined their own formats for models, e.g.,~the 
+output formats of Nitpick~\cite{BN10-ITP} and Z3~\cite{dMB08}.
+% +++
+% Nikolaj says ...
+% Z3 It produces models that define functions by expressions. For example, a model of succ is 
+% Succ(x) =X+ 1
+% Works when domain is integer. Currently z3 does not implement infinite models for uninterpreted sorts. I would probably support infinite sorts by creating injection into an algebraic datatype and then support models that can be expressed over ADT.
+% See also https://microsoft.github.io/z3guide/docs/logic/Quantifiers
+% +++
+
+\paragraph{This paper is organized as follows:}
+Section~\ref{Interpretations} discusses the nature of interpretations, considering what is
+needed from interpretations, and the various forms that interpretations can take.
+Section~\ref{NewTarskian} defines the format for Tarskian interpretations, and
+Section~\ref{NewKripke} does the same for Kripke interpretations.
+% Section~\ref{Verification} describes the semantic approach to model verification.
+Section~\ref{Conclusion} concludes and discusses plans for future work.
+
+\paragraph{Note well:} 
+This paper refers to examples of problems and their interpretations that are listed in the 
+Appendices.
+They are referenced with a \example{} icon.
+ 
+%--------------------------------------------------------------------------------------------------
+\section{About Interpretations}
+\label{Interpretations}
 
 %--------------------------------------------------------------------------------------------------
-% Not needed for CEUR 
-% \bibliographystyle{plain}
+\subsection{What do we Need?}
+\label{Need}
+
+The needs of applications that use model finding vary according to their use of the model.
+In the simplest case, applications need to know only that a model exists.
+Examples of such applications include checking the consistency of an axiomatization~\cite{CI15},
+use as a subroutine in more complex reasoning, e.g.,~for
+axiom selection~\cite{SP07,Pud07-ESARLT}, and establishing the existence of a bug in a
+verification process\footnote{%
+Bill McCune claimed that establishing the existence of a bug without having an explicit model
+to help pinpoint the bug would be ``frustrating''. And he should have known.}.
+A key weakness of a model finder that claims to have found a model but does not output an 
+explicit model is that it is necessary to trust the model finder.
+
+In many applications it is necessary to have an explicit model, in some representation format that
+allows for analysis of the model.
+Applications that productively use an explicit model include finding inconsistencies in 
+axiomatizations~\cite{SS+17}, identification of bugs in verification~\cite{CE82,QS82},
+studying modal and description logics~\cite{SH13}, solving problems encoded as a model finding 
+problems~\cite{Win82}, and evaluating formulae wrt the model~\cite{SS+23-LPAR}.
+Manual inspection of explicit models can also be useful, e.g.,~\cite{EK+10}.
+% Explicit models can be used for machine learning and improving model finders internally.
+A key strength of a model finder that outputs an explicit model is that the model can be verified,
+i.e., it is not necessary to trust the model finder.
+
+Given the innate desirability of obtaining explicit models of satisfiable formulae, the desirable
+properties of interpretation representation are as follows:
+\begin{packed_enumerate}
+\item Interpretations must be for the symbols of the input formulae.
+\item Evaluation of any formulae wrt an interpretation should be possible, because many uses of
+      interpretations can be reduced to evaluation~\cite[\S3.2]{CLP04}.
+      The evaluation should be tractable, or in a tractable core.
+      This corresponds to the \emph{atom test} and \emph{formula evaluation} postulates suggested
+      by~\cite{FL96,CLP04}, and might be considered to be the most important property of
+      interpretation representation.
+\item Verification of models should be possible by checking that the problem formulae evaluate 
+      to \textit{true} wrt the model.
+      The verification should be tractable, or in a tractable core.
+\item Interpretations should be sufficiently (human) comprehensible to be useful in (human)
+      applications.
+\end{packed_enumerate}
+
+%--------------------------------------------------------------------------------------------------
+\subsection{What do we Have?}
+\label{Have}
+
+A \emph{Tarskian interpretation}~\cite{TV56} consists of a non-empty domain of distinct elements 
+(not the Herbrand Universe -- see Herbrand interpretations below) for each type used in the 
+formulae (just one domain for untyped logic), mappings for function symbols from tuples of 
+domain elements to the domain, and mappings for predicate symbols from tuples of domain elements 
+to $\{true,false\}$~\cite{Hun96,Gal15}.
+For higher-order logic only Henkin interpretations~\cite{Hen50} are considered.
+An overview of some ways of building and representing Tarskian interpretations is provided 
+by~\cite{CLP04}, and~\cite{Pel03-EQMC} provides a comprehensive list of approaches.
+% A \emph{complete} interpretation can be used to evaluate all formulae that can be written in the 
+% language of the problem formulae, while a \emph{partial} interpretation can be used to evaluate the
+% problem formulae but not necessarily all possible formulae~\cite{BSW23}.
+
+Two types of Tarskian interpretations are clear (and more might exist):
+\begin{packed_enumerate}
+\item \emph{Finite} Tarskian interpretations have only finite domains.
+      The domain and symbol mappings can be explicitly enumerated.
+      Finite models are typically produced by starting with domains of size one, and incrementing 
+      the sizes until a model is found.
+      At each iteration the formulae are reduced to a decidable logic, e.g.,~
+      propositional~\cite{CS03,McC03-MACE4-TR} or function free~\cite{BF+09} logic, and an ATP 
+      system for that logic is used to decide if there is a model.
+      There are several ATP systems that produce finite Tarskian models, e.g.,~Paradox, FM-Darwin, 
+      and Vampire.
+\item \emph{Infinite} Tarskian interpretations have one or more infinite domains.
+      Infinite domains can be explicitly generated, e.g.,~terms representing Peano numbers, or 
+      implicitly specified, e.g.,~some set of algebraic numbers such as the integers~\cite{BB13}.
+      % HOW IS THIS DONE?
+      There are some ATP systems that produce infinite Tarskian models, e.g.,~
+      cvc5~\cite{BB+22-cvc5}, FEST~\cite{EPS24}, and Z3.
+\end{packed_enumerate}
+
+A \emph{Herbrand interpretation}~\cite{Her30} is a particular form of Tarskian interpretation.
+A Herbrand interpretation has the Herbrand universe as the domain, the mapping for function symbols
+is the ``identity'', and the mapping for predicate symbols is from the Herbrand base to 
+$\{true,false\}$.
+Every set of formulae induces its set of Herbrand models.
+Formulae in Skolem normal form induce Herbrand models with a Herbrand universe that includes any 
+Skolem symbols. 
+An empty set of formulae induces all interpretations, i.e., all interpretations are models
+of the set.
+Such sets of formulae can be the result of applying model preserving transformations to the 
+problem formulae (even the input itself induces its set of Herbrand models), or be generated 
+by an ATP system with the explicit intention of representing Herbrand models.
+They are important in the context of resolution and all similar modern calculi; saturations (see 
+below) are a common case.
+\begin{packed_itemize}
+\item Formulae that are intended to represent Herbrand interpretations are written 
+      \emph{HI-formulae} in this paper, to avoid confusion.
+      Examples include saturations (discussed separately in the next bullet point), 
+      Bachmair-Ganzinger models~\cite{BG94,Lyn13}, a disjunction of implicit generalisations 
+      (DIGs)~\cite{LM87}, sets of constrained unit clauses~\cite{CZ92,CP95,CP95-TAB}, SGGS clause 
+      sequences~\cite{BP16}, tableaux~\cite{Hah01}
+      % (as long as you use a proof confluent calculus, it is normally possible to construct 
+      % a model from a saturated branch) 
+      and hyper-tableaux~\cite{BFN96}, eq-interpretations~\cite{Pel03-EQMC}, and 
+      predicate definitions over the term algebra~\cite{SK12}.
+      E-KRHyper~\cite{PW07} was an ATP system that produced hyper-tableaux, and
+      iProver~\cite{Kor08,SK12} is an ATP system that outputs predicate definitions 
+      over the term algebra.
+\item \emph{Saturations}~\cite{BG+01,Pel03-JSC} are a special case of HI-formulae.
+      A saturation is a fixed point for a set of clauses at which further application of a
+      complete inference system does not generate any new clauses (up to redundancy).
+      A saturation of a set of clauses determines the same set of Herbrand models as 
+      the clauses themselves.
+      Saturations can be used as explicit models in equational theories~\cite{JRS26-arXiv}.
+      Saturation-based ATP systems include E~\cite{SCV19}, Prover9~\cite{McC-Prover9-URL}, 
+      Vampire, and Zipperposition~\cite{VB+21}.
+\end{packed_itemize}
+While the domain of a Herbrand interpretation determined by Herbrand formulae is known to be the 
+Herbrand universe, there might not be an explicit symbol interpretation that can be used 
+constructively by users.
+
+A \emph{Kripke interpretation}~\cite{Kri63} adds a layer of \emph{possible worlds} over Tarskian 
+interpretations.
+There can be a finite or infinite number of worlds.
+There is an \emph{accessibility relation} between the worlds, which can be subject to the
+requirements of the logic being used, e.g.,~for modal logic \textbf{M} the accessibility 
+relation must be reflexive~\cite{Gar18}.
+Within each world there is a Tarskian interpretation. 
+The Tarskian interpretations' domains might be \emph{constant}, i.e., the same in all the worlds,
+but might also vary.
+The designation of symbols might be \emph{rigid}, i.e., the same in all the worlds' Tarskian 
+interpretations, but might also vary.
+The designation of ground terms might be \emph{local}, i.e., from only the domain of the world,
+or might be global.
+% Quantification is over the domains in the world of evaluation (\emph{actualist quantification}), 
+% but the domains in the worlds can be chosen to coincide to simplify matters (\emph{possibilist 
+% quantification}).
+Formulae can be evaluated wrt Kripke interpretations with a finite worlds and local terms by
+evaluating modal operators using Kripke semantics, and
+evaluating formulae within a world wrt the Tarskian interpretation in the world.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{What does the TPTP format Provide?}
+\label{TPTPProvides}
+
+The TPTP format represents interpretations in \emph{interpretation-formulae} that have the new
+annotated formula role \smalltt{interpretation}.
+The details are provided in Sections~\ref{NewTarskian}, \ref{NewHerbrand} and~\ref{NewKripke}.
+Interpretation-formulae are written using the TPTP syntax.
+As a brief reminder of the TPTP syntax, problems and solutions are built from 
+{\em annotated formulae} of the form: \\
+\hspace*{0.5cm}{\em language}{\tt (}{\em name}{\tt ,}
+{\em role}{\tt ,}
+{\em formula}{\tt ,}
+{\em source}{\tt ,}
+{\em useful\_info}{\tt )} \\
+The {\em language}s supported are \smalltt{cnf} (clause normal form), \smalltt{fof}
+(first-order form), \smalltt{tff} (typed first-order form), and \smalltt{thf}
+(typed higher-order form).
+The {\em role}, e.g., \smalltt{axiom}, \smalltt{lemma}, \smalltt{conjecture}, defines the 
+use of the formula.
+In a {\em formula}, terms and atoms follow Prolog conventions -- functions and predicates start 
+with a lowercase letter or are {\tt '}single quoted{\tt '}, and variables start with an uppercase 
+letter.
+The language also supports interpreted symbols that either start with a {\tt \$}, e.g., the 
+truth constants \smalltt{\$true}, \smalltt{\$false}, the individual and boolean
+types \smalltt{\$i}, \smalltt{\$o}, or are composed of 
+non-alphabetic characters, e.g., integer/rational/real numbers such as 27, 43/92, -99.66.
+The logical connectives in the TPTP language are
+{\tt !>}, {\tt ?*}, {\tt @+}, {\tt @-}, {\tt !}, {\tt ?}, {\tt {\tildenot}}, {\tt |}, {\tt \&}, 
+{\tt =>}, {\tt <=}, {\tt <=>}, and {\tt <{\tildenot}>}, for the mathematical connectives
+$\Pi$, $\Sigma$, choice (indefinite description), definite description,
+$\forall$, $\exists$, $\neg$, $\vee$, $\wedge$, $\Rightarrow$, $\Leftarrow$, $\Leftrightarrow$, 
+and $\oplus$ respectively.
+Equality and inequality are expressed as the infix operators {\tt =} and {\tt !=}.
+The {\em source} and {\em useful\_info} are optional.
+
+The notions of interpretations, models, partial interpretations, finite interpretations,
+Herbrand interpretations, etc., are captured in the SZS 
+ontologies~\cite{Sut08-KEAPPA}.\footnote{%
+Updated at
+\href{https://tptp.org/UserDocs/SZSOntology/}{\tt tptp.org/UserDocs/SZSOntology}}
+For this work the Success ontology was extended with a new value ModelExtending (MEX).
+The success ontology provides values for a pair Ax-C, where Ax is a set (conjunction) of axioms 
+and C is a conjecture to be proved from Ax. 
+MEX is defined as ``Some interpretations are models of Ax, and some interpretations are models 
+of C, and all models of C are conservative extensions of models of Ax (which means that all 
+models of C are models of Ax)''.
+This is used for transformations on satisfiable sets of formulae in which the models of the set 
+are unchanged, or are changed only by adding new domain elements or mappings, so that the
+extended models are still models of the original formulae. 
+Examples of such transformations are Skolemization, and adding logical consequences of a set 
+into the set.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Do we Have what we Need?}
+\label{HaveNeed}
+
+Figure~\ref{ModelLandscape} provides an overview of the situation.
+The starting point is the set of {\sf Satisfiable formulae} written in the language $\Sigma$. 
+The satisfiable formulae might have been formed from 
+{\sf Ax $\cup$ \{\tildenot{}C\}}. 
+Going down leads to the {\sf Models} of the satisfiable formulae.
+Going left from the {\sf Satisfiable formulae in $\Sigma$} is the pathway taken by ATP systems 
+that find a Tarskian/Kripke model, and output interpretation-formulae representing the model.
+The interpretation-formulae can be for a conservative extension $\Sigma^+$ of the language of 
+the input formula, e.g.,~by the addition of Skolem symbols, defined symbols, etc.
+If the interpretation-formulae correctly represent a model of the satisfiable formulae, then
+the satisfiable formulae can be proved ($\vDash$) from the interpretation-formulae.
+The models of the interpretation-formulae are conservative extensions of a subset (by the 
+definition of $\vDash$) of the models of the satisfiable formulae.
+Going right from the {\sf Satisfiable formulae in $\Sigma$} is the pathway taken by ATP systems
+(for classical logics at least) that apply 
+% model preserving ({\sf MPT}s) 
+transformations to the 
+satisfiable set, to produce formulae that determine Herbrand models of the satisfiable formulae.
+The satisfiable formulae can be proved ($\vDash$) from the sets that result from applying the 
+transformations.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{ModelLandscape.pdf}
+\caption{A Landscape of Model Building}
+\label{ModelLandscape}
+\end{figure}
+
+%--------------------------------------------------------------------------------------------------
+\subsubsection{Formula Evaluation}
+\label{FormulaEvaluation}
+
+The second, most important, property of interpretation representation is to evaluate formulae
+wrt the interpretation.
+With interpretation-formulae this can be achieved as follows:
+% $\varphi$ wrt a given interpretation $I$ ($I\,\vdash\,\Phi$ means that 
+% $\Phi$ is \textit{true} in $I$, i.e., $I$ is a model of formula $\Phi$):
+\begin{itemize}
+\item For Tarskian interpretation-formulae with finite domains, direct evaluation can be used.
+      \begin{packed_itemize}
+      \item Interpret quantifiers using Tarskian semantics.
+      \item Interpret ground (grounded with domain elements) terms and atoms using the mappings.
+      \item Interpret formulae using the truth tables for connectives.
+      \end{packed_itemize}
+      This approach is taken internally in Vampire to verify its finite models.
+\item For Tarskian interpretation-formulae, theorem proving can be used.
+      \begin{packed_itemize}
+      \item If a formula can be proved from the interpretation-formulae then it is \textit{true} 
+            in the interpretation represented by the interpretation-formulae.
+      \item If a formula can be disproved from the interpretation-formulae then it is 
+            \textit{false} in the interpretation represented by the interpretation-formulae.
+      \item In practice, a formula might be neither proved nor disproved within reasonable 
+            resource limits, so that nothing is known.
+      \end{packed_itemize}
+\item For Herbrand interpretations determined by HI-formulae, theorem proving can be 
+      used:~\footnote{%
+      \emph{We (well, at least the first author) believe that this verification technique works,
+      and so do Stephan Schulz and Uwe Waldmann, but Andrei Voronkov and Christoph Weidenbach say 
+      they do not.}}
+      \begin{packed_itemize}
+      \item If a formula can be proved from the HI-formulae then it is \textit{true} in all 
+            the Herbrand interpretations determined by the HI-formulae.
+      \item If a formula can be disproved from the HI-formulae then it is \textit{false} in 
+            some of the Herbrand interpretations determined by the HI-formulae.
+      \item In practice, a formula might be neither proved nor disproved within reasonable 
+            resource limits, so that nothing is known.
+      \end{packed_itemize}
+\item For Kripke interpretation-formulae, theorem proving can be used.
+      This is described in Section~\ref{KripkeVerification}.
+\end{itemize}
+
+%--------------------------------------------------------------------------------------------------
+\subsubsection{Model Verification}
+\label{Verification}
+
+The third property of interpretation representation is to verify a model of given formulae.
+Given ways to evaluate a formula wrt interpretation-formulae, models represented in
+interpretation-formulae can be checked.
+This has (at least) the following aspects: 
+\begin{packed_enumerate}
+\item Verify that the type declarations and interpretation-formulae are syntactically well-formed 
+      and well-typed. 
+\item Validate that the interpretation-formulae correctly represent the model found by the AT
+      system.
+\item Verify that the interpretation-formulae are satisfiable.
+\item Verify that the interpretation represented by the interpretation-formulae is a model for 
+      the given formulae.
+\end{packed_enumerate}
+
+These steps can be (in)completed as follows:
+\begin{enumerate}
+\item This can be confirmed using standard parsing and type checking tools, 
+      e.g.,~\cite{VS06,HR15,Ste26}.
+\item This cannot be confirmed without insight into the ATP system that found the model.
+\item This can be confirmed using a trusted model finder.
+      Hopefully, confirming that the interpretation-formulae are satisfiable is much easier than 
+      finding the model itself, so the ATP system used to check the satisfiability can be weaker 
+      and more trusted than the ATP system that found the model.
+      In light of the next point, this model finding task can be made easier by combining the
+      interpretation-formulae with the problem formulae (axioms and negated conjecture).
+\item This can be confirmed using the theorem proving approach to verification, in which the 
+      problem formulae $\Phi$ are proved from the interpretation-formulae $\varphi$ using a trusted 
+      theorem prover.
+      The soundness of this approach is proved by showing that if $\Phi$ can be proved from 
+      $\varphi$ then the interpretation $I$ represented by $\varphi$ is a model of $\Phi$.
+      This is done for finite Tarskian interpretations for FOF in~\cite{SS+23-LPAR}.
+%      by proving that if a formulae $\Phi$ can be 
+%      proved from the interpretation-formulae $\varphi$ then the interpretation $I$ 
+%      represented by $\varphi$ is a model of $\Phi$.
+      We believe the proof in~\cite{SS+23-LPAR} lifts naturally to TFF and THF, but is technically 
+      more complicated due to the introduction of types.
+      % and type-promotion functions.
+      The extension to infinite domains is quite simple after that.
+      For Kripke interpretation-formulae it is necessary to make changes that reduce the
+      verification problem to TXF/THF (see Section~\ref{KripkeVerification}).
+\end{enumerate}
+
+Steps~2 to 4 are implemented in the AGMV model verifier~\cite{SS+23-LPAR}, available in the
+SystemOnTSTP~\cite{Sut07-CSR} web interface.\footnote{%
+\href{https://www.tptp.org/cgi-bin/SystemOnTSTP}{\tt www.tptp.org/cgi-bin/SystemOnTSTP}}
+      
+%--------------------------------------------------------------------------------------------------
+\section{The Format for Tarskian Interpretations}
+\label{NewTarskian}
+
+A simple Tarskian interpretation-formula is a conjunction of components
+(see the examples [\example{}:~\ref{FOF_Finite.s}, \ref{TFF_Finite.s}, 
+\ref{TFF_Finite_SeparateDomains.s}, \ref{THF_Finite.s}]):
+\begin{packed_itemize}
+\item A domain for each type in the problem formulae.
+\item Interpretation of non-boolean symbols, as equalities whose left-hand sides are formed from 
+      symbols applied to domain elements, and whose right-hand sides are domain elements.
+\item Interpretation of boolean symbols, as literals formed from symbols applied to domain 
+      elements; positive literals are \emph{true} and negative literals are \emph{false}.
+\end{packed_itemize}
+The TPTP format for Tarskian interpretation-formulae requires no changes to the TPTP
+language syntax (other than the addition of the \smalltt{interpretation} role that is used for
+interpretation-formulae).
+At this stage only monomorphic types are supported, but the syntax is flexible enough to extend
+the format to polymorphic types.
+
+Function and predicate symbols are interpreted by applying them directly to domain elements 
+(\emph{{\`a} la}~\cite[\S5.3.4]{Gal15}), rather than using the presentation of interpretations that 
+introduces a new interpretation function for each function/predicate symbol~\cite[\S5.3.2]{Gal15}.
+This approach obviates the need for introducing interpretation functions, and makes 
+interpretation of formulae using theorem proving simpler.
+However, applying the problem's function and predicate symbols to domain elements that are 
+defined with different types to the problem's types requires using \emph{type-promotion} 
+bijections to keep interpretation-formulae well-typed (see Section~\ref{TarskianNewFiniteTypes}).
+% The explanations and examples that follow will convince you of that!
+
+[\example{}:~\ref{FOF_Finite.s}, \ref{TFF_Finite.s}, \ref{TFF_Peano.s}, \ref{TFF_Integer.s}, 
+\ref{THF_Finite.s}] illustrate the components of finite Tarskian interpretations in a single 
+interpretation-formula, as explained in Sections~\ref{FOFTarskian}, \ref{TarskianReusingTypes}, 
+and \ref{TarskianNewFiniteTypes}.
+[\example{}:~\ref{FOF_Finite_Medium.s}, \ref{FOF_Finite_Fine.s}, \ref{TFF_Finite_Medium.s}, 
+\ref{TFF_Finite_Fine.s}, \ref{THF_Finite_Medium.s}] illustrate Tarskian interpretations split 
+over multiple interpretation-formulae, as explained in Section~\ref{NewTarskianSplit}.
+[\example{}:~\ref{TFF_Finite_Compact.s}] illustrates a Tarskian interpretation that is compacted 
+using quantification, as explained in Section~\ref{NewTarskianCompact}.
+[\example{}:~\ref{FOF_Formulae.s}, \ref{FOF_Saturation.s}] illustrate interpretation-formulae 
+that determine Herbrand interpretations, as explained in Section~\ref{NewHerbrand}.
+These examples illustrate the possibilities for writing Tarskian interpretations in the TPTP 
+format, but are not intended to be exhaustive.
+In particular, interpretations of higher-order formulae have yet to be fleshed out.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Finite Interpretations without Types}
+\label{FOFTarskian}
+
+[\example{}:~\ref{FOF_Finite.p}] shows a FOF problem that has a countermodel with a finite 
+domain, which is shown in [\example{}:~\ref{FOF_Finite.s}].
+
+The domain specification of a finite interpretation without types is a conjunction of:
+\begin{packed_itemize}
+\item Specification of the domain elements as a universally quantified disjunction of equalities 
+      whose right-hand sides are the domain elements, 
+      e.g.,~[\example{}:~\ref{FOF_Finite.s}]:\\
+      \hspace*{0.5cm}\smalltt{! [X] : ( X = "a" | X = "f" | X = "john" | X = "gotA")}
+\item Specification of the distinctness of the domain elements.
+      Distinctness can be specified with pairwise inequalities, with the \smalltt{\$distinct} 
+      predicate, or by using \smalltt{"double quoted"} terms as domain elements (different 
+      \smalltt{"double quoted"} terms are known to be unequal (and often not used in problems,
+      which makes them easy to identify as domain elements)),
+      e.g.,~[\example{}:~\ref{FOF_Finite.s}] \smalltt{"a"} is known to be unequal to \smalltt{"f"}.
+\end{packed_itemize}
+
+The function mappings are equalities between domain elements and functions applied to domain 
+elements,
+e.g.,~[\example{}:~\ref{FOF_Finite.s}]: \\
+\hspace*{0.5cm}\smalltt{grade\_of("john") = "f"}\\
+The predicate mappings are literals, e.g.,~[\example{}:~\ref{FOF_Finite.s}]: \\
+\hspace*{0.5cm}\smalltt{created\_equal("john","gotA")}\\
+If \smalltt{"double quoted"} constants are already used in the formulae being interpreted, they
+are naturally interpreted as themselves.
+Note that for a complete interpretation all function and predicate mappings need to be provided,
+even if they make no sense in a typed sense, e.g.,~[\example{}:~\ref{FOF_Finite.s}]: \\
+\hspace*{0.5cm}\smalltt{grade\_of("f") = "a"}\\
+\hspace*{0.5cm}\smalltt{\tildenot{}\,created\_equal("a","john")}
+
+[\example{}:~\ref{FOF_Finite.s.p}] shows the verification problem for the model.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Finite Interpretations reusing Problem Types}
+\label{TarskianReusingTypes}
+
+[\example{}:~\ref{TFF_Finite.p}] shows a TFF problem that has a countermodel with finite domains,
+which is shown in [\example{}:~\ref{TFF_Finite.s}].
+
+Each domain specification is a conjunction of:
+\begin{packed_itemize}
+\item Specification of the domain elements as a universally quantified disjunction of equalities 
+      whose right-hand sides are the domain elements, e.g.,~[\example{}:~\ref{TFF_Finite.s}]:\\
+      \hspace*{0.5cm}\smalltt{! [DC: cat]: ( DC = d\_garfield | DC = d\_arlene | DC = d\_nermal )}
+\item Specification of the distinctness of the domain elements, 
+e.g.,~[\example{}:~\ref{TFF_Finite.s}]:\\
+      \hspace*{0.5cm}\smalltt{\$distinct(d\_garfield,d\_arlene,d\_nermal)}
+\end{packed_itemize}
+
+The function mappings are equalities between domain elements and functions applied to domain 
+elements, e.g.,~[\example{}:~\ref{TFF_Finite.s}]: \\
+\hspace*{0.5cm}\smalltt{loves(d\_garfield) = d\_garfield}\\
+The predicate mappings are literals, e.g.,~[\example{}:~\ref{TFF_Finite.s}]: \\
+\hspace*{0.5cm}\smalltt{\tildenot{}\,owns(d\_jon,d\_nermal)}
+
+The interpretation-formulae are preceded by the necessary type declarations:
+\begin{packed_itemize}
+\item The types in the problem.
+\item The types of the domains.
+\item The types of the domain elements.
+\end{packed_itemize}
+
+[\example{}:~\ref{TFF_Finite.s.p}] shows the verification problem for 
+the model.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Finite Interpretations with Domain Types}
+\label{TarskianNewFiniteTypes}
+
+Reusing the problem types for domain elements can get murky, e.g.,~when quantification over only 
+the domain elements is intended. 
+It is clearer to use new types for domain elements, and it becomes necessary when the domain 
+elements are complex or of a defined type such as \smalltt{\$int} (see 
+Section~\ref{TarskianInfinite}).
+As noted in the introduction to Section~\ref{NewTarskian}, applying the problem's function and 
+predicate symbols to domain elements that are defined with different types to the problem's types 
+requires using type-promotion bijections to ``convert'' domain elements to terms of the 
+corresponding problem type.
+
+[\example{}:~\ref{TFF_Finite.p}] shows a TFF problem that has a 
+countermodel with finite domains, which is shown in 
+[\example{}:~\ref{TFF_Finite_SeparateDomains.s}].
+[\example{}:~\ref{THF_Finite.p}] shows a THF problem that has a 
+countermodel with finite domains, which is shown in
+[\example{}:~\ref{THF_Finite.s}].
+
+Each domain specification is a conjunction of:
+\begin{packed_itemize}
+\item Specification of the domain for each problem type, as a formula that makes the 
+      type-promotion function a surjection, 
+      e.g.,~[\example{}:~\ref{TFF_Finite_SeparateDomains.s}]:\\
+      \hspace*{0.5cm}\smalltt{! [H: human] : ? [DH: d\_human] : H = d2human(DH)}\\
+      \hspace*{0.5cm}\smalltt{! [C: cat] : ? [DC: d\_cat] : C = d2cat(DC)}\\
+      and [\example{}:~\ref{THF_Finite.s}]:\\
+      \hspace*{0.5cm}\smalltt{! [B: beverage] : ? [DB: d\_beverage] : ( B = ( d2beverage @ DB ) )}\\
+      \hspace*{0.5cm}\smalltt{! [S: syrup] : ? [DS: d\_syrup] : ( S = ( d2syrup @ DS ) )}
+\item Specification of the domain elements as a universally quantified disjunction of equalities 
+      whose right-hand sides are the domain elements, 
+      e.g.,~[\example{}:~\ref{TFF_Finite_SeparateDomains.s}]:\\
+      \hspace*{0.5cm}\smalltt{! [DH: d\_human] : ( DH = d\_jon )}\\
+      \hspace*{0.5cm}\smalltt{! [DC: d\_cat]: ( DC = d\_garfield | DC = d\_arlene | DC = d\_nermal )}\\
+      and [\example{}:~\ref{THF_Finite.s}]:\\
+      \hspace*{0.5cm}\smalltt{! [DB: beverage] : ( DB = d\_coffee )}\\
+      \hspace*{0.5cm}\smalltt{! [DS: d\_syrup] : ( DS = d\_vanilla )}
+\item Specification of the distinctness of the domain elements, 
+      e.g.,~[\example{}:~\ref{TFF_Finite_SeparateDomains.s}]:\\
+      \hspace*{0.5cm}\smalltt{\$distinct(d\_garfield,d\_arlene,d\_nermal)}\\
+      If each domain has only one element this is unnecessary [\example{}:~\ref{THF_Finite.s}].
+\item A formula making the type-promotion function an injection, which together with the 
+      surjectivity makes it a bijection, e.g.,~[\example{}:~\ref{TFF_Finite_SeparateDomains.s}]:\\
+      \hspace*{0.5cm}\smalltt{! [DH1: d\_human,DH2: d\_human] : ( d2human(DH1) = d2human(DH2) => DH1 = DH2 )}\\
+      \hspace*{0.5cm}\smalltt{! [DC1: d\_cat,DC2: d\_cat] : ( d2cat(DC1) = d2cat(DC2) => DC1 = DC2 )}\\
+      and [\example{}:~\ref{THF_Finite.s}]:\\
+      \hspace*{0.5cm}\smalltt{! [DB1: d\_beverage,DB2: d\_beverage] :}\\
+      \hspace*{0.8cm}\smalltt{( ( ( d2beverage @ DB1 ) = ( d2beverage @ DB2 ) ) => ( DB1 = DB2 ) )}\\
+      \hspace*{0.5cm}\smalltt{! [DS1: d\_syrup,DS2: d\_syrup] :}\\
+      \hspace*{0.8cm}\smalltt{( ( ( d2syrup @ DS1 ) = ( d2syrup @ DS2 ) ) => ( DS1 = DS2 ) )}
+\end{packed_itemize}
+
+The function mappings are equalities between type-promoted domain elements and functions applied 
+to type-promoted domain elements, e.g.,~[\example{}:~\ref{TFF_Finite_SeparateDomains.s}]:\\
+\hspace*{0.5cm}\smalltt{jon = d2human(d\_jon)}\\
+\hspace*{0.5cm}\smalltt{loves(d2cat(d\_garfield)) = d2cat(d\_garfield)}\\
+and [\example{}:~\ref{THF_Finite.s}]:\\
+\hspace*{0.5cm}\smalltt{coffee = ( d2beverage @ d\_coffee )}\\
+\hspace*{0.5cm}\smalltt{( heat @ ( d2beverage @ d\_coffee ) ) = ( d2beverage @ d\_coffee )}\\
+The predicate mappings are literals, 
+e.g.,~[\example{}:~\ref{TFF_Finite_SeparateDomains.s}]:\\
+\hspace*{0.5cm}\smalltt{\tildenot{}\,owns(d2human(d\_jon),d2cat(d\_nermal))}\\
+and [\example{}:~\ref{THF_Finite.s}]:\\
+\hspace*{0.5cm}\smalltt{hot @ ( d2beverage @ d\_coffee )}\\
+The mappings of higher-order function symbols are lambda abstractions, 
+e.g.,~[\example{}:~\ref{THF_Finite.s}]:\\
+\hspace*{0.5cm}\smalltt{mix = ( \textasciicircum~[F: syrup > beverage] : ( d2beverage @ d\_coffee ) )}\\
+\hspace*{0.5cm}\smalltt{heated\_mix = ( \textasciicircum~[F: syrup > beverage] : ( d2beverage @ d\_coffee ) )}\\
+The lambda abstractions are convenient because the interpretation of symbols that take a function 
+argument must specify the interpretation for every such function. 
+This differs from ground domain elements that can simply be assigned a name. 
+A function is entirely characterised by its values on all inputs, so specifying a function-type 
+element necessarily involves defining its behaviour, which is expressed as a lambda term. 
+For infinite base types such as \smalltt{\$int}, the function space cannot be enumerated, 
+providing an additional reason for using lambda abstractions, but the use of lambda abstractions 
+is required regardless of cardinality.
+
+The TFF and THF interpretation-formulae are preceded by the necessary type declarations:
+\begin{packed_itemize}
+\item The types in the problem.
+\item The types of the domains.
+\item The types of the domain elements.
+\item The types of the type-promotion functions.
+\end{packed_itemize}
+
+[\example{}:~\ref{TFF_Finite_SeparateDomains.s.p}, 
+\ref{THF_Finite.s.p}] show the verification problems for the models.
+Sometimes higher-order formulae have models that can be expressed in TFF, which is preferable for
+presentation and readability. 
+However, since the model and its verification problem must be in the same language, and 
+verification obligations might require higher-order reasoning, both must be stated in THF.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Infinite Interpretations}
+\label{TarskianInfinite}
+
+Interpretations can have infinite domains formed from terms or defined types such as 
+\smalltt{\$int}.
+[\example{}:~\ref{TFF_Infinite.p}] shows a TFF problem that has a 
+model with an infinite domain.
+[\example{}:~\ref{TFF_Peano.s}] shows the model with an infinite term 
+domain, and [\example{}:~\ref{TFF_Integer.s}] shows the model with an
+\smalltt{\$int} domain.
+
+Each domain specification is a conjunction of:
+\begin{packed_itemize}
+\item The domain for each problem type, as a formula that makes the type-promotion function a 
+      surjection, e.g.,~[\example{}:~\ref{TFF_Peano.s}]:\\
+      \hspace*{0.5cm}\smalltt{! [P: person] : ? [I: peano] : ( P = peano2person(I) )}\\
+      and [\example{}:~\ref{TFF_Integer.s}]:\\
+      \hspace*{0.5cm}\smalltt{! [P: person] : ? [I: \$int] : P = int2person(I)}\\
+      If the problem type and the domain type are the same defined type, e.g.,~both are 
+      \smalltt{\$int}, this is unnecessary.
+\item Specification of the domain elements as an existentially quantified formula that captures an
+      infinite disjunction of equalities, e.g.,~[\example{}:~\ref{TFF_Peano.s}]:\\
+      \hspace*{0.5cm}\smalltt{! [I: peano] : ( I = zero | ? [P: peano] : I = s(P) )} \\
+      If the domain is a defined type such as \smalltt{\$int} this is unnecessary
+      [\example{}:~\ref{TFF_Integer.s}].
+\item Specification of the distinctness of the domain elements, unless implicit from their type.
+      e.g.,~[\example{}:~\ref{TFF_Peano.s}]:\\
+      \hspace*{0.5cm}\smalltt{( peano\_less(I1,I2) => I1 != I2 )}\\
+      If the domain is a defined type such as \smalltt{\$int} this is unnecessary
+      [\example{}:~\ref{TFF_Integer.s}].
+\item A formula making the type-promotion function an injection, which together with the 
+      surjectivity makes it a bijection, e.g.,~[\example{}:~\ref{TFF_Peano.s}]:\\
+      \hspace*{0.5cm}\smalltt{! [I1: peano,I2: peano] : ( peano2person(I1) = peano2person(I2) => I1 = I2 )}\\
+      and [\example{}:~\ref{TFF_Integer.s}]:\\
+      \hspace*{0.5cm}\smalltt{! [I1: \$int,I2: \$int] : ( int2person(I1) = int2person(I2) => I1 = I2 )}
+\end{packed_itemize}
+
+The function mappings are universally quantified equalities between type-promoted domain 
+elements and functions applied to type-promoted domain elements, 
+e.g.,~[\example{}:~\ref{TFF_Peano.s}]:\\
+\hspace*{0.5cm}\smalltt{! [I: peano] : child\_of(peano2person(I)) = peano2person(s(I))}\\
+and [\example{}:~\ref{TFF_Integer.s}]:\\
+\hspace*{0.5cm}\smalltt{! [I: \$int] : child\_of(int2person(I)) = int2person(\$sum(I,1))}\\
+The predicate mappings are universally quantified formulae, 
+e.g.,~[\example{}:~\ref{TFF_Peano.s}]:\\
+\hspace*{0.5cm}\smalltt{! [A: peano,D: peano] :}\\
+\hspace*{0.9cm}\smalltt{( is\_descendant(peano2person(A),peano2person(D)) <=> peano\_less(A,D) )}\\
+and [\example{}:~\ref{TFF_Integer.s}]:\\
+\hspace*{0.5cm}\smalltt{! [A: \$int,D: \$int] :}\\
+\hspace*{0.9cm}\smalltt{( is\_descendant(int2person(A),int2person(D))}\\
+\hspace*{0.5cm}\smalltt{<=> peano\_less(A,D) )}\\
+The interpretation of function and predicate symbols is not given for argument tuples
+with negative integers.
+% , i.e., this is an example of a partial interpretation.
+
+The interpretation-formulae are preceded by the necessary type declarations:
+\begin{packed_itemize}
+\item The types in the problem.
+\item The types of the domains.
+\item The types of the domain elements.
+\item The types of the type-promotion functions.
+\end{packed_itemize}
+
+[\example{}:~\ref{TFF_Peano.s.p}, \ref{TFF_Integer.s.p}] show the 
+verification problems for the models.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Interpretations with Multiple Interpretation-formulae}
+\label{NewTarskianSplit}
+
+The interpretation-formulae described thus far have all the information about an interpretation 
+in a single interpretation-formula.
+In some situations it is useful to split the various components into separate 
+interpretation-formulae, e.g.,~separating the domains from the symbol mappings.
+The TPTP format offers splitting in a flexible way, at medium and fine grained levels, using 
+annotated formula subroles.
+
+At the medium grained level, the \smalltt{interpretation} role can be extended with the subroles
+\smalltt{domains} and \smalltt{mappings}.
+Two (or more) interpretation-formulae are used, each containing the corresponding parts of the 
+interpretation.
+[\example{}:~\ref{FOF_Finite_Medium.s}, \ref{TFF_Finite_Medium.s}]
+show examples of splitting the interpretation-formulae in the FOF and TFF 
+interpretations [\example{}:~\ref{FOF_Finite.s}, \ref{TFF_Finite.s}] 
+respectively, which separate the domain specifications from the symbol mappings.
+For example, [\example{}:~\ref{TFF_Finite_Medium.s}]:\\
+\hspace*{0.5cm}\smalltt{tff(garfield\_domains,interpretation-domains,}\emph{the domains}\smalltt{).} \\
+contains the information about the two domains, and the interpretation-formula: \\
+\hspace*{0.5cm}\smalltt{tff(garfield\_mappings,interpretation-mappings,}\emph{the mappings}\smalltt{).} \\
+contains the symbol mappings.
+Note that each role and role-subrole pair can be used multiple times according to need, 
+e.g.,~[\example{}:~\ref{FOF_Finite_Medium.s}] there can be separate
+\smalltt{interpretation-mappings} interpretation-formulae, one for functions and one for 
+predicates.
+
+At the fine grained level, interpretation-formulae can split the individual domains and symbol 
+mappings, with the \smalltt{domains} and \smalltt{mappings} subroles given arguments to indicate
+which domain or symbol mapping is recorded.
+For \smalltt{domains} the arguments of the subrole are the domain in the problem and the domain 
+in the interpretation.
+For \smalltt{mappings} the arguments are the symbol and its result domain type.
+[\example{}:~\ref{FOF_Finite_Fine.s}, \ref{TFF_Finite_Fine.s}] show 
+examples of splitting the interpretation-formulae in
+[\example{}:~\ref{FOF_Finite.s}, \ref{TFF_Finite.s}] respectively.
+For example, [\example{}:~\ref{TFF_Finite_Fine.s}]:\\
+\hspace*{0.5cm}\smalltt{tff(garfield\_domain\_human,interpretation-domains(human,d\_human)} \\
+contains the \smalltt{d\_human} domain specification, and: \\
+\hspace*{0.5cm}\smalltt{tff(garfield\_domain\_cat,interpretation-domains(cat,d\_cat)} \\
+contains the \smalltt{d\_cat} domain specification.
+
+The medium and fine grained splitting can be mixed.
+[\example{}:~\ref{THF_Finite_Medium.s}] shows an example of mixed 
+splitting of [\example{}:~\ref{THF_Finite.s}].
+For example, the domains are specified separately~[\example{}:~\ref{THF_Finite_Medium.s}]: \\
+\hspace*{0.5cm}\smalltt{thf(hot\_coffee\_beverage,interpretation-domains(beverage,d\_beverage),}\\
+\hspace*{0.9cm}\emph{beverage domain}\smalltt{).} \\
+\hspace*{0.5cm}\smalltt{thf(hot\_coffee\_syrup,interpretation-domains(syrup,d\_syrup),}\emph{syrup domain}\smalltt{).} \\
+while all the symbol mappings are in: \\
+\hspace*{0.5cm}\smalltt{thf(hot\_coffee,interpretation-mappings,}\emph{the mappings}\smalltt{).}
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Interpretations Compacted by Quantification}
+\label{NewTarskianCompact}
+
+The full logical language can be used in interpretation-formulae to provide compaction.
+[\example{}:~\ref{TFF_Finite_Compact.s}] shows an example compacting 
+the interpretation-formula \smalltt{garfield\_mapping\_loves} in
+[\example{}:~\ref{TFF_Finite.s}].
+For example, universal quantification can be used to map \smalltt{loves} to \smalltt{d\_garfield} 
+for all \smalltt{d\_cats}~[\example{}:~\ref{TFF_Finite_Compact.s}]: \\
+\hspace*{0.5cm}\smalltt{!\,[DC:\,d\_cat]\,:\,(\,loves(d2cat(DC))\,=\,d2cat(d\_garfield)\,)}
+
+%--------------------------------------------------------------------------------------------------
+\subsection{HI-formulae and Saturations}
+\label{NewHerbrand}
+
+HI-formulae determine sets of Herbrand interpretations.
+Interpretation-formulae can be used for these, although the actual Herbrand interpretations are
+not easy to extract.
+To indicate that the interpretation-formulae are intended to determine Herbrand interpretations 
+they are given the subrole \smalltt{herbrand}.
+[\example{}:~\ref{FOF_Finite.p}] shows a problem that has a HI-formulae
+model formed from predicate definitions over the term algebra, which is shown in 
+[\example{}:~\ref{FOF_Formulae.s}].
+[\example{}:~\ref{FOF_Finite.p}] also has a saturation, which is shown 
+in [\example{}:~\ref{FOF_Saturation.s}].
+[\example{}:~\ref{FOF_Formulae.s.p}, \ref{FOF_Saturation.s.p}] show 
+the corresponding verification problems.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Visualization of Interpretations}
+\label{IIV}
+
+Finite Tarskian interpretations with domain types, as described in 
+Section~\ref{TarskianNewFiniteTypes}, can be visualised in the Interactive Interpretation Viewer 
+(IIV)~\cite{MS23-Poster}.
+Figure~\ref{IIVPicture} shows the view of the model 
+in [\example{}:~\ref{TFF_Finite_SeparateDomains.s}].
+The cursor is hovering over the \smalltt{d\_nermal} node in the interpretation of the
+\smalltt{owns} predicate applied to \smalltt{d\_jon} and \smalltt{d\_nermal}, which is 
+interpreted as \smalltt{\$false}.
+The \smalltt{\$o} triangle above the \smalltt{owns} inverted house shows that \smalltt{owns} has
+a boolean result in the problem, and the \smalltt{\$o} triangle below \smalltt{\$false} box shows 
+that the interpretation value is boolean.
+IIV is available in the SystemOnTSTP web interface.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{IIV.pdf}
+\caption{IIV view of [\example{}:~\ref{TFF_Finite_SeparateDomains.s}]}
+\label{IIVPicture}
+\end{figure}
+
+%--------------------------------------------------------------------------------------------------
+\section{The Format for Kripke Interpretations}
+\label{NewKripke}
+ 
+The TPTP format for Kripke interpretations also uses interpretation-formulae.
+As was noted in Section~\ref{Have}, Kripke interpretations can have either a finite or an
+infinite number of worlds, and the interpretations in a world can be Tarskian or 
+Herbrand.
+% For interpretations of classical logic formulae the semantics is the standard classical semantics 
+% of TXF.
+The TPTP format for Kripke interpretation-formulae adds four defined symbols:
+\begin{packed_itemize}
+\item A defined type \smalltt{\$world} for the worlds of the interpretation.
+      Different constants of type \smalltt{\$world} are known to be unequal.
+\item A defined predicate \smalltt{\$accessible\_world} of type {\tt (\$world\,*\,\$world)\,>\,\$o}
+      to specify the accessibility relation between worlds.
+\item A defined constant \smalltt{\$local\_world} of type \smalltt{\$world} to specify 
+      the world in which a local (the default) conjecture is to be proved. 
+\item A defined predicate \smalltt{\$in\_world} of type \smalltt{(\$world\,*\,\$o)\,>\,\$o} to 
+      specify the interpretations in the worlds.
+\end{packed_itemize}
+
+A single Kripke interpretation-formula is a conjunction of:
+\begin{packed_itemize}
+\item A specification of the worlds.
+\item Explication of the distinctness of the worlds (by definition different worlds are known to
+      be distinct, but no ATP systems know that yet, so it's necessary to encode the
+      distinctness explicitly using inequalities or the \smalltt{\$distinct} predicate).
+\item The accessibility relation.
+\item Specification of the local world if any.
+\item For each world, its Tarskian interpretation (also in the TPTP format for interpretations),
+      augmented by existential subformulae that require the existence of the world's domain 
+      elements -- these are necessary because the semantics is that of modal logic (see
+      Sections~\ref{NewKripkeFiniteFinite} and~\ref{NewKripkeSplitCompact} for examples).
+\end{packed_itemize}
+The interpretation-formulae are preceded by the necessary type declarations:
+\begin{packed_itemize}
+\item The types for the Tarskian interpretations in the worlds.
+\item The worlds declared of type \smalltt{\$world}, e.g.,~\smalltt{w1: \$world}.
+\end{packed_itemize}
+
+The \smalltt{logic} specification of the problem is included to specify that the interpretation is
+for formulae in that logic.
+This information is needed when processing an interpretation, e.g.,~in verification (see 
+Section~\ref{Verification}). 
+The interpretation-formula does not provide this information because it underspecifies the 
+logic in use, e.g.,~it's usually not possible to see whether the interpretation exemplifies modal 
+system K or modal system S5 -- in both cases the interpretation could interpret the accessibility 
+relation as an equivalence relation (this is required for S5 but it is also OK for K).
+
+[\example{}:~\ref{NXF_Finite-Finite-Global.s}, \ref{NXF_Finite-Finite-Local.s}] illustrate the 
+components of finite Kripke interpretations in a single interpretation-formula, as explained in 
+Sections~\ref{NewKripkeFiniteFinite}.
+[\example{}:~\ref{NXF_Finite-Finite-Global_Medium.s},
+\ref{NXF_Finite-Finite-Global_Fine.s}] illustrate Kripke interpretations split 
+over multiple interpretation-formulae, as explained in Section~\ref{NewKripkeSplitCompact}.
+[\example{}:~\ref{NXF_Finite-Finite-Global_Compact.s}] illustrate
+a Kripke interpretations that is compacted using quantification, as explained in 
+Section~\ref{NewKripkeSplitCompact}.
+These examples illustrate the possibilities for writing Kripke interpretations in the TPTP format,
+but are not intended to be exhaustive.
+In particular, Kripke interpretations with an infinite number of worlds are not considered.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Finite-Finite Kripke Interpretations}
+\label{NewKripkeFiniteFinite}
+
+[\example{}:~\ref{NXF_Finite-Finite-Global.p}] shows a NXF problem 
+that has a countermodel with finite worlds, each of which contains a finite Tarskian 
+interpretation, which is shown in 
+[\example{}:~\ref{NXF_Finite-Finite-Global.s}].
+The problem has global axioms and a local conjecture.
+The countermodel has three worlds [\example{}:~\ref{NXF_Finite-Finite-Global.s}]: \\
+\hspace*{0.5cm}\smalltt{!\,[W:\,\$world]\,:\,(\,W\,=\,w1\,|\,W\,=\,w2\,|\,W\,=\,w3\,)} \\
+\hspace*{0.5cm}\smalltt{\$distinct(w1,w2,w3)} \\
+with the accessibility relation: \\
+\hspace*{0.9cm}\smalltt{\$accessible\_world(w1,w1) \& \$accessible\_world(w2,w2)}\\
+\hspace*{0.5cm}\smalltt{\& \$accessible\_world(w1,w2) \& \$accessible\_world(w2,w3)}\\
+\hspace*{0.5cm}\smalltt{\& \$accessible\_world(w3,w1)}\\
+\hspace*{0.5cm}\smalltt{\& \tildenot{}\,\$accessible\_world(w1,w3) \& \tildenot{}\,\$accessible\_world(w2,w1)}\\
+\hspace*{0.5cm}\smalltt{\& \tildenot{}\,\$accessible\_world(w3,w2) \& \tildenot{}\,\$accessible\_world(w3,w3)}\\
+The conjecture is disproved in a local world [\example{}:~\ref{NXF_Finite-Finite-Global.s}]: \\
+\hspace*{0.5cm}\smalltt{\$local\_world = w1} \\
+The finite Tarskian interpretations for the worlds are provided in the format described in 
+Section~\ref{NewTarskian}: \\
+\hspace*{0.5cm}\smalltt{\$in\_world(w1,}\emph{the Tarskian interpretation}\smalltt{)} \\
+\hspace*{0.5cm}\smalltt{\$in\_world(w2,}\emph{the Tarskian interpretation}\smalltt{)} \\
+\hspace*{0.5cm}\smalltt{\$in\_world(w3,}\emph{the Tarskian interpretation}\smalltt{)} \\
+Note the augmentation of the Tarskian interpretations with subformulae such as:\\
+\hspace*{0.5cm}\smalltt{?\,[CD:\,child\_d]\,:\,CD\,=\,child\_1}\\
+The quantification semantics is not classical, but instead that of modal logic, i.e., the 
+quantification is over the domain elements that exist in the world.
+That subformula requires that the domain element \smalltt{child\_1} exists in the world.
+[\example{}:~\ref{NXF_Finite-Finite-Global.s.p}] shows the verification problem for the model.
+
+[\example{}:~\ref{NXF_Finite-Finite-Local.p}] shows a NXF problem 
+that has both local and global axioms.
+It has a countermodel with finite worlds each of which contains a finite Tarskian interpretation, 
+which is shown in [\example{}:~\ref{NXF_Finite-Finite-Local.s}].
+This example illustrates how a local axiom (with role \smalltt{axiom-local}) is satisfied in 
+only the local world (\smalltt{w1}).
+[\example{}:~\ref{NXF_Finite-Finite-Local.s.p}] shows the verification 
+problem for the model.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Kripke Interpretations Split and Compacted}
+\label{NewKripkeSplitCompact}
+
+Kripke interpretation-formulae can be split to separate the various components of the 
+interpretation.
+The \smalltt{interpretation} role can be extended with the subroles \smalltt{worlds},
+\smalltt{domains}, and \smalltt{mappings}.
+[\example{}:~\ref{NXF_Finite-Finite-Global_Medium.s}] shows a medium 
+grained split of [\example{}:~\ref{NXF_Finite-Finite-Global.s}].
+An interpretation-formula with the role \smalltt{interpretation-worlds} contains information about 
+the worlds of the interpretation.
+For example, one interpretation-formula contains the information about the three 
+worlds~[\example{}:~\ref{NXF_Finite-Finite-Global_Medium.s}]: \\
+\hspace*{0.5cm}\smalltt{tff(people\_worlds,interpretation-worlds,}\emph{world information}\smalltt{).}
+
+Splitting can be done in a flexible way, using the fine grained splitting available for
+Tarskian interpretation-formulae.
+For example, the interpretation-formula~[\example{}:~\ref{NXF_Finite-Finite-Global_Fine.s}]: \\
+\hspace*{0.5cm}\smalltt{tff(child\_domains,interpretation-domains(child,child\_d),}\emph{child domain}\smalltt{).} \\
+contains the information about the domain \smalltt{child\_d}, the interpretation-formula: \\
+\hspace*{0.5cm}\smalltt{tff(people\_mappings,interpretation-mappings(charly,child\_d)}\emph{charly mapping}\smalltt{).} \\
+contains the mapping for the \smalltt{charly} constant, and the interpretation-formula: \\
+\hspace*{0.5cm}\smalltt{tff(rains\_mappings,interpretation-mappings(rains,\$o),}\emph{rains mapping}\smalltt{).} \\
+contains the mapping for the \smalltt{rains} predicate.
+
+In the same way that Tarskian interpretation-formulae can be compacted, Kripke
+interpretation-formulae can be compacted, e.g.,~by using universal quantification over the
+worlds to factor out common elements of the Tarskian interpretations in the worlds.
+For example, the interpretation-formula [\example{}:~\ref{NXF_Finite-Finite-Global_Compact.s}]: \\
+\hspace*{0.5cm}\smalltt{tff(people\_domains,interpretation-domains,} \\
+\hspace*{0.9cm}\smalltt{! [W: \$world] :} \\
+\hspace*{1.3cm}\smalltt{\$in\_world(W,}\emph{the domain specification}\smalltt{).} \\
+contains the information about the domains that are the same in all worlds 
+[\example{}:~\ref{NXF_Finite-Finite-Global.s}], and the interpretation-formula
+[\example{}:~\ref{NXF_Finite-Finite-Global_Compact.s}]: \\
+\hspace*{0.5cm}\smalltt{tff(charly\_mappings,interpretation-mappings(charly,child\_d),}\\
+\hspace*{0.9cm}\smalltt{! [W: \$world] :} \\
+\hspace*{1.3cm}\smalltt{\$in\_world(W,} \\
+\hspace*{1.7cm}\smalltt{( charly = d2child(child\_1) )) ).} \\
+contains the mapping for the \smalltt{charly} constant that is the same in all worlds
+[\example{}:~\ref{NXF_Finite-Finite-Global.s}], and the interpretation-formula
+[\example{}:~\ref{NXF_Finite-Finite-Global_Compact.s}]: \\
+\hspace*{0.5cm}\smalltt{tff(rains\_mappings,interpretation-mappings(rains,\$o),} \\
+\hspace*{0.5cm}\smalltt{! [W: \$world] :} \\
+\hspace*{0.9cm}\smalltt{\$in\_world(W,} \\
+\hspace*{1.3cm}\smalltt{rains) ).} \\
+contains the predicate mapping for \smalltt{rains} that is the same in all worlds
+[\example{}:~\ref{NXF_Finite-Finite-Global.s}].
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Kripke Model Verification}
+\label{KripkeVerification}
+
+Kripke models written as interpretation-formulae can be verified using the theorem proving 
+approach described in Section~\ref{Verification}.\footnote{%
+To date we have done this for NXF problem formulae and TXF interpretation-formulae. 
+Extension to NHF should be possible.}
+An NXF verification problem is built from the NXF problem formulae and the TXF 
+interpretation-formulae.
+Although the verification problem includes the non-classical connectives in the problem
+formulae, it is not necessary to provide a full logic specification (as in 
+[\example{}:~\ref{NXF_Finite-Finite-Global.p}, 
+\ref{NXF_Finite-Finite-Local.p}]) because the logical setting is captured in 
+the interpretation-formulae.
+The verification problem is thus not in the same logic as the problem formulae, but rather
+some kind of hybrid logic~\cite{Bra11}, which is indicated by the special logic specification
+value \smalltt{\$\$fomlModel}.
+[\example{}:~\ref{NXF_Finite-Finite-Global.s.p}] shows the NXF 
+verification problem for the NXF problem
+[\example{}:~\ref{NXF_Finite-Finite-Global.p}] and its countermodel 
+in [\example{}:~\ref{NXF_Finite-Finite-Global.s}].
+[\example{}:~\ref{NXF_Finite-Finite-Local.s.p}] shows the NXF 
+verification problem for the problem in 
+[\example{}:~\ref{NXF_Finite-Finite-Local.p}] and its countermodel in 
+[\example{}:~\ref{NXF_Finite-Finite-Local.s}].
+
+In the NXF verification problem the Kripke interpretation-formulae are given the \smalltt{axiom} 
+role, and each of the problem axioms and the negated problem conjecture are given the 
+\smalltt{conjecture} role with a subrole of \smalltt{local} or \smalltt{global} according to 
+their role in the problem.
+For example, the axiom~[\example{}:~\ref{NXF_Finite-Finite-Global.p}]: \\
+\hspace*{0.5cm}\smalltt{tff(a1,axiom} \\
+\hspace*{0.9cm}\smalltt{! [C: child] : \tildenot{}\,( \tildenot{}\,quiet(C) \& ? [A: adult] : sleepy(A) ) ).}\\
+is global (the default), so the NXF verification conjecture has the \smalltt{global} subrole
+[\example{}:~\ref{NXF_Finite-Finite-Global.s.p}]: \\
+\hspace*{0.5cm}\smalltt{tff(a1,conjecture-global,} \\
+The conjecture of the problem is local (the default) 
+[\example{}:~\ref{NXF_Finite-Finite-Global.p}]: \\
+\hspace*{0.5cm}\smalltt{tff(c,conjecture,} \\
+\hspace*{0.9cm}\smalltt{\{\$possible\}\,@\,(\,\tildenot{}\,rains\,)\,).} \\
+so the NXF verification (negated) conjecture has the \smalltt{local} subrole
+[\example{}:~\ref{NXF_Finite-Finite-Global.s.p}]: \\
+\hspace*{0.5cm}\smalltt{tff(c,conjecture-local,}\emph{verification obligation}\smalltt{).}
+
+The NXF verification problem is embedded into TH0 using the ATFLET tool.
+ATFLET recognizes the special logic specification and the type and predicates, and combines
+the NXF conjectures into a single TH0 conjecture.
+The resultant TH0 problem is discharged using a trusted TH0 ATP system.
+
+% \paragraph{Conversion to TXF:}~\\
+% The type and predicates, and the non-classical connectives in the problem, are expressed 
+% in TXF, and the resultant TXF verification problem is discharged using a trusted TXF 
+% ATP system.\footnote{%
+% To date we have done this for alethic modal logic in NXF, which has the \samlltt{\$necessary} and 
+% \smalltt{\$possible} connectives.
+% Extension to NHF might be possible.}
+% Appendix~\ref{NXF_Finite-Finite-Global.s.p} shows the verification problem for the problem
+% in Appendix~\ref{NXF_Finite-Finite-Global.p} and its countermodel in 
+% Appendix~\ref{NXF_Finite-Finite-Global.s}.
+% Appendix~\ref{NXF_Finite-Finite-Local.s.p} shows the verification problem for the problem
+% in Appendix~\ref{NXF_Finite-Finite-Local.p} and its countermodel in 
+% Appendix~\ref{NXF_Finite-Finite-Local.s}.
+% 
+% The type and predicates are converted to plain types and predicates by defining \smalltt{'}single 
+% quoted\smalltt{'} versions of them, e.g.,~in TFF: \\
+% \hspace*{0.5cm}\smalltt{tff(dollar\_world\_type,type,'\$world': \$tType).} \\
+% \hspace*{0.5cm}\smalltt{tff(dollar\_accessible\_world\_decl,type,} \\
+% \hspace*{0.9cm}\smalltt{'\$accessible\_world': ('\$world' * '\$world') > \$o).} \\
+% \hspace*{0.5cm}\smalltt{tff(dollar\_local\_world\_decl,type, '\$local\_world': '\$world').} \\
+% \hspace*{0.5cm}\smalltt{tff(dollar\_in\_world\_decl,type, '\$in\_world': ('\$world' * \$o) > \$o).} \\
+% The modal connectives are redefined in \smalltt{'}single quotes{\tt '}, with a world as an additional
+% argument: \\
+% \hspace*{0.5cm}\smalltt{tff(dollar\_necessary\_decl,type, '\$necessary': ( '\$world' * \$o ) > \$o ).} \\
+% \hspace*{0.5cm}\smalltt{tff(dollar\_possible\_decl,type, '\$possible': ( '\$world' * \$o ) > \$o ).} \\
+% The meanings of the connectives are then axiomatized wrt a current world:
+% \begin{packed_itemize}
+% \item A formula is necessarily \textit{true} wrt the current world if it is \textit{true} wrt the interpretations
+%       in all worlds that are accessible from the current world.
+%       See the {\tt necessary\_defn} axiom in Appendices~\ref{NXF_Finite-Finite-Global.s.p}
+%       and~\ref{NXF_Finite-Finite-Local.s.p}.
+% \item A formula is possibly \textit{true} wrt the current world if it is \textit{true} wrt the interpretation
+%       in some world that is accessible from the current world.
+%       See the {\tt possible\_defn} axiom in Appendices~\ref{NXF_Finite-Finite-Global.s.p}
+%       and~\ref{NXF_Finite-Finite-Local.s.p}.
+% \item The duality of {\tt \$necessary} and {\tt \$possible} is axiomatized wrt worlds.
+%       See the {\tt duality} axiom in Appendices~\ref{NXF_Finite-Finite-Global.s.p}
+%       and~\ref{NXF_Finite-Finite-Local.s.p}.
+% \end{packed_itemize}
+% 
+% The verification problem has the connective axioms and the Kripke interpretation-formulae 
+% (with the type and predicates {\tt '}quoted{\tt '}) as axioms.
+% The problem axioms and negated conjecture (with the modal connectives {\tt '}quoted{\tt '})
+% are proved.
+% Global (the default) axioms and global (specified with the {\tt conjecture-local} role)
+% negated conjectures are proved in all worlds' interpretations, e.g.,~in 
+% Appendix~\ref{NXF_Finite-Finite-Global.s.p} the axioms are all global, and are proved in
+% all worlds' interpretations by universal quantification over the worlds: \\
+% \hspace*{0.5cm}\smalltt{! [W: '\$world'] : ? [I: \$o] : ( '\$in\_world'(W,(I)) \& ( (I) =>} \\
+% Note how the world is provided as an additional argument to the {\tt '}quoted{\tt '} modal
+% connectives, e.g.,~in Appendix~\ref{NXF_Finite-Finite-Global.s.p}: \\
+% \hspace*{0.5cm}\smalltt{’\$possible’(W,gets\_rich(P))} \\
+% Local (specified with the {\tt axiom-local} role) axioms and local (the default) negated
+% conjectures are proved in the local world's interpretation, e.g.,~
+% in Appendix~\ref{NXF_Finite-Finite-Local.s.p} the local axiom {\tt rotten(banana)} and
+% the conjecture are proved in the local world's interpretation: \\
+% \hspace*{0.5cm}\smalltt{? [I: \$o] : ( '\$in\_world'('\$local\_world',(I)) \& ( (I) =>} \\
+% Note how the local world is provided as an additional argument to the {\tt '}quoted{\tt '} 
+% modal connectives, e.g.,~in Appendix~\ref{NXF_Finite-Finite-Local.s.p}: \\
+% \hspace*{0.5cm}\smalltt{'\$necessary'('\$local\_world',( healthy(apple) \& ~ rotten(banana) ))}
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Visualization of Interpretations}
+\label{IKV}
+
+Finite Kripke interpretations with domain types, as described in 
+Section~\ref{NewKripkeFiniteFinite}, can be visualised in the Interactive Interpretation Viewer 
+(IIV).
+The left hand side of Figure~\ref{IKVPicture} shows the worlds of the model in 
+[\example{}:~\ref{NXF_Finite-Finite-Global.s}].
+The cursor is hovering over the \smalltt{w1} world, and the worlds are coloured in lighter
+shades according to the number of accessibility relations that have to be traversed from
+the selected world.
+Clicking on a world displays,the Tarskian interpretation in the world, shown in the
+right hand side of Figure~\ref{IKVPicture}.
+IIV is available in the SystemOnTSTP web interface.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{IKV.pdf}
+\caption{IIV view of the Kripke model in [\example{}:~\ref{NXF_Finite-Finite-Global.s}]}
+\label{IKVPicture}
+\end{figure}
+
+%--------------------------------------------------------------------------------------------------
+\section{Conclusion}
+\label{Conclusion}
+
+This paper describes the TPTP format for representing interpretations.
+It provides a background survey that helped ensure that the representation format is adequate
+for different types of interpretations, including Tarskian, Herbrand, and Kripke interpretations.
+Some tools that support processing the format have been noted.
+
+The TPTP format provides numerous options and features, and it is expected that only the 
+basic features will be adopted initially. 
+For ATP systems that already output the old TPTP format for finite Tarskian interpretations,
+all that is needed is to replace the {\tt fi\_domain}, {\tt fi\_functors}, and {\tt fi\_predicates}
+roles by {\tt interpretation}. 
+To be more informative, {\tt fi\_domain} can be replaced by {\tt interpretation-domains}, and 
+{\tt fi\_functors} and {\tt fi\_predicates} can be replaced by {\tt interpretation\-mappings}.
+
+Section~\ref{Need} lists four needs for interpretations: 
+\begin{packed_enumerate}
+\item Evaluability - the ability to evaluate a formula wrt an interpretation.
+\item Tractability - the ability to evaluate a formula using some limited/reasonable amount of
+      resources.
+\item Verifiability - the ability to verify a model by evaluating all the formulae it claims
+      to model as \textit{true}.
+\item Comprehensibility - be sufficiently comprehensible to humans and machines to be useful in 
+      applications.
+\end{packed_enumerate}
+
+In the light of the above (and hey, maybe there are more techniques than just those) we (well,
+at least the first author) claim:
+\begin{packed_itemize}
+\item Finite interpretations represented by interpretation-formulae are typically evaluable,
+      tractable, verifiable, and comprehensible.
+\item Infinite interpretations represented by interpretation-formulae are evaluable, often 
+      intractable, verifiable, and might not be comprehensible.
+\item HI-formulae (in interpretation-formulae) are evaluable, can be tractable, verifiable, 
+      and can be comprehensible.
+\item Saturations (in interpretation-formulae) are evaluable, often intractable, verifiable, 
+      and almost always incomprehensible.
+\item The verifiability, tractability, and comprehensibility of Kripke interpretations vary
+      between individual cases.
+\item Use of the same language as the problem formulae for writing interpretation-formulae
+      contributes to comprehensibility (but does not ensure it).
+\end{packed_itemize}
+
+This work will be extended to deal with more non-classical languages.
+But for now we are pausing to allow ATP system developers to implement the format in their 
+ATP systems.
+
+%--------------------------------------------------------------------------------------------------
+\bibliographystyle{plain}
 \bibliography{Bibliography.bib}
 %--------------------------------------------------------------------------------------------------
-\appendix 
+\appendix
+
 \newpage
 \section{FOF}
 \label{FOF}
 
 \subsection{FOF Problem with a Finite Countermodel
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Finite.p}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Finite.p}{Online})}
 \label{FOF_Finite.p}
 \begin{small}
 \verbatiminput{Examples/FOF_Finite.p}
@@ -132,8 +1247,7 @@ We didn't use any.
 
 \newpage
 \subsection{FOF Finite Model for \ref{FOF_Finite.p}, Coarse Grained
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Finite.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Finite.s}{Online})}
 \label{FOF_Finite.s}
 \begin{small}
 \verbatiminput{Examples/FOF_Finite.s}
@@ -141,8 +1255,7 @@ We didn't use any.
 
 \newpage
 \subsection{FOF Verification Problem for \ref{FOF_Finite.p} and \ref{FOF_Finite.s}
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Finite.s.p}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Finite.s.p}{Online})}
 \label{FOF_Finite.s.p}
 \begin{small}
 \verbatiminput{Examples/FOF_Finite.s.p}
@@ -150,8 +1263,7 @@ We didn't use any.
 
 \newpage
 \subsection{FOF Finite Model for \ref{FOF_Finite.p}, Medium Grained
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Finite_Medium.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Finite_Medium.s}{Online})}
 \label{FOF_Finite_Medium.s}
 \begin{small}
 \verbatiminput{Examples/FOF_Finite_Medium.s}
@@ -159,8 +1271,7 @@ We didn't use any.
 
 \newpage
 \subsection{FOF Finite Model for \ref{FOF_Finite.p}, Fine Grained
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Finite_Fine.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Finite_Fine.s}{Online})}
 \label{FOF_Finite_Fine.s}
 \begin{small}
 \verbatiminput{Examples/FOF_Finite_Fine.s}
@@ -168,8 +1279,7 @@ We didn't use any.
 
 \newpage
 \subsection{FOF Formula Model for \ref{FOF_Finite.p}
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Formulae.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Formulae.s}{Online})}
 \label{FOF_Formulae.s}
 \begin{small}
 \verbatiminput{Examples/FOF_Formulae.s}
@@ -177,8 +1287,7 @@ We didn't use any.
 
 \newpage
 \subsection{FOF Saturation for \ref{FOF_Finite.p}
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Saturation.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Saturation.s}{Online})}
 \label{FOF_Saturation.s}
 \begin{small}
 \verbatiminput{Examples/FOF_Saturation.s}
@@ -186,8 +1295,7 @@ We didn't use any.
 
 \newpage
 \subsection{FOF Verification Problem for \ref{FOF_Finite.p} and \ref{FOF_Formulae.s}
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Formulae.s.p}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Formulae.s.p}{Online})}
 \label{FOF_Formulae.s.p}
 \begin{small}
 \verbatiminput{Examples/FOF_Formulae.s.p}
@@ -195,8 +1303,7 @@ We didn't use any.
 
 \newpage
 \subsection{FOF Verification Problem for \ref{FOF_Finite.p} and \ref{FOF_Saturation.s}
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Saturation.s.p}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/FOF_Saturation.s.p}{Online})}
 \label{FOF_Saturation.s.p}
 \begin{small}
 \verbatiminput{Examples/FOF_Saturation.s.p}
@@ -208,8 +1315,7 @@ We didn't use any.
 \label{TF0Finite}
 
 \subsection{TF0 Problem with a Finite Countermodel
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite.p}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite.p}{Online})}
 \label{TFF_Finite.p}
 \begin{small}
 \verbatiminput{Examples/TFF_Finite.p}
@@ -217,8 +1323,7 @@ We didn't use any.
 
 \newpage
 \subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Reusing Problem Types
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite.s}{Online})}
 \label{TFF_Finite.s}
 \begin{small}
 \verbatiminput{Examples/TFF_Finite.s}
@@ -226,8 +1331,7 @@ We didn't use any.
 
 \newpage
 \subsection{TF0 Verification Problem for \ref{TFF_Finite.p} and \ref{TFF_Finite.s}
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite.s.p}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite.s.p}{Online})}
 \label{TFF_Finite.s.p}
 \begin{small}
 \verbatiminput{Examples/TFF_Finite.s.p}
@@ -235,8 +1339,7 @@ We didn't use any.
 
 \newpage
 \subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Separate Domain Types
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_SeparateDomains.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_SeparateDomains.s}{Online})}
 \label{TFF_Finite_SeparateDomains.s}
 \begin{small}
 \verbatiminput{Examples/TFF_Finite_SeparateDomains.s}
@@ -244,8 +1347,7 @@ We didn't use any.
 
 \newpage
 \subsection{TF0 Verification Problem for \ref{TFF_Finite.p} and \ref{TFF_Finite_SeparateDomains.s}
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_SeparateDomains.s.p}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_SeparateDomains.s.p}{Online})}
 \label{TFF_Finite_SeparateDomains.s.p}
 \begin{small}
 \verbatiminput{Examples/TFF_Finite_SeparateDomains.s.p}
@@ -253,8 +1355,7 @@ We didn't use any.
 
 \newpage
 \subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Medium Grained
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_Medium.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_Medium.s}{Online})}
 \label{TFF_Finite_Medium.s}
 \begin{small}
 \verbatiminput{Examples/TFF_Finite_Medium.s}
@@ -262,8 +1363,7 @@ We didn't use any.
 
 \newpage
 \subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Fine Grained
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_Fine.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_Fine.s}{Online})}
 \label{TFF_Finite_Fine.s}
 \begin{small}
 \verbatiminput{Examples/TFF_Finite_Fine.s}
@@ -271,8 +1371,7 @@ We didn't use any.
 
 \newpage
 \subsection{TF0 Finite Model for \ref{TFF_Finite.p}, Compacted
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_Compact.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Finite_Compact.s}{Online})}
 \label{TFF_Finite_Compact.s}
 \begin{small}
 \verbatiminput{Examples/TFF_Finite_Compact.s}
@@ -284,8 +1383,7 @@ We didn't use any.
 \label{TF0Infinite}
 
 \subsection{TF0 Axioms with an Infinite Model
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Infinite.p}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Infinite.p}{Online})}
 \label{TFF_Infinite.p}
 \begin{small}
 \verbatiminput{Examples/TFF_Infinite.p}
@@ -293,8 +1391,7 @@ We didn't use any.
 
 \newpage
 \subsection{TF0 Infinite Model for \ref{TFF_Infinite.p}, Term Domain
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Peano.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Peano.s}{Online})}
 \label{TFF_Peano.s}
 \begin{small}
 \verbatiminput{Examples/TFF_Peano.s}
@@ -302,8 +1399,7 @@ We didn't use any.
 
 \newpage
 \subsection{TF0 Infinite Model for \ref{TFF_Infinite.p}, Integer Domain
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Integer.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Integer.s}{Online})}
 \label{TFF_Integer.s}
 \begin{small}
 \verbatiminput{Examples/TFF_Integer.s}
@@ -311,8 +1407,7 @@ We didn't use any.
 
 \newpage
 \subsection{TF0 Verification Problem for \ref{TFF_Infinite.p} and \ref{TFF_Peano.s}
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Peano.s.p}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Peano.s.p}{Online})}
 \label{TFF_Peano.s.p}
 \begin{small}
 \verbatiminput{Examples/TFF_Peano.s.p}
@@ -320,8 +1415,7 @@ We didn't use any.
 
 \newpage
 \subsection{TF0 Verification Problem for \ref{TFF_Infinite.p} and \ref{TFF_Integer.s}
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Integer.s.p}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/TFF_Integer.s.p}{Online})}
 \label{TFF_Integer.s.p}
 \begin{small}
 \verbatiminput{Examples/TFF_Integer.s.p}
@@ -333,8 +1427,7 @@ We didn't use any.
 \label{TH0Finite}
 
 \subsection{TH0 Problem with a Finite Countermodel
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/THF_Finite.p}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/THF_Finite.p}{Online})}
 \label{THF_Finite.p}
 \begin{small}
 \verbatiminput{Examples/THF_Finite.p}
@@ -342,8 +1435,7 @@ We didn't use any.
 
 \newpage
 \subsection{TH0 Finite Model for \ref{THF_Finite.p}, Coarse Grained
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/THF_Finite.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/THF_Finite.s}{Online})}
 \label{THF_Finite.s}
 \begin{small}
 \verbatiminput{Examples/THF_Finite.s}
@@ -351,8 +1443,7 @@ We didn't use any.
 
 \newpage
 \subsection{TH0 Verification Problem for \ref{THF_Finite.p} and \ref{THF_Finite.s}
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/THF_Finite.s.p}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/THF_Finite.s.p}{Online})}
 \label{THF_Finite.s.p}
 \begin{small}
 \verbatiminput{Examples/THF_Finite.s.p}
@@ -360,8 +1451,7 @@ We didn't use any.
 
 \newpage
 \subsection{TH0 Finite Model for \ref{THF_Finite.p}, Mixed Grained
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/THF_Finite_Medium.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/THF_Finite_Medium.s}{Online})}
 \label{THF_Finite_Medium.s}
 \begin{small}
 \verbatiminput{Examples/THF_Finite_Medium.s}
@@ -373,8 +1463,7 @@ We didn't use any.
 \label{NXF}
 
 \subsection{NXF Problem with Global Axioms, \\ with a Finite-Finite Countermodel
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global.p}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global.p}{Online})}
 \label{NXF_Finite-Finite-Global.p}
 \begin{small}
 \verbatiminput{Examples/NXF_Finite-Finite-Global.p}
@@ -382,8 +1471,7 @@ We didn't use any.
 
 \newpage
 \subsection{TXF Finite-Finite Model for \ref{NXF_Finite-Finite-Global.p}
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global.s}{Online})}
 \label{NXF_Finite-Finite-Global.s}
 \begin{small}
 \verbatiminput{Examples/NXF_Finite-Finite-Global.s}
@@ -392,8 +1480,7 @@ We didn't use any.
 \newpage
 \subsection{NXF Verification Problem for \ref{NXF_Finite-Finite-Global.p} and 
 \ref{NXF_Finite-Finite-Global.s}
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global.s.p}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global.s.p}{Online})}
 \label{NXF_Finite-Finite-Global.s.p}
 \begin{small}
 \verbatiminput{Examples/NXF_Finite-Finite-Global.s.p}
@@ -402,7 +1489,7 @@ We didn't use any.
 % \newpage
 % \subsection{TXF Verification Problem for \ref{NXF_Finite-Finite-Global.p} and 
 % \ref{NXF_Finite-Finite-Global.s}
-% % (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global.s.TXF.p}{Online})}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global.s.TXF.p}{Online})}
 % \label{NXF_Finite-Finite-Global.s.TXF.p}
 % \begin{small}
 % \verbatiminput{Examples/NXF_Finite-Finite-Global.s.TXF.p}
@@ -411,8 +1498,7 @@ We didn't use any.
 \newpage
 \subsection{NXF Problem with Global and Local Axioms, \\
             with a Finite-Finite Countermodel
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Local.p}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Local.p}{Online})}
 \label{NXF_Finite-Finite-Local.p}
 \begin{small}
 \verbatiminput{Examples/NXF_Finite-Finite-Local.p}
@@ -420,8 +1506,7 @@ We didn't use any.
 
 \newpage
 \subsection{TXF Finite-Finite Model for \ref{NXF_Finite-Finite-Local.p}
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Local.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Local.s}{Online})}
 \label{NXF_Finite-Finite-Local.s}
 \begin{small}
 \verbatiminput{Examples/NXF_Finite-Finite-Local.s}
@@ -430,8 +1515,7 @@ We didn't use any.
 \newpage
 \subsection{NXF Verification Problem for \ref{NXF_Finite-Finite-Local.p} and
 \ref{NXF_Finite-Finite-Local.s}
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Local.s.p}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Local.s.p}{Online})}
 \label{NXF_Finite-Finite-Local.s.p}
 \begin{small}
 \verbatiminput{Examples/NXF_Finite-Finite-Local.s.p}
@@ -440,7 +1524,7 @@ We didn't use any.
 % \newpage
 % \subsection{TXF Verification Problem for \ref{NXF_Finite-Finite-Local.p} and
 % \ref{NXF_Finite-Finite-Local.s}
-% % (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Local.s.TXF.p}{Online})}
+% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Local.s.TXF.p}{Online})}
 % \label{NXF_Finite-Finite-Local.s.TXF.p}
 % \begin{small}
 % \verbatiminput{Examples/NXF_Finite-Finite-Local.s.TXF.p}
@@ -448,8 +1532,7 @@ We didn't use any.
 
 \newpage
 \subsection{TXF Finite-Finite Model for \ref{NXF_Finite-Finite-Global.p}, Medium Grained \\
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global_Medium.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global_Medium.s}{Online})}
 \label{NXF_Finite-Finite-Global_Medium.s}
 \begin{small}
 \verbatiminput{Examples/NXF_Finite-Finite-Global_Medium.s}
@@ -457,8 +1540,7 @@ We didn't use any.
 
 \newpage
 \subsection{TXF Finite-Finite Model for \ref{NXF_Finite-Finite-Global.p}, Fine Grained
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global_Fine.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global_Fine.s}{Online})}
 \label{NXF_Finite-Finite-Global_Fine.s}
 \begin{small}
 \verbatiminput{Examples/NXF_Finite-Finite-Global_Fine.s}
@@ -466,8 +1548,7 @@ We didn't use any.
 
 \newpage
 \subsection{TXF Finite-Finite Model for \ref{NXF_Finite-Finite-Global.p}, Compacted
-% (\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global_Compact.s}{Online})
-}
+(\href{https://raw.githubusercontent.com/GeoffsPapers/InterpretationFormat/master/Examples/NXF_Finite-Finite-Global_Compact.s}{Online})}
 \label{NXF_Finite-Finite-Global_Compact.s}
 \begin{small}
 \verbatiminput{Examples/NXF_Finite-Finite-Global_Compact.s}
