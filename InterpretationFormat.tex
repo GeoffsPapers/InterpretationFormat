@@ -819,8 +819,7 @@ e.g.,~[\example{}:~\ref{TFF_Peano.s}]:\\
 \hspace*{0.9cm}\smalltt{( is\_descendant(peano2person(A),peano2person(D)) <=> peano\_less(A,D) )}\\
 and [\example{}:~\ref{TFF_Integer.s}]:\\
 \hspace*{0.5cm}\smalltt{! [A: \$int,D: \$int] :}\\
-\hspace*{0.9cm}\smalltt{( is\_descendant(int2person(A),int2person(D))}\\
-\hspace*{0.5cm}\smalltt{<=> peano\_less(A,D) )}\\
+\hspace*{0.9cm}\smalltt{( is\_descendant(int2person(A),int2person(D)) <=> peano\_less(A,D) )}\\
 The interpretation of function and predicate symbols is not given for argument tuples
 with negative integers.
 % , i.e., this is an example of a partial interpretation.
@@ -1026,11 +1025,11 @@ with the accessibility relation: \\
 \hspace*{0.5cm}\smalltt{\& \tildenot{}\,\$accessible\_world(w3,w2) \& \tildenot{}\,\$accessible\_world(w3,w3)}\\
 The conjecture is disproved in a local world [\example{}:~\ref{NXF_Finite-Finite-Global.s}]: \\
 \hspace*{0.5cm}\smalltt{\$local\_world = w1} \\
-The finite Tarskian interpretations for the worlds are provided in the format described in 
-Section~\ref{NewTarskian}: \\
+The finite Tarskian interpretations for the worlds are provided in the format described 
+in Section~\ref{NewTarskian}, e.g.,: \\
 \hspace*{0.5cm}\smalltt{\$in\_world(w1,}\emph{the Tarskian interpretation}\smalltt{)} \\
-\hspace*{0.5cm}\smalltt{\$in\_world(w2,}\emph{the Tarskian interpretation}\smalltt{)} \\
-\hspace*{0.5cm}\smalltt{\$in\_world(w3,}\emph{the Tarskian interpretation}\smalltt{)} \\
+% \hspace*{0.5cm}\smalltt{\$in\_world(w2,}\emph{the Tarskian interpretation}\smalltt{)} \\
+% \hspace*{0.5cm}\smalltt{\$in\_world(w3,}\emph{the Tarskian interpretation}\smalltt{)} \\
 Note the augmentation of the Tarskian interpretations with subformulae such as:\\
 \hspace*{0.5cm}\smalltt{?\,[CD:\,child\_d]\,:\,CD\,=\,child\_1}\\
 The quantification semantics is not classical, but instead that of modal logic, i.e., the 
@@ -1078,22 +1077,17 @@ interpretation-formulae can be compacted, e.g.,~by using universal quantificatio
 worlds to factor out common elements of the Tarskian interpretations in the worlds.
 For example, the interpretation-formula [\example{}:~\ref{NXF_Finite-Finite-Global_Compact.s}]: \\
 \hspace*{0.5cm}\smalltt{tff(people\_domains,interpretation-domains,} \\
-\hspace*{0.9cm}\smalltt{! [W: \$world] :} \\
-\hspace*{1.3cm}\smalltt{\$in\_world(W,}\emph{the domain specification}\smalltt{).} \\
+\hspace*{0.9cm}\smalltt{! [W: \$world] : \$in\_world(W,}\emph{the domain specification}\smalltt{).} \\
 contains the information about the domains that are the same in all worlds 
 [\example{}:~\ref{NXF_Finite-Finite-Global.s}], and the interpretation-formula
 [\example{}:~\ref{NXF_Finite-Finite-Global_Compact.s}]: \\
 \hspace*{0.5cm}\smalltt{tff(charly\_mappings,interpretation-mappings(charly,child\_d),}\\
-\hspace*{0.9cm}\smalltt{! [W: \$world] :} \\
-\hspace*{1.3cm}\smalltt{\$in\_world(W,} \\
-\hspace*{1.7cm}\smalltt{( charly = d2child(child\_1) )) ).} \\
+\hspace*{0.9cm}\smalltt{! [W: \$world] : \$in\_world(W, ( charly = d2child(child\_1) )) ).} \\
 contains the mapping for the \smalltt{charly} constant that is the same in all worlds
 [\example{}:~\ref{NXF_Finite-Finite-Global.s}], and the interpretation-formula
 [\example{}:~\ref{NXF_Finite-Finite-Global_Compact.s}]: \\
 \hspace*{0.5cm}\smalltt{tff(rains\_mappings,interpretation-mappings(rains,\$o),} \\
-\hspace*{0.5cm}\smalltt{! [W: \$world] :} \\
-\hspace*{0.9cm}\smalltt{\$in\_world(W,} \\
-\hspace*{1.3cm}\smalltt{rains) ).} \\
+\hspace*{0.9cm}\smalltt{! [W: \$world] : \$in\_world(W, rains) ).} \\
 contains the predicate mapping for \smalltt{rains} that is the same in all worlds
 [\example{}:~\ref{NXF_Finite-Finite-Global.s}].
 
@@ -1129,7 +1123,7 @@ role, and each of the problem axioms and the negated problem conjecture are give
 \smalltt{conjecture} role with a subrole of \smalltt{local} or \smalltt{global} according to 
 their role in the problem.
 For example, the axiom~[\example{}:~\ref{NXF_Finite-Finite-Global.p}]: \\
-\hspace*{0.5cm}\smalltt{tff(a1,axiom} \\
+\hspace*{0.5cm}\smalltt{tff(a1,axiom,} \\
 \hspace*{0.9cm}\smalltt{! [C: child] : \tildenot{}\,( \tildenot{}\,quiet(C) \& ? [A: adult] : sleepy(A) ) ).}\\
 is global (the default), so the NXF verification conjecture has the \smalltt{global} subrole
 [\example{}:~\ref{NXF_Finite-Finite-Global.s.p}]: \\
