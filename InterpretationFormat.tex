@@ -87,14 +87,11 @@ email=Lydia.Kondylidou@tcs.ifi.lmu.de
 \address[4]{Ludwig-Maximilians-Universität München, Germany}
 
 \begin{abstract}
-This paper describes the TPTP format for representing interpretations.
-It provides a background survey that helped ensure that the representation format is adequate
-for different types of interpretations: Tarskian, Herbrand, and Kripke interpretations.
-The needs of applications that use models are considered.
-The syntax and semantics of the format are expounded in detail, with multiple examples.
-Verification of models is discussed.
-Some tools that support processing the format are noted.
-The properties of interpretations represented in the format are discussed.
+This paper describes the (new) TPTP format for representing interpretations.
+The sources and properties of interpretations, which influenced the design of the format, are
+discusse.
+The format for Tarskian, Herbrand, and Kripke interpretations is described.
+Tools for verification and visualization of the interpretations are described.
 \end{abstract}
 \begin{keywords}
   TPTP World \sep
@@ -919,7 +916,7 @@ in [\example{}:~\ref{FOF_Saturation.s}].
 the corresponding verification problems.
 
 %--------------------------------------------------------------------------------------------------
-\subsection{Visualization of Interpretations}
+\subsection{Visualization of Finite Tarskian Interpretations}
 \label{IIV}
 
 Finite Tarskian interpretations with domain types, as described in 
@@ -1092,7 +1089,7 @@ contains the predicate mapping for \smalltt{rains} that is the same in all world
 [\example{}:~\ref{NXF_Finite-Finite-Global.s}].
 
 %--------------------------------------------------------------------------------------------------
-\subsection{Kripke Model Verification}
+\subsection{Verification of Kripke Models}
 \label{KripkeVerification}
 
 Kripke models written as interpretation-formulae can be verified using the theorem proving 
@@ -1203,10 +1200,10 @@ The resultant TH0 problem is discharged using a trusted TH0 ATP system.
 % \hspace*{0.5cm}\smalltt{'\$necessary'('\$local\_world',( healthy(apple) \& ~ rotten(banana) ))}
 
 %--------------------------------------------------------------------------------------------------
-\subsection{Visualization of Interpretations}
+\subsection{Visualization of Finite-Finite Kripke Interpretations}
 \label{IKV}
 
-Finite Kripke interpretations with domain types, as described in 
+Finite-finite Kripke interpretations with domain types, as described in 
 Section~\ref{NewKripkeFiniteFinite}, can be visualised in the Interactive Interpretation Viewer 
 (IIV).
 The left hand side of Figure~\ref{IKVPicture} shows the worlds of the model in 
